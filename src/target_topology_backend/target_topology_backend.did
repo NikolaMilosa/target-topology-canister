@@ -13,5 +13,7 @@ type Node = record {
 type Result = variant { Ok; Err : text };
 service : {
   add_nodes : (vec Node) -> (Result);
+  get_node : (principal) -> (opt Node) query;
   get_nodes : () -> (vec Node) query;
+  get_nodes_for_subnet : (principal) -> (opt vec Node) query;
 }

@@ -60,4 +60,23 @@ impl Context {
 
         Ok(())
     }
+
+    pub fn get_node(&self, node_id: Principal) -> Option<Node> {
+        self.nodes.get(&node_id)
+    }
+
+    pub fn get_subnet(&self, subnet_id: Principal) -> Option<Vec<Node>> {
+        let nodes_in_subnet: Vec<_> = self
+            .nodes
+            .iter()
+            .map(|v| v.value())
+            .filter(|n| n.subnet_id.is_some_and(|id| id.eq(&subnet_id)))
+            .collect();
+
+        if nodes_in_subnet.is_empty() {
+            return None;
+        }
+
+        Some(nodes_in_subnet)
+    }
 }

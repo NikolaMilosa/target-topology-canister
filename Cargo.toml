@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "src/target_topology_backend"
+]
+resolver = "2"

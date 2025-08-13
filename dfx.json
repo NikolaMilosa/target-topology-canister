@@ -1,0 +1,27 @@
+{
+  "canisters": {
+    "target_topology_backend": {
+      "candid": "src/target_topology_backend/target_topology_backend.did",
+      "package": "target_topology_backend",
+      "type": "rust"
+    },
+    "target_topology_frontend": {
+      "dependencies": [
+        "target_topology_backend"
+      ],
+      "source": [
+        "src/target_topology_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "target_topology_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

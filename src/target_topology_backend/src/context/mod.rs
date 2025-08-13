@@ -1,11 +1,22 @@
-use std::{cell::RefCell, collections::BTreeMap};
+use std::cell::RefCell;
 
 use candid::Principal;
+use ic_stable_structures::{
+    memory_manager::{MemoryId, MemoryManager, VirtualMemory},
+    BTreeMap, DefaultMemoryImpl,
+};
 
 use crate::model::node::Node;
 
+type Memory = VirtualMemory<DefaultMemoryImpl>;
+
 thread_local! {
-    static CONTEXT: RefCell<Context> = RefCell::new(Context::new())
+    static MEMORY_MANAGER: RefCell<MemoryManager<DefaultMemoryImpl>> = RefCell::new(MemoryManager::init(DefaultMemoryImpl::default()));
+    static CONTEXT: RefCell<Context> = RefCell::new(Context::new(
+        BTreeMap::init(
+            MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(0)))
+        )
+    ))
 }
 
 pub fn with_context<F, R>(f: F) -> R
@@ -22,29 +33,20 @@ where
 }
 
 pub struct Context {
-    nodes: BTreeMap<Principal, Node>,
+    nodes: BTreeMap<Principal, Node, Memory>,
 }
 
 impl Context {
-    pub fn new() -> Self {
-        Self {
-            nodes: BTreeMap::new(),
-        }
+    pub fn new(nodes: BTreeMap<Principal, Node, Memory>) -> Self {
+        Self { nodes }
     }
 
     pub fn nodes(&self) -> Vec<Node> {
-        self.nodes.values().cloned().collect()
+        self.nodes.iter().map(|e| e.value().clone()).collect()
     }
 
     // TODO: use only for testing, in prod, should pull from registry
     pub fn add_node(&mut self, node: Node) -> anyhow::Result<()> {
-        if self.nodes.get(&node.node_id).is_some() {
-            return Err(anyhow::anyhow!(
-                "Node with id {} already exists",
-                node.node_id
-            ));
-        }
-
         self.nodes.insert(node.node_id, node);
 
         Ok(())

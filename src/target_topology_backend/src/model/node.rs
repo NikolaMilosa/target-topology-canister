@@ -1,4 +1,5 @@
-use candid::{CandidType, Principal};
+use candid::{CandidType, Decode, Encode, Principal};
+use ic_stable_structures::{storable::Bound, Storable};
 use serde::{Deserialize, Serialize};
 
 #[derive(CandidType, Clone, Serialize, Deserialize)]
@@ -13,4 +14,20 @@ pub struct Node {
     pub guestos_version: String,
     pub is_api_bn: bool,
     pub node_reward_type: String,
+}
+
+impl Storable for Node {
+    fn to_bytes(&self) -> std::borrow::Cow<'_, [u8]> {
+        std::borrow::Cow::Owned(Encode!(self).unwrap())
+    }
+
+    fn into_bytes(self) -> Vec<u8> {
+        Encode!(&self).unwrap()
+    }
+
+    fn from_bytes(bytes: std::borrow::Cow<[u8]>) -> Self {
+        Decode!(bytes.as_ref(), Self).unwrap()
+    }
+
+    const BOUND: Bound = Bound::Unbounded;
 }

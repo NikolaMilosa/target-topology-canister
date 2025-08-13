@@ -25,6 +25,12 @@ type TopologyEntry = record {
   subnet_type : text;
   subnet_limit_node_provider : nat8;
 };
+type TopologyLimitReport = record {
+  violations : vec TopologyLimitViolation;
+  limit_name : text;
+  limit_value : nat8;
+};
+type TopologyLimitViolation = record { found : nat8; value : text };
 service : {
   add_nodes : (vec Node) -> (Result);
   add_topology : (TargetTopology) -> (Result);
@@ -33,4 +39,5 @@ service : {
   get_node : (principal) -> (opt Node) query;
   get_nodes : () -> (vec Node) query;
   get_nodes_for_subnet : (principal) -> (opt vec Node) query;
+  get_topology_report : (principal) -> (opt vec TopologyLimitReport) query;
 }

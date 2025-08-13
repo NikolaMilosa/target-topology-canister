@@ -6,7 +6,10 @@ use ic_stable_structures::{
     BTreeMap, DefaultMemoryImpl,
 };
 
-use crate::model::{node::Node, topology::TargetTopology};
+use crate::model::{
+    node::Node,
+    topology::{calculate_topology_limit_report, TargetTopology, TopologyLimitReport},
+};
 
 use self::nakamoto::{calculate_nakamoto_from_nodes, NakamotoCoefficient};
 
@@ -108,5 +111,18 @@ impl Context {
             .insert(target_topology.proposal.clone(), target_topology);
 
         Ok(())
+    }
+
+    pub fn check_topology_constraints(
+        &self,
+        subnet_id: Principal,
+    ) -> Option<Vec<TopologyLimitReport>> {
+        let nodes = self.get_subnet(subnet_id);
+        let topology = self.get_active_topology();
+
+        match (nodes, topology) {
+            (Some(nodes), Some(topology)) => Some(calculate_topology_limit_report(nodes, topology)),
+            _ => None,
+        }
     }
 }

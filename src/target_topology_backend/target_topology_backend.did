@@ -1,3 +1,17 @@
+type Node = record {
+  ip : text;
+  node_id : principal;
+  hostos_version : text;
+  is_api_bn : bool;
+  node_operator_id : principal;
+  guestos_version : text;
+  subnet_id : opt principal;
+  node_provider_id : principal;
+  node_reward_type : text;
+  dc_id : text;
+};
+type Result = variant { Ok; Err : text };
 service : {
-    "greet": (text) -> (text) query;
+  add_nodes : (vec Node) -> (Result);
+  get_nodes : () -> (vec Node) query;
 }

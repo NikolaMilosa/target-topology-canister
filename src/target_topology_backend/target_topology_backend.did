@@ -12,8 +12,22 @@ type Node = record {
   dc_id : text;
 };
 type Result = variant { Ok; Err : text };
+type TargetTopology = record {
+  entries : vec record { text; TopologyEntry };
+  proposal : text;
+  timestamp_seconds : nat64;
+};
+type TopologyEntry = record {
+  subnet_limit_data_center : nat8;
+  subnet_id : principal;
+  is_sev : bool;
+  subnet_size : nat8;
+  subnet_type : text;
+  subnet_limit_node_provider : nat8;
+};
 service : {
   add_nodes : (vec Node) -> (Result);
+  get_active_topology : () -> (opt TargetTopology) query;
   get_nakamoto_for_subnet : (principal) -> (opt vec NakamotoCoefficient) query;
   get_node : (principal) -> (opt Node) query;
   get_nodes : () -> (vec Node) query;

@@ -1,6 +1,7 @@
 use candid::CandidType;
 
 pub mod node;
+pub mod topology;
 
 type CustomResult<T> = std::result::Result<T, String>;
 

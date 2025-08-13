@@ -8,6 +8,10 @@ use ic_stable_structures::{
 
 use crate::model::node::Node;
 
+use self::nakamoto::{calculate_nakamoto_from_nodes, NakamotoCoefficient};
+
+pub mod nakamoto;
+
 type Memory = VirtualMemory<DefaultMemoryImpl>;
 
 thread_local! {
@@ -78,5 +82,10 @@ impl Context {
         }
 
         Some(nodes_in_subnet)
+    }
+
+    pub fn calculate_nakamoto(&self, subnet_id: Principal) -> Option<Vec<NakamotoCoefficient>> {
+        self.get_subnet(subnet_id)
+            .map(|nodes| calculate_nakamoto_from_nodes(nodes))
     }
 }

@@ -1,3 +1,4 @@
+type NakamotoCoefficient = record { value : nat8; attribute : text };
 type Node = record {
   ip : text;
   node_id : principal;
@@ -13,6 +14,7 @@ type Node = record {
 type Result = variant { Ok; Err : text };
 service : {
   add_nodes : (vec Node) -> (Result);
+  get_nakamoto_for_subnet : (principal) -> (opt vec NakamotoCoefficient) query;
   get_node : (principal) -> (opt Node) query;
   get_nodes : () -> (vec Node) query;
   get_nodes_for_subnet : (principal) -> (opt vec Node) query;

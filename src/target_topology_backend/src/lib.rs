@@ -1,5 +1,5 @@
 use candid::Principal;
-use context::{with_context, with_context_mut};
+use context::{nakamoto::NakamotoCoefficient, with_context, with_context_mut};
 use model::{node::Node, TargetTopologyResult};
 
 mod context;
@@ -23,6 +23,11 @@ fn get_node(node_id: Principal) -> Option<Node> {
 #[ic_cdk::query]
 fn get_nodes_for_subnet(subnet_id: Principal) -> Option<Vec<Node>> {
     with_context(|ctx| ctx.get_subnet(subnet_id))
+}
+
+#[ic_cdk::query]
+fn get_nakamoto_for_subnet(subnet_id: Principal) -> Option<Vec<NakamotoCoefficient>> {
+    with_context(|ctx| ctx.calculate_nakamoto(subnet_id))
 }
 
 // Export the interface for the smart contract.

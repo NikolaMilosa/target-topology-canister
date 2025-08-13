@@ -102,4 +102,11 @@ impl Context {
     pub fn get_active_topology(&self) -> Option<TargetTopology> {
         self.topology_manager.last_key_value().map(|(_, val)| val)
     }
+
+    pub fn add_topology(&mut self, target_topology: TargetTopology) -> anyhow::Result<()> {
+        self.topology_manager
+            .insert(target_topology.proposal.clone(), target_topology);
+
+        Ok(())
+    }
 }

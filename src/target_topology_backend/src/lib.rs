@@ -36,5 +36,10 @@ fn get_active_topology() -> Option<TargetTopology> {
     with_context(|ctx| ctx.get_active_topology())
 }
 
+#[ic_cdk::update]
+fn add_topology(topology: TargetTopology) -> TargetTopologyResult<()> {
+    with_context_mut(|ctx| ctx.add_topology(topology).into())
+}
+
 // Export the interface for the smart contract.
 ic_cdk::export_candid!();

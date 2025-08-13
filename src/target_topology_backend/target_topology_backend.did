@@ -27,6 +27,7 @@ type TopologyEntry = record {
 };
 service : {
   add_nodes : (vec Node) -> (Result);
+  add_topology : (TargetTopology) -> (Result);
   get_active_topology : () -> (opt TargetTopology) query;
   get_nakamoto_for_subnet : (principal) -> (opt vec NakamotoCoefficient) query;
   get_node : (principal) -> (opt Node) query;

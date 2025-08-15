@@ -14,6 +14,8 @@ pub struct TopologyEntry {
     pub is_sev: bool,
     pub subnet_limit_node_provider: u8,
     pub subnet_limit_data_center: u8,
+    pub subnet_limit_data_center_owner: u8,
+    pub subnet_limit_country: u8,
 }
 
 #[derive(CandidType, Serialize, Deserialize)]
@@ -80,6 +82,26 @@ pub fn calculate_topology_limit_report(
                     .entries
                     .get(subnet)
                     .map(|entry| entry.subnet_limit_data_center)
+            }),
+        ),
+        (
+            "Data center owner",
+            Box::new(|node: &Node| node.dc_owner.to_string()),
+            Box::new(|topology: &TargetTopology, subnet: &str| {
+                topology
+                    .entries
+                    .get(subnet)
+                    .map(|entry| entry.subnet_limit_data_center_owner)
+            }),
+        ),
+        (
+            "Country",
+            Box::new(|node: &Node| node.country.to_string()),
+            Box::new(|topology: &TargetTopology, subnet: &str| {
+                topology
+                    .entries
+                    .get(subnet)
+                    .map(|entry| entry.subnet_limit_country)
             }),
         ),
     ];

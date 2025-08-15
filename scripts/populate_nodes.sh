@@ -25,6 +25,8 @@ for start in $(seq 0 $BATCH_SIZE $((total_nodes - 1))); do
         "subnet_id = " + (if .subnet_id == null then "null" else "opt principal \"" + .subnet_id + "\"" end) + "; " +
         "node_provider_id = principal \"" + .node_provider_id + "\"; " +
         "node_reward_type = \"" + (.node_reward_type // "") + "\"; " +
+        "dc_owner = \"" + (.dc_owner // "") + "\"; " +
+        "country = \"" + (.country // "") + "\"; " +
         "dc_id = \"" + (.dc_id // "") + "\"; " +
         "}"
       )

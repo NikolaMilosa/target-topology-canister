@@ -3,11 +3,13 @@ type Node = record {
   ip : text;
   node_id : principal;
   hostos_version : text;
+  country : text;
   is_api_bn : bool;
   node_operator_id : principal;
   guestos_version : text;
   subnet_id : opt principal;
   node_provider_id : principal;
+  dc_owner : text;
   node_reward_type : text;
   dc_id : text;
 };
@@ -18,9 +20,11 @@ type TargetTopology = record {
   timestamp_seconds : nat64;
 };
 type TopologyEntry = record {
+  subnet_limit_country : nat8;
   subnet_limit_data_center : nat8;
   subnet_id : principal;
   is_sev : bool;
+  subnet_limit_data_center_owner : nat8;
   subnet_size : nat8;
   subnet_type : text;
   subnet_limit_node_provider : nat8;

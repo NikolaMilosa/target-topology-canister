@@ -40,6 +40,7 @@ fn get_active_topology() -> Option<TargetTopology> {
     with_context(|ctx| ctx.get_active_topology())
 }
 
+// TODO: ensure only some callers can call this
 #[ic_cdk::update]
 fn add_topology(topology: TargetTopology) -> TargetTopologyResult<()> {
     with_context_mut(|ctx| ctx.add_topology(topology).into())

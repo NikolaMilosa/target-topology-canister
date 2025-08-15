@@ -21,6 +21,11 @@ pub(super) fn calculate_nakamoto_from_nodes(nodes: Vec<Node>) -> Vec<NakamotoCoe
             "Data center",
             Box::new(|node: &Node| node.dc_id.to_string()),
         ),
+        (
+            "Data center owner",
+            Box::new(|node: &Node| node.dc_owner.to_string()),
+        ),
+        ("Country", Box::new(|node: &Node| node.country.to_string())),
     ];
 
     attributes

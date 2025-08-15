@@ -14,6 +14,8 @@ pub struct Node {
     pub guestos_version: String,
     pub is_api_bn: bool,
     pub node_reward_type: String,
+    pub country: String,
+    pub dc_owner: String,
 }
 
 impl Storable for Node {

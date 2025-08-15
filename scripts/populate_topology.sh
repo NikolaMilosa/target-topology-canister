@@ -8,7 +8,7 @@ ENTRIES="vec {"
 
 first=true
 
-while IFS=',' read -r subnet_type subnet_id _ subnet_size is_sev subnet_limit_node_provider subnet_limit_data_center _ _; do
+while IFS=',' read -r subnet_type subnet_id _ subnet_size is_sev subnet_limit_node_provider subnet_limit_data_center subnet_limit_data_center_owner subnet_limit_country; do
     # Skip header
     if [[ "$subnet_type" == "subnet_type" ]]; then
         continue
@@ -34,7 +34,9 @@ subnet_id = principal \"$subnet_id\"; \
 subnet_size = $subnet_size; \
 is_sev = $is_sev_bool; \
 subnet_limit_node_provider = $subnet_limit_node_provider; \
-subnet_limit_data_center = $subnet_limit_data_center \
+subnet_limit_data_center = $subnet_limit_data_center; \
+subnet_limit_data_center_owner = $subnet_limit_data_center_owner; \
+subnet_limit_country = $subnet_limit_country \
 } }"
 done < "$INPUT_FILE"
 

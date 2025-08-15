@@ -17,5 +17,8 @@
     "jsx": "react-jsx",
     "types": ["vite/client"]
   },
-  "include": ["src"]
+  "exclude": ["node_modules", "vite.config.mjs"], // Exclude vite.config.mts
+  "include": ["src", "**/*.js", "**/*.jsx", "src/**/*"],
+  "references": [{ "path": "./jsconfig.node.json" }]
+
 }

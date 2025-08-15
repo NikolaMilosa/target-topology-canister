@@ -1,10 +1,8 @@
 use candid::Principal;
-use context::{nakamoto::NakamotoCoefficient, with_context, with_context_mut};
-use model::{
-    node::Node,
-    topology::{TargetTopology, TopologyLimitReport},
-    TargetTopologyResult,
+use context::{
+    nakamoto::NakamotoCoefficient, topology::TopologyLimitReport, with_context, with_context_mut,
 };
+use model::{node::Node, topology::TargetTopology, TargetTopologyResult};
 
 mod context;
 mod model;

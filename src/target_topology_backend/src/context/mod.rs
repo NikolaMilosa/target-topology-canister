@@ -6,14 +6,15 @@ use ic_stable_structures::{
     BTreeMap, DefaultMemoryImpl,
 };
 
-use crate::model::{
-    node::Node,
-    topology::{calculate_topology_limit_report, TargetTopology, TopologyLimitReport},
+use crate::model::{node::Node, topology::TargetTopology};
+
+use self::{
+    nakamoto::{calculate_nakamoto_from_nodes, NakamotoCoefficient},
+    topology::{calculate_topology_limit_report, TopologyLimitReport},
 };
 
-use self::nakamoto::{calculate_nakamoto_from_nodes, NakamotoCoefficient};
-
 pub mod nakamoto;
+pub mod topology;
 
 type Memory = VirtualMemory<DefaultMemoryImpl>;
 

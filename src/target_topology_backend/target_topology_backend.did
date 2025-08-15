@@ -1,3 +1,8 @@
+type ChangeSubnetMembership = record {
+  subnet_id : principal;
+  node_ids_to_add : vec principal;
+  node_ids_to_remove : vec principal;
+};
 type NakamotoCoefficient = record { value : nat8; attribute : text };
 type Node = record {
   ip : text;
@@ -12,6 +17,15 @@ type Node = record {
   dc_owner : text;
   node_reward_type : text;
   dc_id : text;
+};
+type Proposal = record {
+  id : nat64;
+  title : text;
+  payload : ProposalPayload;
+  timestamp_seconds : nat64;
+};
+type ProposalPayload = variant {
+  ChangeSubnetMembership : ChangeSubnetMembership;
 };
 type Result = variant { Ok; Err : text };
 type TargetTopology = record {
@@ -37,11 +51,13 @@ type TopologyLimitReport = record {
 type TopologyLimitViolation = record { found : nat8; value : text };
 service : {
   add_nodes : (vec Node) -> (Result);
+  add_proposals : (vec Proposal) -> ();
   add_topology : (TargetTopology) -> (Result);
   get_active_topology : () -> (opt TargetTopology) query;
   get_nakamoto_for_subnet : (principal) -> (opt vec NakamotoCoefficient) query;
   get_node : (principal) -> (opt Node) query;
   get_nodes : () -> (vec Node) query;
   get_nodes_for_subnet : (principal) -> (opt vec Node) query;
+  get_proposals : () -> (vec Proposal) query;
   get_topology_report : (principal) -> (opt vec TopologyLimitReport) query;
 }

@@ -6,7 +6,7 @@ use ic_stable_structures::{
     BTreeMap, DefaultMemoryImpl,
 };
 
-use crate::model::{node::Node, topology::TargetTopology};
+use crate::model::{node::Node, proposal::Proposal, topology::TargetTopology};
 
 use self::{
     nakamoto::{calculate_nakamoto_from_nodes, NakamotoCoefficient},
@@ -46,6 +46,7 @@ where
 pub struct Context {
     nodes: BTreeMap<Principal, Node, Memory>,
     topology_manager: BTreeMap<String, TargetTopology, Memory>,
+    proposals: std::collections::BTreeMap<u64, Proposal>,
 }
 
 impl Context {
@@ -56,6 +57,7 @@ impl Context {
         Self {
             nodes,
             topology_manager,
+            proposals: std::collections::BTreeMap::new(),
         }
     }
 
@@ -125,5 +127,17 @@ impl Context {
             (Some(nodes), Some(topology)) => Some(calculate_topology_limit_report(nodes, topology)),
             _ => None,
         }
+    }
+
+    pub fn add_proposal(&mut self, proposal: Proposal) {
+        self.proposals.insert(proposal.id.clone(), proposal);
+    }
+
+    pub fn add_proposals(&mut self, proposals: Vec<Proposal>) {
+        proposals.into_iter().for_each(|p| self.add_proposal(p));
+    }
+
+    pub fn get_proposals(&self) -> Vec<Proposal> {
+        self.proposals.values().cloned().collect()
     }
 }

@@ -2,7 +2,7 @@ use candid::Principal;
 use context::{
     nakamoto::NakamotoCoefficient, topology::TopologyLimitReport, with_context, with_context_mut,
 };
-use model::{node::Node, topology::TargetTopology, TargetTopologyResult};
+use model::{node::Node, proposal::Proposal, topology::TargetTopology, TargetTopologyResult};
 
 mod context;
 mod model;
@@ -47,6 +47,16 @@ fn add_topology(topology: TargetTopology) -> TargetTopologyResult<()> {
 #[ic_cdk::query]
 fn get_topology_report(subnet_id: Principal) -> Option<Vec<TopologyLimitReport>> {
     with_context(|ctx| ctx.check_topology_constraints(subnet_id))
+}
+
+#[ic_cdk::query]
+fn get_proposals() -> Vec<Proposal> {
+    with_context(|ctx| ctx.get_proposals())
+}
+
+#[ic_cdk::update]
+fn add_proposals(proposals: Vec<Proposal>) {
+    with_context_mut(|ctx| ctx.add_proposals(proposals))
 }
 
 // Export the interface for the smart contract.

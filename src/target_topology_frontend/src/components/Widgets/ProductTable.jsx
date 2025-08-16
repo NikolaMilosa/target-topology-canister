@@ -7,9 +7,7 @@ import { Card, Table } from 'react-bootstrap';
 // project import
 import SimpleBar from 'simplebar-react';
 
-// -----------------------|| PRODUCT TABLE ||-----------------------//
-
-export default function ProductTable({ wrapclass, title, height, tableheading, rowdata }) {
+export default function ViewTable({ wrapclass, title, height, tableheading, rowdata }) {
   return (
     <Card className={wrapclass}>
       <Card.Header>
@@ -53,7 +51,7 @@ export default function ProductTable({ wrapclass, title, height, tableheading, r
   );
 }
 
-ProductTable.propTypes = {
+ViewTable.propTypes = {
   wrapclass: PropTypes.string,
   title: PropTypes.string,
   height: PropTypes.string,

@@ -1,11 +1,11 @@
-export function SalesCustomerSatisfactionChartData() {
+export function NodeUtilization(series) {
   return {
     height: 260,
     options: {
       chart: {
         background: 'transparent'
       },
-      labels: ['extremely Satisfied', 'Satisfied', 'Poor', 'Very Poor'],
+      labels: ['Assigned', 'Not assigned', 'Api boundary nodes'],
       legend: {
         show: true,
         offsetY: 50
@@ -38,6 +38,6 @@ export function SalesCustomerSatisfactionChartData() {
         }
       ]
     },
-    series: [66, 50, 40, 30]
+    series: series
   };
 }

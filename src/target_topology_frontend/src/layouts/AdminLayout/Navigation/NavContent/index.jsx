@@ -60,7 +60,7 @@ export default function NavContent({ navigation, activeNav }) {
 
   const mHeader = (
     <div className="m-header">
-      <Link to="/dashboard/sales" className="b-brand">
+      <Link to="/home" className="b-brand">
         <img src={logo} alt="" className="logo logo-lg" />
       </Link>
     </div>

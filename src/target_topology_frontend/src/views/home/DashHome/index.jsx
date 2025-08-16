@@ -7,6 +7,7 @@ import Chart from 'react-apexcharts';
 // project imports
 import FlatCard from '../../../components/Widgets/Statistic/FlatCard';
 import FeedTable from '../../../components/Widgets/FeedTable';
+import ProductCard from '../../../components/Widgets/Statistic/ProductCard';
 import { NodeUtilization } from './chart/node-utilization';// -----------------------|| DASHBOARD Node utilization ||-----------------------//
 import { target_topology_backend } from 'declarations/target_topology_backend';
 import { useState } from 'react';
@@ -33,6 +34,7 @@ export default function DashSales() {
   const [totalDataCenters, setTotalDataCenters] = useState(0)
   const [openProposals, setOpenProposals] = useState([])
   const [nodeSeries, setNodeSeries] = useState([])
+  const [activeTopology, setActiveTopology] = useState('')
 
   target_topology_backend.get_nodes().then((nodes) => {
     setTotalNodes(nodes.length);
@@ -51,7 +53,6 @@ export default function DashSales() {
 
     const nodes_in_subnet = nodes.reduce((acc, i) => acc + (i.subnet_id.length > 0 ? 1 : 0), 0);
     const api_bns = nodes.reduce((acc, i) => acc + (i.is_api_bn === true ? 1 : 0), 0);
-    console.log(api_bns);
     const unassigned = nodes.length - nodes_in_subnet - api_bns;
 
     setNodeSeries([nodes_in_subnet, unassigned, api_bns]);
@@ -66,6 +67,11 @@ export default function DashSales() {
         link: "#"
     }));
     setOpenProposals(props);
+  });
+
+  target_topology_backend.get_active_topology().then((topology) => {
+    const proposal = topology.length > 0 ? topology[0].proposal : "Unknown";
+    setActiveTopology(proposal);
   })
   
   return (
@@ -124,7 +130,10 @@ export default function DashSales() {
       </Col>
       <Col md={12} xl={6}>
         {/* Feed Table */}
-        <FeedTable wrapclass="feed-card" height="385px" title="Open proposals" options={openProposals} />
+        <FeedTable wrapclass="feed-card" height="358px" title="Open proposals" options={openProposals} />
+        <a href={`https://dashboard.internetcomputer.org/proposal/${activeTopology}`}>
+          <ProductCard params={{ title: 'Active topology motion proposal', variant: 'primary', primaryText: activeTopology, icon: 'map' }} />
+        </a>
       </Col>
     </Row>
   );

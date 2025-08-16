@@ -1,4 +1,4 @@
-export function NodeUtilization() {
+export function NodeUtilization(series) {
   return {
     height: 260,
     options: {
@@ -38,6 +38,6 @@ export function NodeUtilization() {
         }
       ]
     },
-    series: [701, 550, 20]
+    series: series
   };
 }

@@ -19,7 +19,7 @@ for start in $(seq 0 $BATCH_SIZE $((total_nodes - 1))); do
         "ip = \"" + (.http.ip_addr // "127.0.0.1") + "\"; " +
         "node_id = principal \"" + .node_id + "\"; " +
         "hostos_version = \"" + (.hostos_version_id // "") + "\"; " +
-        "is_api_bn = false; " +
+        "is_api_bn = " + (.is_api_bn | tostring) + "; " +
         "node_operator_id = principal \"" + .node_operator_id + "\"; " +
         "guestos_version = \"\"; " +
         "subnet_id = " + (if .subnet_id == null then "null" else "opt principal \"" + .subnet_id + "\"" end) + "; " +

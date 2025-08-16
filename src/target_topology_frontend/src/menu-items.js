@@ -30,6 +30,14 @@ const menuItems = {
           icon: 'material-icons-two-tone',
           iconname: 'map',
           url: '/target_topology'
+        },
+        {
+          id: 'proposals',
+          title: 'Proposals',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'gavel',
+          url: '/proposals'
         }
       ]
     },

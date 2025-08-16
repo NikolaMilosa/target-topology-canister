@@ -76,6 +76,18 @@ export default function DashSales() {
   
   return (
     <Row>
+      <Col sm={12}>
+        <Card className="flat-card">
+          <Card.Header>
+            <Card.Title as="h1">Target topology dashboard</Card.Title>
+          </Card.Header>
+          <Card.Body>
+            <Card.Text className="text-muted mb-4">
+              Internet computer target topology dashboard is a single place to get information about proposals and their statuses. Here you can find information about target topology constraints, nakamoto coefficients and more. It is developed and maintained by the DRE team.
+            </Card.Text>
+          </Card.Body>
+        </Card>
+      </Col>
       <Col md={12} xl={6}>
         <Card className="flat-card">
           <div className="row-table">

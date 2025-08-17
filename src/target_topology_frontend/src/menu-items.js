@@ -10,14 +10,14 @@ export function useMenuItems() {
     target_topology_backend.get_active_topology().then((topology) => {
       if (!topology.length) return;
 
-      const subnetChildren = topology[0].entries.map((entry) => {
+      const subnetChildren = topology[0].entries.sort((a, b) => String(a["0"]) - String(b["0"])).map((entry) => {
         const subnetId = String(entry["1"].subnet_id);
         return {
           id: subnetId,
           title: `Subnet ${subnetId.split('-')[0]}`, // keep as plain text
           type: 'item',
           icon: 'material-icons-two-tone',
-          iconname: 'map',
+          iconname: 'computer',
           url: `/subnet/${subnetId}`
         };
       });
@@ -54,20 +54,20 @@ function buildMenu(subnets) {
             url: '/subnets'
           },
           {
-            id: 'subnet_details',
-            title: 'Subnet details',
-            type: 'collapse',
-            icon: 'material-icons-two-tone',
-            iconname: 'map',
-            children: subnets,
-          },
-          {
             id: 'proposals',
             title: 'Proposals',
             type: 'item',
             icon: 'material-icons-two-tone',
             iconname: 'gavel',
             url: '/proposals'
+          },
+          {
+            id: 'subnet_details',
+            title: 'Subnet details',
+            type: 'collapse',
+            icon: 'material-icons-two-tone',
+            iconname: 'map',
+            children: subnets,
           }
         ]
       },

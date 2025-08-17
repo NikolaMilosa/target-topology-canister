@@ -4,8 +4,7 @@ import { useContext } from 'react';
 import NavContent from './NavContent';
 import { ConfigContext } from '../../../contexts/ConfigContext';
 import useWindowSize from '../../../hooks/useWindowSize';
-import navigation from '../../../menu-items';
-import navitemcollapse from '../../../menu-items-collapse';
+import { useMenuItems } from '../../../menu-items';
 import * as actionType from '../../../store/actions';
 
 // assets
@@ -17,6 +16,7 @@ export default function Navigation() {
   const { collapseMenu, collapseLayout } = configContext.state;
   const windowSize = useWindowSize();
   const { dispatch } = configContext;
+  const menuItems = useMenuItems();
 
   const navToggleHandler = () => {
     dispatch({ type: actionType.COLLAPSE_MENU });
@@ -24,7 +24,7 @@ export default function Navigation() {
 
   let navClass = 'dark-sidebar';
 
-  let navContent = <NavContent navigation={collapseLayout ? navitemcollapse.items : navigation.items} />;
+  let navContent = <NavContent navigation={menuItems} />;
   navClass = [...navClass, 'pc-sidebar'];
   if (windowSize.width <= 1024 && collapseMenu) {
     navClass = [...navClass, 'mob-sidebar-active'];

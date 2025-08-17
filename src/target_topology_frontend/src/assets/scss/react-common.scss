@@ -193,6 +193,11 @@ button.close {
   &:not(.pc-trigger) .pc-submenu {
     max-height: 0; /* Adjust based on content height */
   }
+  &.active {
+    .pc-submenu {
+      overflow-y: auto; // enable scroll when active
+    }
+  }
 }
 
 .event-table {

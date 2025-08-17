@@ -8,7 +8,7 @@ import { Link, useLocation } from 'react-router-dom';
 import FeatherIcon from 'feather-icons-react';
 
 // project imports
-import navigation from '../../../menu-items';
+import { useMenuItems } from '../../../menu-items';
 import { BASE_TITLE } from '../../../config/constant';
 
 // -----------------------|| BREADCRUMB ||-----------------------//
@@ -19,15 +19,16 @@ export default function Breadcrumb() {
   /* eslint-disable @typescript-eslint/no-unused-vars */
   // @ts-ignore
   const location = useLocation();
+  const menuItems = useMenuItems();
 
   useEffect(() => {
-    navigation.items.map((item) => {
+    menuItems.map((item) => {
       if (item.type && item.type === 'group') {
         getCollapse(item);
       }
       return false;
     });
-  });
+  }, [menuItems]);
 
   const getCollapse = (items) => {
     if (items.children) {

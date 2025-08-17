@@ -107,7 +107,7 @@ export default function NavCollapse({ collapse, type }) {
   let mainContent;
 
   mainContent = (
-    <ListGroup.Item as="li" bsPrefix=" " className={navItemClass.join(' ')}>
+    <ListGroup.Item as="li" bsPrefix=" " className={navItemClass.join(' ')} style={{ overflowY: 'auto' }}>
       {subContent}
     </ListGroup.Item>
   );

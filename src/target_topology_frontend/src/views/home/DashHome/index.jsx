@@ -10,7 +10,7 @@ import FeedTable from '../../../components/Widgets/FeedTable';
 import ProductCard from '../../../components/Widgets/Statistic/ProductCard';
 import { NodeUtilization } from './chart/node-utilization';// -----------------------|| DASHBOARD Node utilization ||-----------------------//
 import { target_topology_backend } from 'declarations/target_topology_backend';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function timeAgo(bigSeconds) {
   const seconds = Number(bigSeconds);
@@ -36,43 +36,45 @@ export default function DashSales() {
   const [nodeSeries, setNodeSeries] = useState([])
   const [activeTopology, setActiveTopology] = useState('')
 
-  target_topology_backend.get_nodes().then((nodes) => {
-    setTotalNodes(nodes.length);
+  useEffect(() => {
+    target_topology_backend.get_nodes().then((nodes) => {    setTotalNodes(nodes.length);
 
-    const subnets = [...new Set(nodes.map(n => n.subnet_id).filter(s => s.length > 0).map(s => String(s)))];
-    setTotalSubnets(subnets.length);
+      const subnets = [...new Set(nodes.map(n => n.subnet_id).filter(s => s.length > 0).map(s => String(s)))];
+      setTotalSubnets(subnets.length);
     
-    const node_providers = [...new Set(nodes.map(n => n.node_provider_id).map(s => String(s)))];
-    setTotalNodeProviders(node_providers.length);
+      const node_providers = [...new Set(nodes.map(n => n.node_provider_id).map(s => String(s)))];
+      setTotalNodeProviders(node_providers.length);
 
-    const countries = [...new Set(nodes.map(n => n.country))];
-    setTotalCountries(countries.length);
+      const countries = [...new Set(nodes.map(n => n.country))];
+      setTotalCountries(countries.length);
 
-    const data_centers = [...new Set(nodes.map(n => n.dc_id))];
-    setTotalDataCenters(data_centers.length);
+      const data_centers = [...new Set(nodes.map(n => n.dc_id))];
+      setTotalDataCenters(data_centers.length);
 
-    const nodes_in_subnet = nodes.reduce((acc, i) => acc + (i.subnet_id.length > 0 ? 1 : 0), 0);
-    const api_bns = nodes.reduce((acc, i) => acc + (i.is_api_bn === true ? 1 : 0), 0);
-    const unassigned = nodes.length - nodes_in_subnet - api_bns;
+      const nodes_in_subnet = nodes.reduce((acc, i) => acc + (i.subnet_id.length > 0 ? 1 : 0), 0);
+      const api_bns = nodes.reduce((acc, i) => acc + (i.is_api_bn === true ? 1 : 0), 0);
+      const unassigned = nodes.length - nodes_in_subnet - api_bns;
 
-    setNodeSeries([nodes_in_subnet, unassigned, api_bns]);
+      setNodeSeries([nodes_in_subnet, unassigned, api_bns]);
     
-  });
+    });
 
-  target_topology_backend.get_proposals().then((proposals) => {
-    const props = proposals.map(p => ({
-        icon: "award",
-        heading: `[${p.id}] ${p.title}`,
-        publishon: timeAgo(p.timestamp_seconds),
-        link: "#"
-    }));
-    setOpenProposals(props);
-  });
+    target_topology_backend.get_proposals().then((proposals) => {
+      const props = proposals.map(p => ({
+          icon: "award",
+          heading: `[${p.id}] ${p.title}`,
+          publishon: timeAgo(p.timestamp_seconds),
+          link: "#"
+      }));
+      setOpenProposals(props);
+    });
 
-  target_topology_backend.get_active_topology().then((topology) => {
-    const proposal = topology.length > 0 ? topology[0].proposal : "Unknown";
-    setActiveTopology(proposal);
-  })
+    target_topology_backend.get_active_topology().then((topology) => {
+      const proposal = topology.length > 0 ? topology[0].proposal : "Unknown";
+      setActiveTopology(proposal);
+    });
+
+  }, []);
   
   return (
     <Row>

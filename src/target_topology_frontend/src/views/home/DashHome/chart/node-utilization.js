@@ -3,41 +3,41 @@ export function NodeUtilization(series) {
     height: 260,
     options: {
       chart: {
-        background: 'transparent'
+        background: "transparent",
       },
-      labels: ['Assigned', 'Not assigned', 'Api boundary nodes'],
+      labels: ["Assigned", "Not assigned", "Api boundary nodes"],
       legend: {
         show: true,
-        offsetY: 50
+        offsetY: 50,
       },
       dataLabels: {
         enabled: true,
         dropShadow: {
-          enabled: false
-        }
+          enabled: false,
+        },
       },
       theme: {
-        mode: 'light',
+        mode: "light",
         monochrome: {
           enabled: true,
-          color: '#7267EF'
-        }
+          color: "#7267EF",
+        },
       },
       responsive: [
         {
           breakpoint: 768,
           options: {
             chart: {
-              height: 320
+              height: 320,
             },
             legend: {
-              position: 'bottom',
-              offsetY: 0
-            }
-          }
-        }
-      ]
+              position: "bottom",
+              offsetY: 0,
+            },
+          },
+        },
+      ],
     },
-    series: series
+    series: series,
   };
 }

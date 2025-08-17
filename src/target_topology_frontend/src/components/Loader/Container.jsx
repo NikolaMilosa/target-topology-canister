@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 // -----------------------|| CONTAINER ||-----------------------//
 
@@ -7,8 +7,8 @@ export default function Container({ animationDuration, children, isFinished }) {
     <div
       style={{
         opacity: isFinished ? 0 : 1,
-        pointerEvents: 'none',
-        transition: `opacity ${animationDuration}ms linear`
+        pointerEvents: "none",
+        transition: `opacity ${animationDuration}ms linear`,
       }}
     >
       {children}
@@ -16,4 +16,8 @@ export default function Container({ animationDuration, children, isFinished }) {
   );
 }
 
-Container.propTypes = { animationDuration: PropTypes.number, children: PropTypes.node, isFinished: PropTypes.bool };
+Container.propTypes = {
+  animationDuration: PropTypes.number,
+  children: PropTypes.node,
+  isFinished: PropTypes.bool,
+};

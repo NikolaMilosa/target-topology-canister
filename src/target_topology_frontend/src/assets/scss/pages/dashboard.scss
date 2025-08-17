@@ -26,7 +26,7 @@
       margin-right: 0;
     }
 
-    > [class*='col-'] {
+    > [class*="col-"] {
       display: table-cell;
       float: none;
       table-layout: fixed;
@@ -39,7 +39,7 @@
     }
   }
 
-  &[class*='widget-'] {
+  &[class*="widget-"] {
     .row-table {
       display: flex;
     }

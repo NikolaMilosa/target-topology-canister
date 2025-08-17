@@ -8,24 +8,24 @@ File: style.css
 =================================================================================== */
 // theme font
 // main framework
-@import '../../../../../node_modules/bootstrap/scss/functions';
-@import '../../../../../node_modules/bootstrap/scss/variables';
-@import '../../../../../node_modules/bootstrap/scss/variables-dark';
+@import "../../../../../node_modules/bootstrap/scss/functions";
+@import "../../../../../node_modules/bootstrap/scss/variables";
+@import "../../../../../node_modules/bootstrap/scss/variables-dark";
 
-@import 'settings/color-variables';
-@import 'settings/theme-variables';
-@import 'settings/bootstrap-variables';
+@import "settings/color-variables";
+@import "settings/theme-variables";
+@import "settings/bootstrap-variables";
 
 $menu-styler: 375px;
 $pct-colors: ();
 $pct-colors: map-merge(
   (
-    'primary': $primary,
-    'success': $success,
-    'info': $info,
-    'warning': $warning,
-    'danger': $danger,
-    'dark': $dark
+    "primary": $primary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "dark": $dark,
   ),
   $pct-colors
 );
@@ -118,7 +118,7 @@ $pct-colors: map-merge(
 
       &:after,
       &:before {
-        content: '';
+        content: "";
         height: 100%;
         position: absolute;
       }
@@ -154,7 +154,7 @@ $pct-colors: map-merge(
   &.header-color {
     @each $color, $value in $pct-colors {
       > a {
-        &[data-value='bg-#{$color}'] {
+        &[data-value="bg-#{$color}"] {
           > span:nth-child(1) {
             &:after {
               background: $value;
@@ -168,7 +168,7 @@ $pct-colors: map-merge(
   &.brand-color {
     @each $color, $value in $pct-colors {
       > a {
-        &[data-value='bg-#{$color}'] {
+        &[data-value="bg-#{$color}"] {
           > span:nth-child(1) {
             &:before {
               background: $value;
@@ -191,7 +191,7 @@ $header-c-background: #1c232f;
 $header-c-color: #fff;
 
 .pc-header {
-  &[class*='bg-'],
+  &[class*="bg-"],
   &.dark-header {
     box-shadow: none;
     background: $header-c-background;

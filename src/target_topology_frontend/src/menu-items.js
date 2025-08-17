@@ -10,66 +10,68 @@ export function useMenuItems() {
     target_topology_backend.get_active_topology().then((topology) => {
       if (!topology.length) return;
 
-      const subnetChildren = topology[0].entries.sort((a, b) => String(a["0"]) - String(b["0"])).map((entry) => {
-        const subnetId = String(entry["1"].subnet_id);
-        return {
-          id: subnetId,
-          title: `Subnet ${subnetId.split('-')[0]}`, // keep as plain text
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'computer',
-          url: `/subnet/${subnetId}`
-        };
-      });
+      const subnetChildren = topology[0].entries
+        .sort((a, b) => String(a["0"]) - String(b["0"]))
+        .map((entry) => {
+          const subnetId = String(entry["1"].subnet_id);
+          return {
+            id: subnetId,
+            title: `Subnet ${subnetId.split("-")[0]}`, // keep as plain text
+            type: "item",
+            icon: "material-icons-two-tone",
+            iconname: "computer",
+            url: `/subnet/${subnetId}`,
+          };
+        });
 
       setMenuItems(buildMenu(subnetChildren));
     });
   }, []);
-  
+
   return menuItems;
 }
 
 function buildMenu(subnets) {
   return [
-      {
-        id: 'navigation',
-        title: 'Navigation',
-        type: 'group',
-        icon: 'icon-navigation',
-        children: [
-          {
-            id: 'home',
-            title: 'Home',
-            type: 'item',
-            icon: 'material-icons-two-tone',
-            iconname: 'home',
-            url: '/'
-          },        
-          {
-            id: 'subnets',
-            title: 'Subnets',
-            type: 'item',
-            icon: 'material-icons-two-tone',
-            iconname: 'group_work',
-            url: '/subnets'
-          },
-          {
-            id: 'proposals',
-            title: 'Proposals',
-            type: 'item',
-            icon: 'material-icons-two-tone',
-            iconname: 'gavel',
-            url: '/proposals'
-          },
-          {
-            id: 'subnet_details',
-            title: 'Subnet details',
-            type: 'collapse',
-            icon: 'material-icons-two-tone',
-            iconname: 'map',
-            children: subnets,
-          }
-        ]
-      },
-    ];
+    {
+      id: "navigation",
+      title: "Navigation",
+      type: "group",
+      icon: "icon-navigation",
+      children: [
+        {
+          id: "home",
+          title: "Home",
+          type: "item",
+          icon: "material-icons-two-tone",
+          iconname: "home",
+          url: "/",
+        },
+        {
+          id: "subnets",
+          title: "Subnets",
+          type: "item",
+          icon: "material-icons-two-tone",
+          iconname: "group_work",
+          url: "/subnets",
+        },
+        {
+          id: "proposals",
+          title: "Proposals",
+          type: "item",
+          icon: "material-icons-two-tone",
+          iconname: "gavel",
+          url: "/proposals",
+        },
+        {
+          id: "subnet_details",
+          title: "Subnet details",
+          type: "collapse",
+          icon: "material-icons-two-tone",
+          iconname: "map",
+          children: subnets,
+        },
+      ],
+    },
+  ];
 }

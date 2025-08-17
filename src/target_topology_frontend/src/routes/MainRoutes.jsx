@@ -1,34 +1,33 @@
-import { lazy } from 'react';
+import { lazy } from "react";
 
-import AdminLayout from '../layouts/AdminLayout';
-import GuestLayout from '../layouts/GuestLayout';
+import AdminLayout from "../layouts/AdminLayout";
+import GuestLayout from "../layouts/GuestLayout";
 
-const DashboardHome = lazy(() => import('../views/home/DashHome/index'));
-
+const DashboardHome = lazy(() => import("../views/home/DashHome/index"));
 
 const MainRoutes = {
-  path: '/',
+  path: "/",
   children: [
     {
-      path: '/',
+      path: "/",
       element: <AdminLayout />,
       children: [
         {
-          path: '/home',
-          element: <DashboardHome />
+          path: "/home",
+          element: <DashboardHome />,
         },
         {
-          path: '*',
-          element: <h1>Not Found</h1>
-        }
-      ]
+          path: "*",
+          element: <h1>Not Found</h1>,
+        },
+      ],
     },
     {
-      path: '/',
+      path: "/",
       element: <GuestLayout />,
-      children: []
-    }
-  ]
+      children: [],
+    },
+  ],
 };
 
 export default MainRoutes;

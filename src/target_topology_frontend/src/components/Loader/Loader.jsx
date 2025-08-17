@@ -1,5 +1,5 @@
 // project imports
-import Progress from './Progress';
+import Progress from "./Progress";
 
 // -----------------------|| LOADER ||-----------------------//
 

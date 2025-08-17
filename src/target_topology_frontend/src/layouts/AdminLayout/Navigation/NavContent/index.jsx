@@ -1,19 +1,19 @@
-import PropTypes from 'prop-types';
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from "prop-types";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
 // react-bootstrap
-import { Card, ListGroup } from 'react-bootstrap';
+import { Card, ListGroup } from "react-bootstrap";
 
 // project imports
-import NavGroup from './NavGroup';
-import { ConfigContext } from '../../../../contexts/ConfigContext';
+import NavGroup from "./NavGroup";
+import { ConfigContext } from "../../../../contexts/ConfigContext";
 
 // third party
-import SimpleBar from 'simplebar-react';
+import SimpleBar from "simplebar-react";
 
 // assets
-import logo from '../../../../assets/images/logo.svg';
+import logo from "../../../../assets/images/logo.svg";
 
 // -----------------------|| NAV CONTENT ||-----------------------//
 
@@ -25,7 +25,7 @@ export default function NavContent({ navigation, activeNav }) {
   const navItems = navigation.map((item) => {
     let navItem = <></>;
     switch (item.type) {
-      case 'group':
+      case "group":
         if (activeNav) {
           navItem = (
             <div key={`nav-group-${item.id}`}>
@@ -42,11 +42,10 @@ export default function NavContent({ navigation, activeNav }) {
   });
 
   let navContentNode = (
-    <SimpleBar style={{ height: 'calc(100vh - 70px)' }}>
+    <SimpleBar style={{ height: "calc(100vh - 70px)" }}>
       <ListGroup variant="flush" as="ul" bsPrefix=" " className="pc-navbar">
         {navItems}
       </ListGroup>
-  
     </SimpleBar>
   );
 

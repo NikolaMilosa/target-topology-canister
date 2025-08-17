@@ -2,40 +2,40 @@
       Custom css start
 ==========================  **/
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src:
-    url('assets/fonts/inter/Inter-Regular.woff2?v=3.13') format('woff2'),
-    url('assets/fonts/inter/Inter-Regular.woff?v=3.13') format('woff');
+    url("assets/fonts/inter/Inter-Regular.woff2?v=3.13") format("woff2"),
+    url("assets/fonts/inter/Inter-Regular.woff?v=3.13") format("woff");
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-display: swap;
   src:
-    url('assets/fonts/inter/Inter-Medium.woff2?v=3.13') format('woff2'),
-    url('assets/fonts/inter/Inter-Medium.woff?v=3.13') format('woff');
+    url("assets/fonts/inter/Inter-Medium.woff2?v=3.13") format("woff2"),
+    url("assets/fonts/inter/Inter-Medium.woff?v=3.13") format("woff");
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
   src:
-    url('assets/fonts/inter/Inter-SemiBold.woff2?v=3.13') format('woff2'),
-    url('assets/fonts/inter/Inter-SemiBold.woff?v=3.13') format('woff');
+    url("assets/fonts/inter/Inter-SemiBold.woff2?v=3.13") format("woff2"),
+    url("assets/fonts/inter/Inter-SemiBold.woff?v=3.13") format("woff");
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
   src:
-    url('assets/fonts/inter/Inter-Bold.woff2?v=3.13') format('woff2'),
-    url('assets/fonts/inter/Inter-Bold.woff?v=3.13') format('woff');
+    url("assets/fonts/inter/Inter-Bold.woff2?v=3.13") format("woff2"),
+    url("assets/fonts/inter/Inter-Bold.woff?v=3.13") format("woff");
 }
 
 * {
@@ -89,7 +89,7 @@ strong {
   height: 100%;
   text-align: center;
   color: #fff;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   padding: 50px 0;
 
   p {
@@ -266,7 +266,7 @@ strong {
       margin: 0;
 
       &.copy::before {
-        content: 'COPY';
+        content: "COPY";
       }
 
       &.copied {
@@ -274,7 +274,7 @@ strong {
         color: #fff !important;
 
         &::before {
-          content: 'COPIED!';
+          content: "COPIED!";
         }
       }
     }
@@ -348,7 +348,7 @@ strong {
   }
 
   &.copied::before {
-    content: 'Copied to Clipboard Successfully ! . . .';
+    content: "Copied to Clipboard Successfully ! . . .";
     position: absolute;
     display: block;
     right: 100%;
@@ -397,7 +397,7 @@ strong {
   margin-bottom: 15px;
 
   .row {
-    > [class^='col-'],
+    > [class^="col-"],
     > .col {
       padding-top: 0.75rem;
       padding-bottom: 0.75rem;
@@ -509,18 +509,18 @@ strong {
   }
 }
 
-:not(pre) > code[class*='language-'],
-pre[class*='language-'] {
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
   background: transparent;
 }
 /* ================================    Blockquote Start  ===================== */
 
 svg.feather {
-  &:not([class*='wid-']) {
+  &:not([class*="wid-"]) {
     width: 20px;
   }
 
-  &:not([class*='hei-']) {
+  &:not([class*="hei-"]) {
     height: 20px;
   }
 }
@@ -530,18 +530,18 @@ svg.feather {
   }
 }
 
-pre[class*='language-']:before,
-pre[class*='language-']:after {
+pre[class*="language-"]:before,
+pre[class*="language-"]:after {
   display: none;
 }
 
-:not(pre) > code[class*='language-'],
-pre[class*='language-'] {
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
   display: flex;
   margin: 0;
 }
 
-pre[class*='language-'] > code {
+pre[class*="language-"] > code {
   width: 100%;
 }
 
@@ -578,7 +578,8 @@ pre[class*='language-'] > code {
   height: 1em;
   margin-top: 5px;
   color: transparent !important;
-  background: transparent escape-svg($btn-close-bg) center / $btn-close-width auto no-repeat;
+  background: transparent escape-svg($btn-close-bg) center / $btn-close-width
+    auto no-repeat;
   filter: invert(1) grayscale(100%) brightness(200%);
 }
 /* ================================    Blockquote End  ===================== */

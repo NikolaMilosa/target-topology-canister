@@ -1,16 +1,16 @@
 // react-bootstrap
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card } from "react-bootstrap";
 
 // third party
-import Chart from 'react-apexcharts';
+import Chart from "react-apexcharts";
 
 // project imports
-import FlatCard from '../../../components/Widgets/Statistic/FlatCard';
-import FeedTable from '../../../components/Widgets/FeedTable';
-import ProductCard from '../../../components/Widgets/Statistic/ProductCard';
-import { NodeUtilization } from './chart/node-utilization';// -----------------------|| DASHBOARD Node utilization ||-----------------------//
-import { target_topology_backend } from 'declarations/target_topology_backend';
-import { useEffect, useState } from 'react';
+import FlatCard from "../../../components/Widgets/Statistic/FlatCard";
+import FeedTable from "../../../components/Widgets/FeedTable";
+import ProductCard from "../../../components/Widgets/Statistic/ProductCard";
+import { NodeUtilization } from "./chart/node-utilization"; // -----------------------|| DASHBOARD Node utilization ||-----------------------//
+import { target_topology_backend } from "declarations/target_topology_backend";
+import { useEffect, useState } from "react";
 
 function timeAgo(bigSeconds) {
   const seconds = Number(bigSeconds);
@@ -27,44 +27,59 @@ function timeAgo(bigSeconds) {
 }
 
 export default function DashSales() {
-  const [totalNodes, setTotalNodes] = useState(0)
-  const [totalSubnets, setTotalSubnets] = useState(0)
-  const [totalNodeProviders, setTotalNodeProviders] = useState(0)
-  const [totalCountries, setTotalCountries] = useState(0)
-  const [totalDataCenters, setTotalDataCenters] = useState(0)
-  const [openProposals, setOpenProposals] = useState([])
-  const [nodeSeries, setNodeSeries] = useState([])
-  const [activeTopology, setActiveTopology] = useState('')
+  const [totalNodes, setTotalNodes] = useState(0);
+  const [totalSubnets, setTotalSubnets] = useState(0);
+  const [totalNodeProviders, setTotalNodeProviders] = useState(0);
+  const [totalCountries, setTotalCountries] = useState(0);
+  const [totalDataCenters, setTotalDataCenters] = useState(0);
+  const [openProposals, setOpenProposals] = useState([]);
+  const [nodeSeries, setNodeSeries] = useState([]);
+  const [activeTopology, setActiveTopology] = useState("");
 
   useEffect(() => {
-    target_topology_backend.get_nodes().then((nodes) => {    setTotalNodes(nodes.length);
+    target_topology_backend.get_nodes().then((nodes) => {
+      setTotalNodes(nodes.length);
 
-      const subnets = [...new Set(nodes.map(n => n.subnet_id).filter(s => s.length > 0).map(s => String(s)))];
+      const subnets = [
+        ...new Set(
+          nodes
+            .map((n) => n.subnet_id)
+            .filter((s) => s.length > 0)
+            .map((s) => String(s)),
+        ),
+      ];
       setTotalSubnets(subnets.length);
-    
-      const node_providers = [...new Set(nodes.map(n => n.node_provider_id).map(s => String(s)))];
+
+      const node_providers = [
+        ...new Set(nodes.map((n) => n.node_provider_id).map((s) => String(s))),
+      ];
       setTotalNodeProviders(node_providers.length);
 
-      const countries = [...new Set(nodes.map(n => n.country))];
+      const countries = [...new Set(nodes.map((n) => n.country))];
       setTotalCountries(countries.length);
 
-      const data_centers = [...new Set(nodes.map(n => n.dc_id))];
+      const data_centers = [...new Set(nodes.map((n) => n.dc_id))];
       setTotalDataCenters(data_centers.length);
 
-      const nodes_in_subnet = nodes.reduce((acc, i) => acc + (i.subnet_id.length > 0 ? 1 : 0), 0);
-      const api_bns = nodes.reduce((acc, i) => acc + (i.is_api_bn === true ? 1 : 0), 0);
+      const nodes_in_subnet = nodes.reduce(
+        (acc, i) => acc + (i.subnet_id.length > 0 ? 1 : 0),
+        0,
+      );
+      const api_bns = nodes.reduce(
+        (acc, i) => acc + (i.is_api_bn === true ? 1 : 0),
+        0,
+      );
       const unassigned = nodes.length - nodes_in_subnet - api_bns;
 
       setNodeSeries([nodes_in_subnet, unassigned, api_bns]);
-    
     });
 
     target_topology_backend.get_proposals().then((proposals) => {
-      const props = proposals.map(p => ({
-          icon: "award",
-          heading: `[${p.id}] ${p.title}`,
-          publishon: timeAgo(p.timestamp_seconds),
-          link: "#"
+      const props = proposals.map((p) => ({
+        icon: "award",
+        heading: `[${p.id}] ${p.title}`,
+        publishon: timeAgo(p.timestamp_seconds),
+        link: "#",
       }));
       setOpenProposals(props);
     });
@@ -73,9 +88,8 @@ export default function DashSales() {
       const proposal = topology.length > 0 ? topology[0].proposal : "Unknown";
       setActiveTopology(proposal);
     });
-
   }, []);
-  
+
   return (
     <Row>
       <Col sm={12}>
@@ -85,7 +99,11 @@ export default function DashSales() {
           </Card.Header>
           <Card.Body>
             <Card.Text className="text-muted mb-4">
-              Internet computer target topology dashboard is a single place to get information about proposals and their statuses. Here you can find information about target topology constraints, nakamoto coefficients and more. It is developed and maintained by the DRE team.
+              Internet computer target topology dashboard is a single place to
+              get information about proposals and their statuses. Here you can
+              find information about target topology constraints, nakamoto
+              coefficients and more. It is developed and maintained by the DRE
+              team.
             </Card.Text>
           </Card.Body>
         </Card>
@@ -94,40 +112,89 @@ export default function DashSales() {
         <Card className="flat-card">
           <div className="row-table">
             <Card.Body className="col-sm-6 br">
-              <FlatCard params={{ title: 'Nodes', iconClass: 'text-primary mb-1', icon: 'computer', value: totalNodes }} />
+              <FlatCard
+                params={{
+                  title: "Nodes",
+                  iconClass: "text-primary mb-1",
+                  icon: "computer",
+                  value: totalNodes,
+                }}
+              />
             </Card.Body>
             <Card.Body className="col-sm-6 br">
-              <FlatCard params={{ title: 'Subnets', iconClass: 'text-primary mb-1', icon: 'language', value: totalSubnets }} />
+              <FlatCard
+                params={{
+                  title: "Subnets",
+                  iconClass: "text-primary mb-1",
+                  icon: "language",
+                  value: totalSubnets,
+                }}
+              />
             </Card.Body>
             <Card.Body className="col-sm-6 d-none d-md-table-cell d-lg-table-cell d-xl-table-cell  br">
-              <FlatCard params={{ title: 'Open Proposals', iconClass: 'text-primary mb-1', icon: 'gavel', value: openProposals.length }} />
+              <FlatCard
+                params={{
+                  title: "Open Proposals",
+                  iconClass: "text-primary mb-1",
+                  icon: "gavel",
+                  value: openProposals.length,
+                }}
+              />
             </Card.Body>
           </div>
           <div className="row-table">
             <Card.Body className="col-sm-6 br">
               <FlatCard
                 params={{
-                  title: 'Node providers',
-                  iconClass: 'text-primary mb-1',
-                  icon: 'supervised_user_circle',
-                  value: totalNodeProviders
+                  title: "Node providers",
+                  iconClass: "text-primary mb-1",
+                  icon: "supervised_user_circle",
+                  value: totalNodeProviders,
                 }}
               />
             </Card.Body>
             <Card.Body className="col-sm-6 br">
-              <FlatCard params={{ title: 'Countries', iconClass: 'text-primary mb-1', icon: 'flag', value: totalCountries }} />
+              <FlatCard
+                params={{
+                  title: "Countries",
+                  iconClass: "text-primary mb-1",
+                  icon: "flag",
+                  value: totalCountries,
+                }}
+              />
             </Card.Body>
             <Card.Body className="col-sm-6 d-none d-md-table-cell d-lg-table-cell d-xl-table-cell  br">
-              <FlatCard params={{ title: 'Data centers', iconClass: 'text-primary mb-1', icon: 'dns', value: totalDataCenters }} />
+              <FlatCard
+                params={{
+                  title: "Data centers",
+                  iconClass: "text-primary mb-1",
+                  icon: "dns",
+                  value: totalDataCenters,
+                }}
+              />
             </Card.Body>
           </div>
           <div className="row-table d-md-none">
             <Card.Body className="col-sm-6 br">
-              <FlatCard params={{ title: 'Open Proposals', iconClass: 'text-primary mb-1', icon: 'gavel', value: openProposals.length }} />
+              <FlatCard
+                params={{
+                  title: "Open Proposals",
+                  iconClass: "text-primary mb-1",
+                  icon: "gavel",
+                  value: openProposals.length,
+                }}
+              />
             </Card.Body>
 
             <Card.Body className="col-sm-6 br">
-              <FlatCard params={{ title: 'Data centers', iconClass: 'text-primary mb-1', icon: 'dns', value: totalDataCenters }} />
+              <FlatCard
+                params={{
+                  title: "Data centers",
+                  iconClass: "text-primary mb-1",
+                  icon: "dns",
+                  value: totalDataCenters,
+                }}
+              />
             </Card.Body>
           </div>
         </Card>
@@ -144,9 +211,23 @@ export default function DashSales() {
       </Col>
       <Col md={12} xl={6}>
         {/* Feed Table */}
-        <FeedTable wrapclass="feed-card" height="358px" title="Open proposals" options={openProposals} />
-        <a href={`https://dashboard.internetcomputer.org/proposal/${activeTopology}`}>
-          <ProductCard params={{ title: 'Active topology motion proposal', variant: 'primary', primaryText: activeTopology, icon: 'map' }} />
+        <FeedTable
+          wrapclass="feed-card"
+          height="358px"
+          title="Open proposals"
+          options={openProposals}
+        />
+        <a
+          href={`https://dashboard.internetcomputer.org/proposal/${activeTopology}`}
+        >
+          <ProductCard
+            params={{
+              title: "Active topology motion proposal",
+              variant: "primary",
+              primaryText: activeTopology,
+              icon: "map",
+            }}
+          />
         </a>
       </Col>
     </Row>

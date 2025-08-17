@@ -1,8 +1,8 @@
 // react-bootstrap
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col } from "react-bootstrap";
 
 // project imports
-import MainCard from '../../../components/Card/MainCard';
+import MainCard from "../../../components/Card/MainCard";
 
 // -----------------------|| BASIC TYPOGRAPHY ||-----------------------//
 
@@ -151,26 +151,62 @@ export default function BasicColor() {
               <div className="p-3 color-block text-blue-900">text-blue-900</div>
             </Col>
             <Col md={4}>
-              <div className="p-3 color-block text-indigo-100">text-indigo-100</div>
-              <div className="p-3 color-block text-indigo-200">text-indigo-200</div>
-              <div className="p-3 color-block text-indigo-300">text-indigo-300</div>
-              <div className="p-3 color-block text-indigo-400">text-indigo-400</div>
-              <div className="p-3 color-block text-indigo-500">text-indigo-500</div>
-              <div className="p-3 color-block text-indigo-600">text-indigo-600</div>
-              <div className="p-3 color-block text-indigo-700">text-indigo-700</div>
-              <div className="p-3 color-block text-indigo-800">text-indigo-800</div>
-              <div className="p-3 color-block text-indigo-900">text-indigo-900</div>
+              <div className="p-3 color-block text-indigo-100">
+                text-indigo-100
+              </div>
+              <div className="p-3 color-block text-indigo-200">
+                text-indigo-200
+              </div>
+              <div className="p-3 color-block text-indigo-300">
+                text-indigo-300
+              </div>
+              <div className="p-3 color-block text-indigo-400">
+                text-indigo-400
+              </div>
+              <div className="p-3 color-block text-indigo-500">
+                text-indigo-500
+              </div>
+              <div className="p-3 color-block text-indigo-600">
+                text-indigo-600
+              </div>
+              <div className="p-3 color-block text-indigo-700">
+                text-indigo-700
+              </div>
+              <div className="p-3 color-block text-indigo-800">
+                text-indigo-800
+              </div>
+              <div className="p-3 color-block text-indigo-900">
+                text-indigo-900
+              </div>
             </Col>
             <Col md={4}>
-              <div className="p-3 color-block text-purple-100">text-purple-100</div>
-              <div className="p-3 color-block text-purple-200">text-purple-200</div>
-              <div className="p-3 color-block text-purple-300">text-purple-300</div>
-              <div className="p-3 color-block text-purple-400">text-purple-400</div>
-              <div className="p-3 color-block text-purple-500">text-purple-500</div>
-              <div className="p-3 color-block text-purple-600">text-purple-600</div>
-              <div className="p-3 color-block text-purple-700">text-purple-700</div>
-              <div className="p-3 color-block text-purple-800">text-purple-800</div>
-              <div className="p-3 color-block text-purple-900">text-purple-900</div>
+              <div className="p-3 color-block text-purple-100">
+                text-purple-100
+              </div>
+              <div className="p-3 color-block text-purple-200">
+                text-purple-200
+              </div>
+              <div className="p-3 color-block text-purple-300">
+                text-purple-300
+              </div>
+              <div className="p-3 color-block text-purple-400">
+                text-purple-400
+              </div>
+              <div className="p-3 color-block text-purple-500">
+                text-purple-500
+              </div>
+              <div className="p-3 color-block text-purple-600">
+                text-purple-600
+              </div>
+              <div className="p-3 color-block text-purple-700">
+                text-purple-700
+              </div>
+              <div className="p-3 color-block text-purple-800">
+                text-purple-800
+              </div>
+              <div className="p-3 color-block text-purple-900">
+                text-purple-900
+              </div>
             </Col>
             <Col md={4}>
               <div className="p-3 color-block text-pink-100">text-pink-100</div>
@@ -195,59 +231,149 @@ export default function BasicColor() {
               <div className="p-3 color-block text-red-900">text-red-900</div>
             </Col>
             <Col md={4}>
-              <div className="p-3 color-block text-orange-100">text-orange-100</div>
-              <div className="p-3 color-block text-orange-200">text-orange-200</div>
-              <div className="p-3 color-block text-orange-300">text-orange-300</div>
-              <div className="p-3 color-block text-orange-400">text-orange-400</div>
-              <div className="p-3 color-block text-orange-500">text-orange-500</div>
-              <div className="p-3 color-block text-orange-600">text-orange-600</div>
-              <div className="p-3 color-block text-orange-700">text-orange-700</div>
-              <div className="p-3 color-block text-orange-800">text-orange-800</div>
-              <div className="p-3 color-block text-orange-900">text-orange-900</div>
+              <div className="p-3 color-block text-orange-100">
+                text-orange-100
+              </div>
+              <div className="p-3 color-block text-orange-200">
+                text-orange-200
+              </div>
+              <div className="p-3 color-block text-orange-300">
+                text-orange-300
+              </div>
+              <div className="p-3 color-block text-orange-400">
+                text-orange-400
+              </div>
+              <div className="p-3 color-block text-orange-500">
+                text-orange-500
+              </div>
+              <div className="p-3 color-block text-orange-600">
+                text-orange-600
+              </div>
+              <div className="p-3 color-block text-orange-700">
+                text-orange-700
+              </div>
+              <div className="p-3 color-block text-orange-800">
+                text-orange-800
+              </div>
+              <div className="p-3 color-block text-orange-900">
+                text-orange-900
+              </div>
             </Col>
             <Col md={4}>
-              <div className="p-3 color-block text-yellow-100">text-yellow-100</div>
-              <div className="p-3 color-block text-yellow-200">text-yellow-200</div>
-              <div className="p-3 color-block text-yellow-300">text-yellow-300</div>
-              <div className="p-3 color-block text-yellow-400">text-yellow-400</div>
-              <div className="p-3 color-block text-yellow-500">text-yellow-500</div>
-              <div className="p-3 color-block text-yellow-600">text-yellow-600</div>
-              <div className="p-3 color-block text-yellow-700">text-yellow-700</div>
-              <div className="p-3 color-block text-yellow-800">text-yellow-800</div>
-              <div className="p-3 color-block text-yellow-900">text-yellow-900</div>
+              <div className="p-3 color-block text-yellow-100">
+                text-yellow-100
+              </div>
+              <div className="p-3 color-block text-yellow-200">
+                text-yellow-200
+              </div>
+              <div className="p-3 color-block text-yellow-300">
+                text-yellow-300
+              </div>
+              <div className="p-3 color-block text-yellow-400">
+                text-yellow-400
+              </div>
+              <div className="p-3 color-block text-yellow-500">
+                text-yellow-500
+              </div>
+              <div className="p-3 color-block text-yellow-600">
+                text-yellow-600
+              </div>
+              <div className="p-3 color-block text-yellow-700">
+                text-yellow-700
+              </div>
+              <div className="p-3 color-block text-yellow-800">
+                text-yellow-800
+              </div>
+              <div className="p-3 color-block text-yellow-900">
+                text-yellow-900
+              </div>
             </Col>
             <Col md={4}>
-              <div className="p-3 color-block text-green-100">text-green-100</div>
-              <div className="p-3 color-block text-green-200">text-green-200</div>
-              <div className="p-3 color-block text-green-300">text-green-300</div>
-              <div className="p-3 color-block text-green-400">text-green-400</div>
-              <div className="p-3 color-block text-green-500">text-green-500</div>
-              <div className="p-3 color-block text-green-600">text-green-600</div>
-              <div className="p-3 color-block text-green-700">text-green-700</div>
-              <div className="p-3 color-block text-green-800">text-green-800</div>
-              <div className="p-3 color-block text-green-900">text-green-900</div>
+              <div className="p-3 color-block text-green-100">
+                text-green-100
+              </div>
+              <div className="p-3 color-block text-green-200">
+                text-green-200
+              </div>
+              <div className="p-3 color-block text-green-300">
+                text-green-300
+              </div>
+              <div className="p-3 color-block text-green-400">
+                text-green-400
+              </div>
+              <div className="p-3 color-block text-green-500">
+                text-green-500
+              </div>
+              <div className="p-3 color-block text-green-600">
+                text-green-600
+              </div>
+              <div className="p-3 color-block text-green-700">
+                text-green-700
+              </div>
+              <div className="p-3 color-block text-green-800">
+                text-green-800
+              </div>
+              <div className="p-3 color-block text-green-900">
+                text-green-900
+              </div>
             </Col>
             <Col md={4}>
-              <div className="p-3 color-block text-teal-100">text-green-100</div>
-              <div className="p-3 color-block text-teal-200">text-green-200</div>
-              <div className="p-3 color-block text-teal-300">text-green-300</div>
-              <div className="p-3 color-block text-teal-400">text-green-400</div>
-              <div className="p-3 color-block text-teal-500">text-green-500</div>
-              <div className="p-3 color-block text-teal-600">text-green-600</div>
-              <div className="p-3 color-block text-teal-700">text-green-700</div>
-              <div className="p-3 color-block text-teal-800">text-green-800</div>
-              <div className="p-3 color-block text-teal-900">text-green-900</div>
+              <div className="p-3 color-block text-teal-100">
+                text-green-100
+              </div>
+              <div className="p-3 color-block text-teal-200">
+                text-green-200
+              </div>
+              <div className="p-3 color-block text-teal-300">
+                text-green-300
+              </div>
+              <div className="p-3 color-block text-teal-400">
+                text-green-400
+              </div>
+              <div className="p-3 color-block text-teal-500">
+                text-green-500
+              </div>
+              <div className="p-3 color-block text-teal-600">
+                text-green-600
+              </div>
+              <div className="p-3 color-block text-teal-700">
+                text-green-700
+              </div>
+              <div className="p-3 color-block text-teal-800">
+                text-green-800
+              </div>
+              <div className="p-3 color-block text-teal-900">
+                text-green-900
+              </div>
             </Col>
             <Col md={4}>
-              <div className="p-3 color-block text-cyan-100">text-green-100</div>
-              <div className="p-3 color-block text-cyan-200">text-green-200</div>
-              <div className="p-3 color-block text-cyan-300">text-green-300</div>
-              <div className="p-3 color-block text-cyan-400">text-green-400</div>
-              <div className="p-3 color-block text-cyan-500">text-green-500</div>
-              <div className="p-3 color-block text-cyan-600">text-green-600</div>
-              <div className="p-3 color-block text-cyan-700">text-green-700</div>
-              <div className="p-3 color-block text-cyan-800">text-green-800</div>
-              <div className="p-3 color-block text-cyan-900">text-green-900</div>
+              <div className="p-3 color-block text-cyan-100">
+                text-green-100
+              </div>
+              <div className="p-3 color-block text-cyan-200">
+                text-green-200
+              </div>
+              <div className="p-3 color-block text-cyan-300">
+                text-green-300
+              </div>
+              <div className="p-3 color-block text-cyan-400">
+                text-green-400
+              </div>
+              <div className="p-3 color-block text-cyan-500">
+                text-green-500
+              </div>
+              <div className="p-3 color-block text-cyan-600">
+                text-green-600
+              </div>
+              <div className="p-3 color-block text-cyan-700">
+                text-green-700
+              </div>
+              <div className="p-3 color-block text-cyan-800">
+                text-green-800
+              </div>
+              <div className="p-3 color-block text-cyan-900">
+                text-green-900
+              </div>
             </Col>
             <Col md={4}>
               <div className="p-3 color-block text-gray-100">text-gray-100</div>

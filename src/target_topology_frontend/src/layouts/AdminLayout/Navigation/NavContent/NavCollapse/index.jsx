@@ -1,20 +1,20 @@
-import PropTypes from 'prop-types';
-import { useContext, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import PropTypes from "prop-types";
+import { useContext, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 // react-bootstrap
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup } from "react-bootstrap";
 
 // third party
-import FeatherIcon from 'feather-icons-react';
+import FeatherIcon from "feather-icons-react";
 
 // project imports
-import NavItem from '../NavItem';
-import LoopNavCollapse from './index';
-import NavIcon from '../NavIcon';
-import { ConfigContext } from '../../../../../contexts/ConfigContext';
-import * as actionType from '../../../../../store/actions';
-import useWindowSize from '../../../../../hooks/useWindowSize';
+import NavItem from "../NavItem";
+import LoopNavCollapse from "./index";
+import NavIcon from "../NavIcon";
+import { ConfigContext } from "../../../../../contexts/ConfigContext";
+import * as actionType from "../../../../../store/actions";
+import useWindowSize from "../../../../../hooks/useWindowSize";
 
 // -----------------------|| NAV COLLAPSE ||-----------------------//
 
@@ -31,10 +31,13 @@ export default function NavCollapse({ collapse, type }) {
   useEffect(() => {
     const currentIndex = document.location.pathname
       .toString()
-      .split('/')
+      .split("/")
       .findIndex((id) => id === collapse.id);
     if (currentIndex > -1) {
-      dispatch({ type: actionType.COLLAPSE_TOGGLE, menu: { id: collapse.id, type: type } });
+      dispatch({
+        type: actionType.COLLAPSE_TOGGLE,
+        menu: { id: collapse.id, type: type },
+      });
     }
   }, [collapse, dispatch, type]);
 
@@ -44,9 +47,9 @@ export default function NavCollapse({ collapse, type }) {
     navItems = Object.keys(collapses).map((item) => {
       item = collapses[item];
       switch (item.type) {
-        case 'collapse':
+        case "collapse":
           return <LoopNavCollapse key={item.id} collapse={item} type="sub" />;
-        case 'item':
+        case "item":
           return <NavItem key={item.id} item={item} />;
         default:
           return false;
@@ -59,35 +62,40 @@ export default function NavCollapse({ collapse, type }) {
     itemTitle = <span className="pc-mtext">{collapse.title}</span>;
   }
 
-  let navLinkClass = ['pc-link'];
+  let navLinkClass = ["pc-link"];
 
-  let navItemClass = ['pc-item', 'pc-hasmenu'];
+  let navItemClass = ["pc-item", "pc-hasmenu"];
   const openIndex = isOpen.findIndex((id) => id === collapse.id);
   if (openIndex > -1) {
-    navItemClass = [...navItemClass, 'active'];
-    navLinkClass = [...navLinkClass, 'active'];
+    navItemClass = [...navItemClass, "active"];
+    navLinkClass = [...navLinkClass, "active"];
   }
 
   const triggerIndex = isTrigger.findIndex((id) => id === collapse.id);
   if (triggerIndex > -1) {
-    navItemClass = [...navItemClass, 'pc-trigger'];
+    navItemClass = [...navItemClass, "pc-trigger"];
   }
 
   const currentIndex = document.location.pathname
     .toString()
-    .split('/')
+    .split("/")
     .findIndex((id) => id === collapse.id);
   if (currentIndex > -1) {
-    navItemClass = [...navItemClass, 'active'];
-    navLinkClass = [...navLinkClass, 'active'];
+    navItemClass = [...navItemClass, "active"];
+    navLinkClass = [...navLinkClass, "active"];
   }
 
   const subContent = (
     <>
       <Link
         to="#"
-        className={navLinkClass.join(' ')}
-        onClick={() => dispatch({ type: actionType.COLLAPSE_TOGGLE, menu: { id: collapse.id, type } })}
+        className={navLinkClass.join(" ")}
+        onClick={() =>
+          dispatch({
+            type: actionType.COLLAPSE_TOGGLE,
+            menu: { id: collapse.id, type },
+          })
+        }
       >
         <NavIcon items={collapse} />
         {itemTitle}
@@ -95,7 +103,9 @@ export default function NavCollapse({ collapse, type }) {
           <FeatherIcon icon="chevron-right" />
         </span>
       </Link>
-      {(!collapseLayout || windowSize.width < 992) && <ul className="pc-submenu">{navItems}</ul>}
+      {(!collapseLayout || windowSize.width < 992) && (
+        <ul className="pc-submenu">{navItems}</ul>
+      )}
       {collapseLayout && windowSize.width >= 992 && (
         <ListGroup variant="flush" bsPrefix=" " as="ul" className="pc-submenu">
           {navItems}
@@ -107,7 +117,12 @@ export default function NavCollapse({ collapse, type }) {
   let mainContent;
 
   mainContent = (
-    <ListGroup.Item as="li" bsPrefix=" " className={navItemClass.join(' ')} style={{ overflowY: 'auto' }}>
+    <ListGroup.Item
+      as="li"
+      bsPrefix=" "
+      className={navItemClass.join(" ")}
+      style={{ overflowY: "auto" }}
+    >
       {subContent}
     </ListGroup.Item>
   );

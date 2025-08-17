@@ -30,10 +30,10 @@
     overflow-y: visible;
   }
 }
-.btn-group-toggle > .btn input[type='radio'],
-.btn-group-toggle > .btn input[type='checkbox'],
-.btn-group-toggle > .btn-group > .btn input[type='radio'],
-.btn-group-toggle > .btn-group > .btn input[type='checkbox'] {
+.btn-group-toggle > .btn input[type="radio"],
+.btn-group-toggle > .btn input[type="checkbox"],
+.btn-group-toggle > .btn-group > .btn input[type="radio"],
+.btn-group-toggle > .btn-group > .btn input[type="checkbox"] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
@@ -107,8 +107,8 @@ button.close {
     }
   }
 }
-.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle,
-.react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle,
+.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle,
+.react-datepicker-popper[data-placement^="top"] .react-datepicker__triangle,
 .react-datepicker__year-read-view--down-arrow,
 .react-datepicker__month-read-view--down-arrow,
 .react-datepicker__month-year-read-view--down-arrow {
@@ -156,7 +156,7 @@ button.close {
   z-index: 999999 !important;
 }
 .choices__input,
-.choices[data-type*='select-one'] .choices__input {
+.choices[data-type*="select-one"] .choices__input {
   &.is-hidden {
     display: none;
   }
@@ -206,7 +206,7 @@ button.close {
       position: relative;
       &::before {
         position: absolute;
-        content: ':';
+        content: ":";
         left: 0;
       }
     }

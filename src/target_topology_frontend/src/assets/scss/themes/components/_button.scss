@@ -17,8 +17,8 @@
     height: 18px;
   }
 
-  &[class*='btn-outline-']:not(:hover) &[class*='btn-link-'],
-  &[class*='btn-light-'] {
+  &[class*="btn-outline-"]:not(:hover) &[class*="btn-link-"],
+  &[class*="btn-light-"] {
     box-shadow: none;
   }
 

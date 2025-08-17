@@ -1,13 +1,19 @@
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 // react-bootstrap
-import { Card, Table } from 'react-bootstrap';
+import { Card, Table } from "react-bootstrap";
 
 // project import
-import SimpleBar from 'simplebar-react';
+import SimpleBar from "simplebar-react";
 
-export default function ViewTable({ wrapclass, title, height, tableheading, rowdata }) {
+export default function ViewTable({
+  wrapclass,
+  title,
+  height,
+  tableheading,
+  rowdata,
+}) {
   return (
     <Card className={wrapclass}>
       <Card.Header>
@@ -30,14 +36,19 @@ export default function ViewTable({ wrapclass, title, height, tableheading, rowd
                   <td>{y.image}</td>
                   <td>
                     <div>
-                      <label className={`badge badge-${y.status.badge}`}>{y.status.label}</label>
+                      <label className={`badge badge-${y.status.badge}`}>
+                        {y.status.label}
+                      </label>
                     </div>
                   </td>
                   <td>{y.price}</td>
                   <td>
                     {y.action.map((z, k) => (
                       <Link to={z.link} key={k}>
-                        <i className={`feather icon-${z.icon} f-16 text-${z.textcls} ${k > 0 ? 'ms-3' : ''}`} title="Action" />
+                        <i
+                          className={`feather icon-${z.icon} f-16 text-${z.textcls} ${k > 0 ? "ms-3" : ""}`}
+                          title="Action"
+                        />
                       </Link>
                     ))}
                   </td>
@@ -56,5 +67,5 @@ ViewTable.propTypes = {
   title: PropTypes.string,
   height: PropTypes.string,
   tableheading: PropTypes.any,
-  rowdata: PropTypes.any
+  rowdata: PropTypes.any,
 };

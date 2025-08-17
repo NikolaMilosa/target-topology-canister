@@ -1,15 +1,15 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
 // third party
-import { Link } from 'react-router-dom';
-import FeatherIcon from 'feather-icons-react';
+import { Link } from "react-router-dom";
+import FeatherIcon from "feather-icons-react";
 
 // project imports
-import { ConfigContext } from '../../../contexts/ConfigContext';
-import * as actionType from '../../../store/actions';
+import { ConfigContext } from "../../../contexts/ConfigContext";
+import * as actionType from "../../../store/actions";
 
 // assets
-import logo from '../../../assets/images/logo.svg';
+import logo from "../../../assets/images/logo.svg";
 
 // -----------------------|| MOBILE HEADER ||-----------------------//
 
@@ -23,7 +23,10 @@ export default function MobileHeader() {
   };
 
   const headerToggleHandler = () => {
-    dispatch({ type: actionType.COLLAPSE_HEADERMENU, collapseHeaderMenu: !collapseHeaderMenu });
+    dispatch({
+      type: actionType.COLLAPSE_HEADERMENU,
+      collapseHeaderMenu: !collapseHeaderMenu,
+    });
   };
 
   return (
@@ -32,14 +35,24 @@ export default function MobileHeader() {
         <img src={logo} alt="" className="logo logo-lg" />
       </div>
       <div className="pcm-toolbar">
-        <Link to="#" className="pc-head-link" id="mobile-collapse" onClick={navToggleHandler}>
+        <Link
+          to="#"
+          className="pc-head-link"
+          id="mobile-collapse"
+          onClick={navToggleHandler}
+        >
           <div className="hamburger hamburger--arrowturn">
             <div className="hamburger-box">
               <div className="hamburger-inner" />
             </div>
           </div>
         </Link>
-        <Link to="#" className="pc-head-link" id="header-collapse" onClick={headerToggleHandler}>
+        <Link
+          to="#"
+          className="pc-head-link"
+          id="header-collapse"
+          onClick={headerToggleHandler}
+        >
           <FeatherIcon icon="more-vertical" title="more" />
         </Link>
       </div>

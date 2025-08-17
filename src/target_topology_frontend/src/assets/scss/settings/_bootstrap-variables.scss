@@ -7,34 +7,34 @@
 
 // fusv-disable
 $grays: (
-  '100': $gray-100,
-  '200': $gray-200,
-  '300': $gray-300,
-  '400': $gray-400,
-  '500': $gray-500,
-  '600': $gray-600,
-  '700': $gray-700,
-  '800': $gray-800,
-  '900': $gray-900
+  "100": $gray-100,
+  "200": $gray-200,
+  "300": $gray-300,
+  "400": $gray-400,
+  "500": $gray-500,
+  "600": $gray-600,
+  "700": $gray-700,
+  "800": $gray-800,
+  "900": $gray-900,
 );
 // fusv-enable
 
 // scss-docs-start colors-map
 $colors: (
-  'blue': $blue,
-  'indigo': $indigo,
-  'purple': $purple,
-  'pink': $pink,
-  'red': $red,
-  'orange': $orange,
-  'yellow': $yellow,
-  'green': $green,
-  'teal': $teal,
-  'cyan': $cyan,
-  'black': $black,
-  'white': $white,
-  'gray': $gray-600,
-  'gray-dark': $gray-800
+  "blue": $blue,
+  "indigo": $indigo,
+  "purple": $purple,
+  "pink": $pink,
+  "red": $red,
+  "orange": $orange,
+  "yellow": $yellow,
+  "green": $green,
+  "teal": $teal,
+  "cyan": $cyan,
+  "black": $black,
+  "white": $white,
+  "gray": $gray-600,
+  "gray-dark": $gray-800,
 );
 // scss-docs-end colors-map
 
@@ -48,19 +48,19 @@ $light: $gray-100; // change
 
 // scss-docs-start theme-colors-map
 $theme-colors: (
-  'primary': $primary,
-  'secondary': $secondary,
-  'success': $success,
-  'info': $info,
-  'warning': $warning,
-  'danger': $danger,
-  'light': $light,
-  'dark': $dark
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark": $dark,
 );
 // scss-docs-end theme-colors-map
 
 // scss-docs-start theme-colors-rgb
-$theme-colors-rgb: map-loop($theme-colors, to-rgb, '$value');
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
 // scss-docs-end theme-colors-rgb
 
 // The contrast ratio to reach against white, to determine if color changes from "light" to "dark". Acceptable values for WCAG 2.0 are 3, 4.5 and 7.
@@ -72,128 +72,134 @@ $color-contrast-dark: $body-color;
 $color-contrast-light: $white;
 
 $blues: (
-  'blue-100': $blue-100,
-  'blue-200': $blue-200,
-  'blue-300': $blue-300,
-  'blue-400': $blue-400,
-  'blue-500': $blue-500,
-  'blue-600': $blue-600,
-  'blue-700': $blue-700,
-  'blue-800': $blue-800,
-  'blue-900': $blue-900
+  "blue-100": $blue-100,
+  "blue-200": $blue-200,
+  "blue-300": $blue-300,
+  "blue-400": $blue-400,
+  "blue-500": $blue-500,
+  "blue-600": $blue-600,
+  "blue-700": $blue-700,
+  "blue-800": $blue-800,
+  "blue-900": $blue-900,
 );
 
 $indigos: (
-  'indigo-100': $indigo-100,
-  'indigo-200': $indigo-200,
-  'indigo-300': $indigo-300,
-  'indigo-400': $indigo-400,
-  'indigo-500': $indigo-500,
-  'indigo-600': $indigo-600,
-  'indigo-700': $indigo-700,
-  'indigo-800': $indigo-800,
-  'indigo-900': $indigo-900
+  "indigo-100": $indigo-100,
+  "indigo-200": $indigo-200,
+  "indigo-300": $indigo-300,
+  "indigo-400": $indigo-400,
+  "indigo-500": $indigo-500,
+  "indigo-600": $indigo-600,
+  "indigo-700": $indigo-700,
+  "indigo-800": $indigo-800,
+  "indigo-900": $indigo-900,
 );
 
 $purples: (
-  'purple-100': $purple-100,
-  'purple-200': $purple-200,
-  'purple-300': $purple-300,
-  'purple-400': $purple-400,
-  'purple-500': $purple-500,
-  'purple-600': $purple-600,
-  'purple-700': $purple-700,
-  'purple-800': $purple-800,
-  'purple-900': $purple-900
+  "purple-100": $purple-100,
+  "purple-200": $purple-200,
+  "purple-300": $purple-300,
+  "purple-400": $purple-400,
+  "purple-500": $purple-500,
+  "purple-600": $purple-600,
+  "purple-700": $purple-700,
+  "purple-800": $purple-800,
+  "purple-900": $purple-900,
 );
 
 $pinks: (
-  'pink-100': $pink-100,
-  'pink-200': $pink-200,
-  'pink-300': $pink-300,
-  'pink-400': $pink-400,
-  'pink-500': $pink-500,
-  'pink-600': $pink-600,
-  'pink-700': $pink-700,
-  'pink-800': $pink-800,
-  'pink-900': $pink-900
+  "pink-100": $pink-100,
+  "pink-200": $pink-200,
+  "pink-300": $pink-300,
+  "pink-400": $pink-400,
+  "pink-500": $pink-500,
+  "pink-600": $pink-600,
+  "pink-700": $pink-700,
+  "pink-800": $pink-800,
+  "pink-900": $pink-900,
 );
 
 $reds: (
-  'red-100': $red-100,
-  'red-200': $red-200,
-  'red-300': $red-300,
-  'red-400': $red-400,
-  'red-500': $red-500,
-  'red-600': $red-600,
-  'red-700': $red-700,
-  'red-800': $red-800,
-  'red-900': $red-900
+  "red-100": $red-100,
+  "red-200": $red-200,
+  "red-300": $red-300,
+  "red-400": $red-400,
+  "red-500": $red-500,
+  "red-600": $red-600,
+  "red-700": $red-700,
+  "red-800": $red-800,
+  "red-900": $red-900,
 );
 
 $oranges: (
-  'orange-100': $orange-100,
-  'orange-200': $orange-200,
-  'orange-300': $orange-300,
-  'orange-400': $orange-400,
-  'orange-500': $orange-500,
-  'orange-600': $orange-600,
-  'orange-700': $orange-700,
-  'orange-800': $orange-800,
-  'orange-900': $orange-900
+  "orange-100": $orange-100,
+  "orange-200": $orange-200,
+  "orange-300": $orange-300,
+  "orange-400": $orange-400,
+  "orange-500": $orange-500,
+  "orange-600": $orange-600,
+  "orange-700": $orange-700,
+  "orange-800": $orange-800,
+  "orange-900": $orange-900,
 );
 
 $yellows: (
-  'yellow-100': $yellow-100,
-  'yellow-200': $yellow-200,
-  'yellow-300': $yellow-300,
-  'yellow-400': $yellow-400,
-  'yellow-500': $yellow-500,
-  'yellow-600': $yellow-600,
-  'yellow-700': $yellow-700,
-  'yellow-800': $yellow-800,
-  'yellow-900': $yellow-900
+  "yellow-100": $yellow-100,
+  "yellow-200": $yellow-200,
+  "yellow-300": $yellow-300,
+  "yellow-400": $yellow-400,
+  "yellow-500": $yellow-500,
+  "yellow-600": $yellow-600,
+  "yellow-700": $yellow-700,
+  "yellow-800": $yellow-800,
+  "yellow-900": $yellow-900,
 );
 
 $greens: (
-  'green-100': $green-100,
-  'green-200': $green-200,
-  'green-300': $green-300,
-  'green-400': $green-400,
-  'green-500': $green-500,
-  'green-600': $green-600,
-  'green-700': $green-700,
-  'green-800': $green-800,
-  'green-900': $green-900
+  "green-100": $green-100,
+  "green-200": $green-200,
+  "green-300": $green-300,
+  "green-400": $green-400,
+  "green-500": $green-500,
+  "green-600": $green-600,
+  "green-700": $green-700,
+  "green-800": $green-800,
+  "green-900": $green-900,
 );
 
 $teals: (
-  'teal-100': $teal-100,
-  'teal-200': $teal-200,
-  'teal-300': $teal-300,
-  'teal-400': $teal-400,
-  'teal-500': $teal-500,
-  'teal-600': $teal-600,
-  'teal-700': $teal-700,
-  'teal-800': $teal-800,
-  'teal-900': $teal-900
+  "teal-100": $teal-100,
+  "teal-200": $teal-200,
+  "teal-300": $teal-300,
+  "teal-400": $teal-400,
+  "teal-500": $teal-500,
+  "teal-600": $teal-600,
+  "teal-700": $teal-700,
+  "teal-800": $teal-800,
+  "teal-900": $teal-900,
 );
 
 $cyans: (
-  'cyan-100': $cyan-100,
-  'cyan-200': $cyan-200,
-  'cyan-300': $cyan-300,
-  'cyan-400': $cyan-400,
-  'cyan-500': $cyan-500,
-  'cyan-600': $cyan-600,
-  'cyan-700': $cyan-700,
-  'cyan-800': $cyan-800,
-  'cyan-900': $cyan-900
+  "cyan-100": $cyan-100,
+  "cyan-200": $cyan-200,
+  "cyan-300": $cyan-300,
+  "cyan-400": $cyan-400,
+  "cyan-500": $cyan-500,
+  "cyan-600": $cyan-600,
+  "cyan-700": $cyan-700,
+  "cyan-800": $cyan-800,
+  "cyan-900": $cyan-900,
 );
 // fusv-enable
 
 // Characters which are escaped by the escape-svg function
-$escaped-characters: (('<', '%3c'), ('>', '%3e'), ('#', '%23'), ('(', '%28'), (')', '%29'));
+$escaped-characters: (
+  ("<", "%3c"),
+  (">", "%3e"),
+  ("#", "%23"),
+  ("(", "%28"),
+  (")", "%29")
+);
 
 // Options
 //
@@ -243,7 +249,7 @@ $spacers: (
   2: $spacer * 0.5,
   3: $spacer,
   4: $spacer * 1.5,
-  5: $spacer * 3
+  5: $spacer * 3,
 );
 // scss-docs-end spacer-variables-maps
 
@@ -255,7 +261,7 @@ $spacers: (
 $position-values: (
   0: 0,
   50: 50%,
-  100: 100%
+  100: 100%,
 );
 // scss-docs-end position-map
 
@@ -263,7 +269,7 @@ $position-values: (
 //
 // Settings for the `<body>` element.
 body {
-  font-feature-settings: 'salt';
+  font-feature-settings: "salt";
 }
 $body-bg: #f0f2f8; // change
 $body-color: #293240; // change
@@ -300,12 +306,12 @@ $grid-breakpoints: (
   md: 768px,
   lg: 992px,
   xl: 1200px,
-  xxl: 1400px
+  xxl: 1400px,
 );
 // scss-docs-end grid-breakpoints
 
-@include _assert-ascending($grid-breakpoints, '$grid-breakpoints');
-@include _assert-starts-at-zero($grid-breakpoints, '$grid-breakpoints');
+@include _assert-ascending($grid-breakpoints, "$grid-breakpoints");
+@include _assert-starts-at-zero($grid-breakpoints, "$grid-breakpoints");
 
 // Grid containers
 //
@@ -317,11 +323,11 @@ $container-max-widths: (
   md: 720px,
   lg: 960px,
   xl: 1140px,
-  xxl: 1320px
+  xxl: 1320px,
 );
 // scss-docs-end container-max-widths
 
-@include _assert-ascending($container-max-widths, '$container-max-widths');
+@include _assert-ascending($container-max-widths, "$container-max-widths");
 
 // Grid columns
 //
@@ -347,7 +353,7 @@ $border-widths: (
   2: 2px,
   3: 3px,
   4: 4px,
-  5: 5px
+  5: 5px,
 );
 
 $border-style: solid;
@@ -387,10 +393,10 @@ $transition-collapse-width: width 0.35s ease;
 // stylelint-disable function-disallowed-list
 // scss-docs-start aspect-ratios
 $aspect-ratios: (
-  '1x1': 100%,
-  '4x3': calc(3 / 4 * 100%),
-  '16x9': calc(9 / 16 * 100%),
-  '21x9': calc(9 / 21 * 100%)
+  "1x1": 100%,
+  "4x3": calc(3 / 4 * 100%),
+  "16x9": calc(9 / 16 * 100%),
+  "21x9": calc(9 / 21 * 100%),
 );
 // scss-docs-end aspect-ratios
 // stylelint-enable function-disallowed-list
@@ -400,8 +406,10 @@ $aspect-ratios: (
 // Font, line-height, and color for body text, headings, and more.
 
 // stylelint-disable value-keyword-case
-$font-family-sans-serif: 'Inter', sans-serif; // change
-$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+$font-family-sans-serif: "Inter", sans-serif; // change
+$font-family-monospace:
+  SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+  monospace;
 // stylelint-enable value-keyword-case
 $font-family-base: var(--#{$variable-prefix}font-sans-serif);
 $font-family-code: var(--#{$variable-prefix}font-monospace);
@@ -436,7 +444,7 @@ $font-sizes: (
   3: $h3-font-size,
   4: $h4-font-size,
   5: $h5-font-size,
-  6: $h6-font-size
+  6: $h6-font-size,
 );
 
 // scss-docs-end font-sizes
@@ -456,7 +464,7 @@ $display-font-sizes: (
   3: 4rem,
   4: 3.5rem,
   5: 3rem,
-  6: 2.5rem
+  6: 2.5rem,
 );
 
 $display-font-weight: 300;
@@ -543,14 +551,14 @@ $table-caption-color: $text-muted;
 $table-bg-scale: -80%;
 
 $table-variants: (
-  'primary': shift-color($primary, $table-bg-scale),
-  'secondary': shift-color($secondary, $table-bg-scale),
-  'success': shift-color($success, $table-bg-scale),
-  'info': shift-color($info, $table-bg-scale),
-  'warning': shift-color($warning, $table-bg-scale),
-  'danger': shift-color($danger, $table-bg-scale),
-  'light': $light,
-  'dark': $dark
+  "primary": shift-color($primary, $table-bg-scale),
+  "secondary": shift-color($secondary, $table-bg-scale),
+  "success": shift-color($success, $table-bg-scale),
+  "info": shift-color($info, $table-bg-scale),
+  "warning": shift-color($warning, $table-bg-scale),
+  "danger": shift-color($danger, $table-bg-scale),
+  "light": $light,
+  "dark": $dark,
 );
 // scss-docs-end table-variables
 
@@ -566,7 +574,10 @@ $input-btn-line-height: $line-height-base;
 
 $input-btn-focus-width: 0.2rem;
 $input-btn-focus-color-opacity: 0.25;
-$input-btn-focus-color: rgba($component-active-bg, $input-btn-focus-color-opacity);
+$input-btn-focus-color: rgba(
+  $component-active-bg,
+  $input-btn-focus-color-opacity
+);
 $input-btn-focus-blur: 0;
 $input-btn-focus-box-shadow: 0 0 0 0 $input-btn-focus-color;
 
@@ -691,11 +702,23 @@ $input-height-border: $input-border-width * 2;
 
 $input-height-inner: add($input-line-height * 1em, calc($input-padding-y * 2));
 $input-height-inner-half: add($input-line-height * 0.5em, $input-padding-y);
-$input-height-inner-quarter: add($input-line-height * 0.25em, calc($input-padding-y / 2));
+$input-height-inner-quarter: add(
+  $input-line-height * 0.25em,
+  calc($input-padding-y / 2)
+);
 
-$input-height: add($input-line-height * 1em, add($input-padding-y * 2, $input-height-border, false));
-$input-height-sm: add($input-line-height * 1em, add($input-padding-y-sm * 2, $input-height-border, false));
-$input-height-lg: add($input-line-height * 1em, add($input-padding-y-lg * 2, $input-height-border, false));
+$input-height: add(
+  $input-line-height * 1em,
+  add($input-padding-y * 2, $input-height-border, false)
+);
+$input-height-sm: add(
+  $input-line-height * 1em,
+  add($input-padding-y-sm * 2, $input-height-border, false)
+);
+$input-height-lg: add(
+  $input-line-height * 1em,
+  add($input-padding-y-lg * 2, $input-height-border, false)
+);
 
 $input-transition:
   border-color 0.15s ease-in-out,
@@ -779,10 +802,13 @@ $form-select-indicator: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/20
 
 $form-select-feedback-icon-padding-end: add(
   1em * 0.75,
-  (2 * $form-select-padding-y * 0.75) + $form-select-padding-x + $form-select-indicator-padding
+  (2 * $form-select-padding-y * 0.75) + $form-select-padding-x +
+    $form-select-indicator-padding
 );
-$form-select-feedback-icon-position: center right ($form-select-padding-x + $form-select-indicator-padding);
-$form-select-feedback-icon-size: $input-height-inner-half $input-height-inner-half;
+$form-select-feedback-icon-position: center right
+  ($form-select-padding-x + $form-select-indicator-padding);
+$form-select-feedback-icon-size: $input-height-inner-half
+  $input-height-inner-half;
 
 $form-select-border-width: $input-border-width;
 $form-select-border-color: $input-border-color;
@@ -853,14 +879,14 @@ $form-feedback-icon-invalid: url("data:image/svg+xml,<svg xmlns='http://www.w3.o
 
 // scss-docs-start form-validation-states
 $form-validation-states: (
-  'valid': (
-    'color': $form-feedback-valid-color,
-    'icon': $form-feedback-icon-valid
+  "valid": (
+    "color": $form-feedback-valid-color,
+    "icon": $form-feedback-icon-valid,
   ),
-  'invalid': (
-    'color': $form-feedback-invalid-color,
-    'icon': $form-feedback-icon-invalid
-  )
+  "invalid": (
+    "color": $form-feedback-invalid-color,
+    "icon": $form-feedback-icon-invalid,
+  ),
 );
 // scss-docs-end form-validation-states
 
@@ -900,10 +926,12 @@ $nav-link-disabled-color: $gray-600;
 $nav-tabs-border-color: var(--bs-border-color);
 $nav-tabs-border-width: $border-width;
 $nav-tabs-border-radius: $border-radius;
-$nav-tabs-link-hover-border-color: var(--bs-border-color) var(--bs-border-color) $nav-tabs-border-color;
+$nav-tabs-link-hover-border-color: var(--bs-border-color) var(--bs-border-color)
+  $nav-tabs-border-color;
 $nav-tabs-link-active-color: var(--bs-body-color);
 $nav-tabs-link-active-bg: var(--bs-body-bg);
-$nav-tabs-link-active-border-color: var(--bs-border-color) var(--bs-border-color) $nav-tabs-link-active-bg;
+$nav-tabs-link-active-border-color: var(--bs-border-color)
+  var(--bs-border-color) $nav-tabs-link-active-bg;
 
 $nav-pills-border-radius: $border-radius;
 $nav-pills-link-active-color: $component-active-color;
@@ -966,7 +994,10 @@ $dropdown-bg: $white;
 $dropdown-border-color: rgba($black, 0.15);
 $dropdown-border-radius: 2px;
 $dropdown-border-width: 0;
-$dropdown-inner-border-radius: subtract($dropdown-border-radius, $dropdown-border-width);
+$dropdown-inner-border-radius: subtract(
+  $dropdown-border-radius,
+  $dropdown-border-width
+);
 $dropdown-divider-bg: $gray-200;
 $dropdown-divider-margin-y: calc($spacer / 2);
 $dropdown-box-shadow: 0 0.5rem 1rem rgba($black, 0.175);
@@ -1085,7 +1116,10 @@ $accordion-bg: $card-bg;
 $accordion-border-width: $border-width;
 $accordion-border-color: var(--#{$prefix}border-color);
 $accordion-border-radius: $border-radius;
-$accordion-inner-border-radius: subtract($accordion-border-radius, $accordion-border-width);
+$accordion-inner-border-radius: subtract(
+  $accordion-border-radius,
+  $accordion-border-width
+);
 
 $accordion-body-padding-y: $accordion-padding-y;
 $accordion-body-padding-x: $accordion-padding-x;
@@ -1147,7 +1181,10 @@ $popover-max-width: 276px;
 $popover-border-width: $border-width;
 $popover-border-color: rgba($black, 0.2);
 $popover-border-radius: $border-radius-lg;
-$popover-inner-border-radius: subtract($popover-border-radius, $popover-border-width);
+$popover-inner-border-radius: subtract(
+  $popover-border-radius,
+  $popover-border-width
+);
 $popover-box-shadow: $box-shadow;
 
 $popover-header-bg: darken($popover-bg, 3%);
@@ -1208,7 +1245,10 @@ $modal-content-bg: $white;
 $modal-content-border-color: rgba($black, 0.2);
 $modal-content-border-width: $border-width;
 $modal-content-border-radius: $border-radius-lg;
-$modal-content-inner-border-radius: subtract($modal-content-border-radius, $modal-content-border-width);
+$modal-content-inner-border-radius: subtract(
+  $modal-content-border-radius,
+  $modal-content-border-width
+);
 $modal-content-box-shadow-xs: 0 0.25rem 0.5rem rgba($black, 0.5);
 $modal-content-box-shadow-sm-up: 0 0.5rem 1rem rgba($black, 0.5);
 

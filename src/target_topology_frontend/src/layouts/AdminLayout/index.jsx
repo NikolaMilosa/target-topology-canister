@@ -1,15 +1,15 @@
-import { useContext, useEffect, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useContext, useEffect, Suspense } from "react";
+import { Outlet } from "react-router-dom";
 
 // project imports
-import MobileHeader from './MobileHeader';
-import Navigation from './Navigation';
-import NavBar from './NavBar';
-import Breadcrumb from './Breadcrumb';
-import useWindowSize from '../../hooks/useWindowSize';
-import { ConfigContext } from '../../contexts/ConfigContext';
-import * as actionType from '../../store/actions';
-import Loader from '../../components/Loader/Loader';
+import MobileHeader from "./MobileHeader";
+import Navigation from "./Navigation";
+import NavBar from "./NavBar";
+import Breadcrumb from "./Breadcrumb";
+import useWindowSize from "../../hooks/useWindowSize";
+import { ConfigContext } from "../../contexts/ConfigContext";
+import * as actionType from "../../store/actions";
+import Loader from "../../components/Loader/Loader";
 
 // -----------------------|| ADMIN LAYOUT ||-----------------------//
 
@@ -26,19 +26,19 @@ export default function AdminLayout() {
   }, [dispatch, windowSize]);
 
   if (windowSize.width > 992 && collapseLayout) {
-    bodyElement.classList.add('minimenu');
+    bodyElement.classList.add("minimenu");
   } else {
-    bodyElement.classList.remove('minimenu');
+    bodyElement.classList.remove("minimenu");
   }
 
-  let containerClass = ['pc-container'];
+  let containerClass = ["pc-container"];
 
   let adminlayout = (
     <>
       <MobileHeader />
       <NavBar />
       <Navigation />
-      <div className={containerClass.join(' ')}>
+      <div className={containerClass.join(" ")}>
         <div className="pcoded-content">
           <>
             <Breadcrumb />
@@ -47,7 +47,6 @@ export default function AdminLayout() {
             </Suspense>
           </>
         </div>
-        
       </div>
     </>
   );

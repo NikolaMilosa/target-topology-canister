@@ -4,9 +4,9 @@ import { Row, Col, Card, Table } from 'react-bootstrap';
 // project imports
 import FlatCard from '../../../components/Widgets/Statistic/FlatCard';
 import ProductCard from '../../../components/Widgets/Statistic/ProductCard';
-import ViewTable from '../../../components/Widgets/ProductTable';
 import { target_topology_backend } from 'declarations/target_topology_backend';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import SimpleBar from 'simplebar-react';
 
@@ -93,7 +93,7 @@ export default function DashSales() {
         <SimpleBar style={{
           height: "513px",
         }}>
-          <Table responsive className="mb-0">
+          <Table responsive className="mb-0 table table-striped">
             <thead>
               <tr>
                 {tableHeadings.map((x, i) => (
@@ -104,8 +104,16 @@ export default function DashSales() {
             <tbody>
               {subnets.map((y, j) => (
                 <tr key={j}>
-                  <td className="d-none d-md-table-cell d-lg-table-cell d-xl-table-cell"><code>{y.subnet_id}</code> ({y.number_of_nodes})</td>
-                  <td className="d-md-none"><code>{y.subnet_short}</code> ({y.number_of_nodes})</td>
+                  <td className="d-none d-md-table-cell d-lg-table-cell d-xl-table-cell">
+                    <Link to={`/subnet/${y.subnet_id}`}>
+                      <code>{y.subnet_id}</code> ({y.number_of_nodes})
+                    </Link>
+                  </td>
+                  <td className="d-md-none">
+                    <Link to={`/subnet/${y.subnet_id}`} >
+                      <code>{y.subnet_short}</code> ({y.number_of_nodes})
+                    </Link>
+                  </td>
                   <td>{y.subnet_type}</td>
                   <td> <a href={`https://dashboard.internetcomputer.org/network/subnets/${y.subnet_id}`}>
                       <i class="material-icons-two-tone">launch</i>

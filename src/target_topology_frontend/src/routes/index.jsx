@@ -8,6 +8,7 @@ import AdminLayout from '../layouts/AdminLayout';
 // render - landing pag
 const DashboardHome = lazy(() => import('../views/home/DashHome/index'));
 const DashboardSubnets= lazy(() => import('../views/subnets/DashSubnets/index'));
+const SubnetDetail = lazy(() => import ('../views/subnetDetail/SubnetDetail/index'));
 
 // ==============================|| ROUTING RENDER ||============================== //
 
@@ -30,6 +31,16 @@ const router = createBrowserRouter(
         {
           index: true,
           element: <DashboardSubnets />
+        }
+      ]
+    },
+    {
+      path: '/subnet/:subnet_id',
+      element: <AdminLayout />,
+      children: [
+        {
+          index: true,
+          element: <SubnetDetail />
         }
       ]
     },

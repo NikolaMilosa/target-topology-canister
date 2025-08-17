@@ -31,7 +31,7 @@ export default function ProductCard({ params }) {
             <i className={`material-icons-two-tone ${iconClass}`}>{params.icon}</i>
           </Col>
         </Row>
-        <p className={`mb-0 ${textClass}`}>{params.secondaryText}</p>
+        <div className={`mb-0 ${textClass}`}>{params.secondaryText}</div>
       </Card.Body>
     </Card>
   );

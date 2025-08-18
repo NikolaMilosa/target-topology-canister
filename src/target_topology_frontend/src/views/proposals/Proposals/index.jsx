@@ -208,26 +208,27 @@ export default function Proposals() {
     links = (
       <>
         <span>
+          View the proposal on the{" "}
           <a
             href={`https://dashboard.internetcomputer.org/proposal/${proposal_id}`}
           >
-            <i class="material-icons-two-tone">launch</i>
-          </a>{" "}
-          View the proposal on the public dashboard
+            {" "}
+            public dashboard
+          </a>
+          .
         </span>
         <br />
         <span>
+          View the proposal on the{" "}
           <a href={`https://nns.ic0.app/proposal/?proposal=${proposal_id}`}>
-            <i class="material-icons-two-tone">launch</i>
-          </a>{" "}
-          View the proposal on the nns dapp
+            nns dapp
+          </a>
+          .
         </span>
         <br />
         <span>
-          <a href={propMetadata.link}>
-            <i class="material-icons-two-tone">launch</i>
-          </a>{" "}
-          Join the discussion on the forum
+          Join the discussion about the proposal on the{" "}
+          <a href={propMetadata.link}>public forum</a>.
         </span>
       </>
     );

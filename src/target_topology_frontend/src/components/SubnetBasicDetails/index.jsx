@@ -1,8 +1,6 @@
-import { Row, Col, Card, Table } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 
 import ProductCard from "../../components/Widgets/Statistic/ProductCard";
-import ReactCountryFlag from "react-country-flag";
-import SimpleBar from "simplebar-react";
 
 import { useEffect, useState } from "react";
 import { target_topology_backend } from "declarations/target_topology_backend";
@@ -10,6 +8,8 @@ import { Principal } from "@dfinity/principal";
 
 import Chip from "@mui/material/Chip";
 import NodesTable from "../NodesTable";
+
+import subnetForumMap from "../../config/subnet_forum_map";
 
 export function mapNodes(nodes) {
   return nodes.map((node) => {
@@ -30,6 +30,7 @@ export default function SubnetDetailWithNodes({ subnet_id }) {
   const subnet_short = subnet_id.split("-")[0];
   const [nodes, setNodes] = useState([]);
   const [subnetTopology, setSubnetTopology] = useState({});
+  const [forumLink, setForumLink] = useState("");
 
   useEffect(() => {
     if (subnet_id.length == 0) {
@@ -56,6 +57,14 @@ export default function SubnetDetailWithNodes({ subnet_id }) {
       currTopology.proposal = topology[0]["proposal"];
       setSubnetTopology(currTopology);
     });
+
+    const forumMap = subnetForumMap();
+    if (forumMap.has(subnet_id)) {
+      const forumMetadata = forumMap.get(subnet_id);
+      setForumLink(
+        `https://forum.dfinity.org/t/${forumMetadata["slug"]}/${forumMetadata["topic_id"]}`,
+      );
+    }
   }, [subnet_id]);
 
   return (
@@ -80,7 +89,9 @@ export default function SubnetDetailWithNodes({ subnet_id }) {
               >
                 public dashboard
               </a>
-              .
+              .<br className="d-none d-md-inline" />
+              Join the discussion about the subnet on the{" "}
+              <a href={forumLink}>public forum</a>.
             </Card.Body>
             <Card.Footer>
               Tags:

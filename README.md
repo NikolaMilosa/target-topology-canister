@@ -13,7 +13,6 @@ The canister for displaying detailed information about the proposals for the com
   * Warnings should be displayed below the proposal payload
 
 * add the proposals related to a subnet in subnet detail view.
-* add the forum topic for each subnet to a subnet details view and proposal related to a subnet.
 
 * Add methods that acutally sync data from governance canister
 * Add methods that actually sync data from registry canister

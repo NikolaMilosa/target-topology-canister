@@ -75,12 +75,14 @@ export default function DashSales() {
     });
 
     target_topology_backend.get_proposals().then((proposals) => {
-      const props = proposals.map((p) => ({
-        icon: "award",
-        heading: `[${p.id}] ${p.title}`,
-        publishon: timeAgo(p.timestamp_seconds),
-        link: "#",
-      }));
+      const props = proposals
+        .sort((a, b) => Number(b.id) - Number(a.id))
+        .map((p) => ({
+          icon: "award",
+          heading: `[${p.id}] ${p.title}`,
+          publishon: timeAgo(p.timestamp_seconds),
+          link: `/proposal/${p.id}`,
+        }));
       setOpenProposals(props);
     });
 

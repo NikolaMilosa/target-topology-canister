@@ -33,16 +33,18 @@ export function useMenuItems() {
       const proposals = await target_topology_backend
         .get_proposals()
         .then((proposals) => {
-          return proposals.map((proposal) => {
-            return {
-              id: proposal.id,
-              title: `Proposal ${proposal.id}`,
-              type: "item",
-              icon: "material-icons-two-tone",
-              iconname: "gavel",
-              url: `/proposal/${proposal.id}`,
-            };
-          });
+          return proposals
+            .map((proposal) => {
+              return {
+                id: Number(proposal.id),
+                title: `Proposal ${proposal.id}`,
+                type: "item",
+                icon: "material-icons-two-tone",
+                iconname: "gavel",
+                url: `/proposal/${proposal.id}`,
+              };
+            })
+            .sort((a, b) => b.id - a.id);
         });
 
       // const proposals = await target_topology_backend.

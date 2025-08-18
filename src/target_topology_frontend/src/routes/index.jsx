@@ -13,6 +13,7 @@ const DashboardSubnets = lazy(
 const SubnetDetail = lazy(
   () => import("../views/subnetDetail/SubnetDetail/index"),
 );
+const Proposals = lazy(() => import("../views/proposals/Proposals/index"));
 
 // ==============================|| ROUTING RENDER ||============================== //
 
@@ -45,6 +46,16 @@ const router = createBrowserRouter(
         {
           index: true,
           element: <SubnetDetail />,
+        },
+      ],
+    },
+    {
+      path: "/proposal/:proposal_id",
+      element: <AdminLayout />,
+      children: [
+        {
+          index: true,
+          element: <Proposals />,
         },
       ],
     },

@@ -6,10 +6,17 @@ use ic_stable_structures::{
     BTreeMap, DefaultMemoryImpl,
 };
 
-use crate::model::{node::Node, proposal::Proposal, topology::TargetTopology};
+use crate::model::{
+    node::Node,
+    proposal::{ChangeSubnetMembership, Proposal},
+    topology::TargetTopology,
+};
 
 use self::{
-    nakamoto::{calculate_nakamoto_from_nodes, NakamotoCoefficient},
+    nakamoto::{
+        calculate_nakamoto_from_nodes, calculate_nakamoto_report, NakamotoCoefficient,
+        NakamotoReport,
+    },
     topology::{calculate_topology_limit_report, TopologyLimitReport},
 };
 
@@ -102,7 +109,35 @@ impl Context {
 
     pub fn calculate_nakamoto(&self, subnet_id: Principal) -> Option<Vec<NakamotoCoefficient>> {
         self.get_subnet(subnet_id)
-            .map(|nodes| calculate_nakamoto_from_nodes(nodes))
+            .map(calculate_nakamoto_from_nodes)
+    }
+
+    pub fn calculate_nakamoto_changes_for_proposal(
+        &self,
+        proposal_id: u64,
+    ) -> Option<NakamotoReport> {
+        let proposal = self.proposals.get(&proposal_id)?;
+
+        let crate::model::proposal::ProposalPayload::ChangeSubnetMembership(
+            ChangeSubnetMembership {
+                subnet_id,
+                node_ids_to_add,
+                node_ids_to_remove,
+            },
+        ) = &proposal.payload;
+
+        let current_nodes = self.get_subnet(*subnet_id)?;
+
+        let nodes_to_add: Vec<_> = node_ids_to_add
+            .iter()
+            .map(|p| self.get_node(*p).unwrap())
+            .collect();
+
+        Some(calculate_nakamoto_report(
+            current_nodes,
+            nodes_to_add,
+            node_ids_to_remove.clone(),
+        ))
     }
 
     pub fn get_active_topology(&self) -> Option<TargetTopology> {
@@ -130,7 +165,7 @@ impl Context {
     }
 
     pub fn add_proposal(&mut self, proposal: Proposal) {
-        self.proposals.insert(proposal.id.clone(), proposal);
+        self.proposals.insert(proposal.id, proposal);
     }
 
     pub fn add_proposals(&mut self, proposals: Vec<Proposal>) {

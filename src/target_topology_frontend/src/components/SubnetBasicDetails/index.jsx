@@ -4,13 +4,13 @@ import ProductCard from "../../components/Widgets/Statistic/ProductCard";
 import ReactCountryFlag from "react-country-flag";
 import SimpleBar from "simplebar-react";
 
+import { useEffect, useState } from "react";
+import { target_topology_backend } from "declarations/target_topology_backend";
+import { Principal } from "@dfinity/principal";
+
 import Chip from "@mui/material/Chip";
 
-export default function SubnetDetailWithNodes({
-  subnet_id,
-  nodes,
-  subnetTopology,
-}) {
+export default function SubnetDetailWithNodes({ subnet_id }) {
   const subnet_short = subnet_id.split("-")[0];
   const tableHeadings = [
     "Node Id",
@@ -20,6 +20,48 @@ export default function SubnetDetailWithNodes({
     "Node Provider",
     "HostOS version",
   ];
+  const [nodes, setNodes] = useState([]);
+  const [subnetTopology, setSubnetTopology] = useState({});
+
+  useEffect(() => {
+    if (subnet_id.length == 0) {
+      return;
+    }
+    target_topology_backend
+      .get_nodes_for_subnet(Principal.fromText(subnet_id))
+      .then((nodes) => {
+        if (nodes.length == 0) {
+          return;
+        }
+
+        setNodes(
+          nodes[0].map((node) => {
+            return {
+              node_id: String(node["node_id"]),
+              dc_id: node["dc_id"],
+              dc_owner: node["dc_owner"],
+              hostos_version: node["hostos_version"],
+              ip: node["ip"],
+              node_operator_id: String(node["node_operator_id"]),
+              node_provider_id: String(node["node_provider_id"]),
+              country: node["country"],
+            };
+          }),
+        );
+      });
+
+    target_topology_backend.get_active_topology().then((topology) => {
+      if (topology.length == 0) {
+        return;
+      }
+
+      const currTopology = topology[0]["entries"].find(
+        (entry) => String(entry["0"]) === subnet_id,
+      )["1"];
+      currTopology.proposal = topology[0]["proposal"];
+      setSubnetTopology(currTopology);
+    });
+  }, [subnet_id]);
 
   return (
     <>

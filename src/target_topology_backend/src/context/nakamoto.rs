@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use candid::CandidType;
+use candid::{CandidType, Principal};
 use serde::{Deserialize, Serialize};
 
 use crate::model::node::Node;
@@ -11,7 +11,32 @@ pub struct NakamotoCoefficient {
     value: u8,
 }
 
+#[derive(CandidType, Serialize, Deserialize, Default, Clone)]
+pub struct NakamotoReport {
+    before: Vec<NakamotoCoefficient>,
+    after: Vec<NakamotoCoefficient>,
+}
+
+pub(super) fn calculate_nakamoto_report(
+    current_nodes: Vec<Node>,
+    nodes_to_add: Vec<Node>,
+    nodes_to_remove: Vec<Principal>,
+) -> NakamotoReport {
+    let nodes_if_adopted = current_nodes
+        .iter()
+        .filter(|n| !nodes_to_remove.contains(&n.node_id))
+        .chain(nodes_to_add.iter())
+        .cloned()
+        .collect();
+
+    NakamotoReport {
+        before: calculate_nakamoto_from_nodes(current_nodes),
+        after: calculate_nakamoto_from_nodes(nodes_if_adopted),
+    }
+}
+
 pub(super) fn calculate_nakamoto_from_nodes(nodes: Vec<Node>) -> Vec<NakamotoCoefficient> {
+    #[allow(clippy::type_complexity)]
     let attributes: Vec<(&str, Box<dyn Fn(&Node) -> String>)> = vec![
         (
             "Node provider",
@@ -31,7 +56,7 @@ pub(super) fn calculate_nakamoto_from_nodes(nodes: Vec<Node>) -> Vec<NakamotoCoe
     attributes
         .iter()
         .map(|(name, selector)| {
-            let values = nodes.iter().map(|node| selector(node)).collect();
+            let values = nodes.iter().map(selector).collect();
             (name, calculate_nakamoto_for_attribute(values))
         })
         .map(|(name, score)| NakamotoCoefficient {

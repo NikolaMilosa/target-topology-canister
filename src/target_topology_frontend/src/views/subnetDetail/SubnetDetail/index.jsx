@@ -1,5 +1,5 @@
 // react-bootstrap
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 
 // project imports
 import { target_topology_backend } from "declarations/target_topology_backend";
@@ -62,7 +62,12 @@ export default function SubnetDetail() {
           return;
         }
 
-        setNakamoto(nakamoto[0]);
+        setNakamoto(
+          nakamoto[0].map((nakamoto) => {
+            nakamoto["variant"] = "secondary";
+            return nakamoto;
+          }),
+        );
       });
 
     target_topology_backend
@@ -73,9 +78,6 @@ export default function SubnetDetail() {
         }
 
         setTopologyReport(topologyReport[0]);
-        setTargetTopologyConstraintsHold(
-          topologyReport[0].every((report) => report.violations.length == 0),
-        );
       });
   }, [subnet_id]);
 
@@ -91,7 +93,24 @@ export default function SubnetDetail() {
           <TargetTopologyConstraints topologyReport={topologyReport} />
         </Col>
         <Col sm={12} md={6}>
-          <NakamotoBreakdown nakamoto={nakamoto} />
+          <Card>
+            <Card.Header>
+              <Card.Title as="h3">Nakamoto coefficients breakdown</Card.Title>
+              <span>
+                Shows how many independent entities would need to collude to
+                compromise decentralization. A higher coefficient means stronger
+                decentralization and resilience against control. To read more
+                visit{" "}
+                <a href="https://www.ledger.com/academy/glossary/nakamoto-coefficient">
+                  Ledger academy
+                </a>
+                .{" "}
+              </span>
+            </Card.Header>
+            <Card.Body>
+              <NakamotoBreakdown nakamoto={nakamoto} />
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
     </Row>

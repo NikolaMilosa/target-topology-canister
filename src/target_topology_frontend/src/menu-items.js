@@ -1,37 +1,61 @@
 // Menu configuration for default layout
 
-import { useEffect, useState } from "react";
+import { Children, useEffect, useState } from "react";
 import { target_topology_backend } from "declarations/target_topology_backend";
 
 export function useMenuItems() {
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
-    target_topology_backend.get_active_topology().then((topology) => {
-      if (!topology.length) return;
+    async function fetchTopologyAndProposals() {
+      const subnetChildren = await target_topology_backend
+        .get_active_topology()
+        .then((topology) => {
+          if (!topology.length) return;
 
-      const subnetChildren = topology[0].entries
-        .sort((a, b) => String(a["0"]) - String(b["0"]))
-        .map((entry) => {
-          const subnetId = String(entry["1"].subnet_id);
-          return {
-            id: subnetId,
-            title: `Subnet ${subnetId.split("-")[0]}`, // keep as plain text
-            type: "item",
-            icon: "material-icons-two-tone",
-            iconname: "computer",
-            url: `/subnet/${subnetId}`,
-          };
+          const subnetChildren = topology[0].entries
+            .sort((a, b) => String(a["0"]) - String(b["0"]))
+            .map((entry) => {
+              const subnetId = String(entry["1"].subnet_id);
+              return {
+                id: subnetId,
+                title: `Subnet ${subnetId.split("-")[0]}`, // keep as plain text
+                type: "item",
+                icon: "material-icons-two-tone",
+                iconname: "computer",
+                url: `/subnet/${subnetId}`,
+              };
+            });
+
+          return subnetChildren;
         });
 
-      setMenuItems(buildMenu(subnetChildren));
-    });
+      const proposals = await target_topology_backend
+        .get_proposals()
+        .then((proposals) => {
+          return proposals.map((proposal) => {
+            return {
+              id: proposal.id,
+              title: `Proposal ${proposal.id}`,
+              type: "item",
+              icon: "material-icons-two-tone",
+              iconname: "gavel",
+              url: `/proposal/${proposal.id}`,
+            };
+          });
+        });
+
+      // const proposals = await target_topology_backend.
+      setMenuItems(buildMenu(subnetChildren, proposals));
+    }
+
+    fetchTopologyAndProposals();
   }, []);
 
   return menuItems;
 }
 
-function buildMenu(subnets) {
+function buildMenu(subnets, proposals) {
   return [
     {
       id: "navigation",
@@ -56,12 +80,12 @@ function buildMenu(subnets) {
           url: "/subnets",
         },
         {
-          id: "proposals",
-          title: "Proposals",
-          type: "item",
+          id: "proposal",
+          title: "Proposals view",
+          type: "collapse",
           icon: "material-icons-two-tone",
           iconname: "gavel",
-          url: "/proposals",
+          children: proposals,
         },
         {
           id: "subnet_details",

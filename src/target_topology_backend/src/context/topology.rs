@@ -21,6 +21,7 @@ pub fn calculate_topology_limit_report(
     nodes: Vec<Node>,
     topology: TargetTopology,
 ) -> Vec<TopologyLimitReport> {
+    #[allow(clippy::type_complexity)]
     let attributes: Vec<(
         &str,
         Box<dyn Fn(&Node) -> String>,
@@ -80,7 +81,7 @@ pub fn calculate_topology_limit_report(
     attributes
         .iter()
         .map(|(attr, selector, topology_selector)| {
-            let attributes: Vec<_> = nodes.iter().map(|node| selector(node)).collect();
+            let attributes: Vec<_> = nodes.iter().map(selector).collect();
             let topology_value = topology_selector(&topology, &subnet_id).unwrap();
 
             TopologyLimitReport {

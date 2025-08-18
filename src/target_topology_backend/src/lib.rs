@@ -1,6 +1,8 @@
 use candid::Principal;
 use context::{
-    nakamoto::NakamotoCoefficient, topology::TopologyLimitReport, with_context, with_context_mut,
+    nakamoto::{NakamotoCoefficient, NakamotoReport},
+    topology::TopologyLimitReport,
+    with_context, with_context_mut,
 };
 use model::{node::Node, proposal::Proposal, topology::TargetTopology, TargetTopologyResult};
 
@@ -57,6 +59,11 @@ fn get_proposals() -> Vec<Proposal> {
 #[ic_cdk::update]
 fn add_proposals(proposals: Vec<Proposal>) {
     with_context_mut(|ctx| ctx.add_proposals(proposals))
+}
+
+#[ic_cdk::query]
+fn nakamoto_report_for_proposal(proposal: u64) -> Option<NakamotoReport> {
+    with_context(|ctx| ctx.calculate_nakamoto_changes_for_proposal(proposal))
 }
 
 // Export the interface for the smart contract.

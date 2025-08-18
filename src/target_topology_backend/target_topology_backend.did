@@ -4,6 +4,10 @@ type ChangeSubnetMembership = record {
   node_ids_to_remove : vec principal;
 };
 type NakamotoCoefficient = record { value : nat8; attribute : text };
+type NakamotoReport = record {
+  after : vec NakamotoCoefficient;
+  before : vec NakamotoCoefficient;
+};
 type Node = record {
   ip : text;
   node_id : principal;
@@ -60,4 +64,5 @@ service : {
   get_nodes_for_subnet : (principal) -> (opt vec Node) query;
   get_proposals : () -> (vec Proposal) query;
   get_topology_report : (principal) -> (opt vec TopologyLimitReport) query;
+  nakamoto_report_for_proposal : (nat64) -> (opt NakamotoReport) query;
 }

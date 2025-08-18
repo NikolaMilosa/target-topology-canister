@@ -1,5 +1,5 @@
 // react-bootstrap
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card, Table } from "react-bootstrap";
 
 // project imports
 import { target_topology_backend } from "declarations/target_topology_backend";
@@ -23,6 +23,8 @@ export default function SubnetDetail() {
   const [targetTopologyConstraintsHold, setTargetTopologyConstraintsHold] =
     useState(false);
 
+  const [attributeBreakdown, setAttributeBreakdown] = useState([]);
+
   useEffect(() => {
     target_topology_backend
       .get_nodes_for_subnet(Principal.fromText(subnet_id))
@@ -31,17 +33,39 @@ export default function SubnetDetail() {
           return;
         }
 
-        setNodes(
-          nodes[0].map((node) => {
+        const nodesMapped = nodes[0].map((node) => {
+          return {
+            node_id: String(node["node_id"]),
+            dc_id: node["dc_id"],
+            dc_owner: node["dc_owner"],
+            hostos_version: node["hostos_version"],
+            ip: node["ip"],
+            node_operator_id: String(node["node_operator_id"]),
+            node_provider_id: String(node["node_provider_id"]),
+            country: node["country"],
+          };
+        });
+
+        setNodes(nodesMapped);
+
+        const attributes = [
+          ["Node provider", (node) => node.node_provider_id.split("-")[0]],
+          ["Data center", (node) => node.dc_id],
+          ["Country", (node) => node.country],
+          ["Data center owner", (node) => node.dc_owner],
+        ];
+
+        setAttributeBreakdown(
+          attributes.map(([attrName, selector]) => {
+            const occurrences = nodesMapped
+              .map(selector)
+              .reduce((map, item) => {
+                map.set(item, (map.get(item) || 0) + 1);
+                return map;
+              }, new Map());
             return {
-              node_id: String(node["node_id"]),
-              dc_id: node["dc_id"],
-              dc_owner: node["dc_owner"],
-              hostos_version: node["hostos_version"],
-              ip: node["ip"],
-              node_operator_id: String(node["node_operator_id"]),
-              node_provider_id: String(node["node_provider_id"]),
-              country: node["country"],
+              attrName: attrName,
+              occurrences: occurrences,
             };
           }),
         );
@@ -144,6 +168,53 @@ export default function SubnetDetail() {
             </Card.Header>
             <Card.Body>
               <NakamotoBreakdown nakamoto={nakamoto} />
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col sm={12}>
+          <Card>
+            <Card.Header>
+              <Card.Title as="h3">Attribute breakdown</Card.Title>
+              <span>Attribute wise breakdown of a subnet.</span>
+            </Card.Header>
+            <Card.Body>
+              <Row>
+                {attributeBreakdown.map((attr, ind) => (
+                  <Col sm={6} md={3} key={ind}>
+                    <Card>
+                      <Card.Header>
+                        <Card.Title as="h5">
+                          Attribute: {attr.attrName}
+                        </Card.Title>
+                      </Card.Header>
+                      <Card.Body>
+                        <Table>
+                          <thead>
+                            <tr>
+                              <th>Value</th>
+                              <th>Utilization</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Array.from(attr.occurrences.entries()).map(
+                              ([key, value]) => (
+                                <tr key={key}>
+                                  <td>
+                                    <code>{key}</code>
+                                  </td>
+                                  <td>{value}</td>
+                                </tr>
+                              ),
+                            )}
+                          </tbody>
+                        </Table>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
             </Card.Body>
           </Card>
         </Col>

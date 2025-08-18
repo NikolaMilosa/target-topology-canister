@@ -7,6 +7,8 @@ pub struct Proposal {
     pub title: String,
     pub timestamp_seconds: u64,
     pub payload: ProposalPayload,
+    pub summary: String,
+    pub link: String,
 }
 
 #[derive(CandidType, Deserialize, Serialize, Clone)]

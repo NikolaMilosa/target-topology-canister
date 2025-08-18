@@ -23,40 +23,42 @@ export default function AttributeBreakdown({ attributeBreakdown }) {
                 </tr>
               </thead>
               <tbody>
-                {Array.from(allKeys).map((key) => {
-                  const before = attr.occurrencesBefore.get(key) || 0;
-                  const after = attr.occurrencesAfter.get(key) || 0;
+                {Array.from(allKeys)
+                  .sort((a, b) => a.localeCompare(b))
+                  .map((key) => {
+                    const before = attr.occurrencesBefore.get(key) || 0;
+                    const after = attr.occurrencesAfter.get(key) || 0;
 
-                  let text =
-                    attr.transformer == null ? key : attr.transformer(key);
+                    let text =
+                      attr.transformer == null ? key : attr.transformer(key);
 
-                  if (attr.urlMaker != null) {
-                    text = (
-                      <a
-                        href={`https://dashboard.internetcomputer.org${attr.urlMaker(key)}`}
-                      >
-                        {text}
-                      </a>
+                    if (attr.urlMaker != null) {
+                      text = (
+                        <a
+                          href={`https://dashboard.internetcomputer.org${attr.urlMaker(key)}`}
+                        >
+                          {text}
+                        </a>
+                      );
+                    }
+
+                    return (
+                      <tr key={key}>
+                        <td>
+                          <code>{text}</code>
+                        </td>
+                        <td>
+                          {before === after ? (
+                            before
+                          ) : (
+                            <>
+                              <s>{before}</s> → {after}
+                            </>
+                          )}
+                        </td>
+                      </tr>
                     );
-                  }
-
-                  return (
-                    <tr key={key}>
-                      <td>
-                        <code>{text}</code>
-                      </td>
-                      <td>
-                        {before === after ? (
-                          before
-                        ) : (
-                          <>
-                            <s>{before}</s> → {after}
-                          </>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
+                  })}
               </tbody>
             </Table>
           </Card.Body>

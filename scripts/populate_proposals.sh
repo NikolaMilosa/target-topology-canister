@@ -10,6 +10,8 @@ CANDID_VEC=$(jq -r '
     "record { " +
     "id = \"\(.id)\"; " +
     "title = \"\(.title)\"; " +
+    "link = \"\(.url)\"; " +
+    "summary = \"\(.summary)\"; " +
     "payload = variant { ChangeSubnetMembership = record { " +
       "subnet_id = principal \"\(.payload.subnet_id)\"; " +
       "node_ids_to_add = vec { " + (.payload.node_ids_add | map("principal \"" + . + "\"") | join("; ")) + " }; " +

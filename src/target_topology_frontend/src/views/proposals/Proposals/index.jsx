@@ -12,6 +12,7 @@ import Chip from "@mui/material/Chip";
 import { Principal } from "@dfinity/principal";
 import AttributeBreakdown from "../../../components/AttributeBreakdown";
 import NodesTable from "../../../components/NodesTable";
+import ReactMarkdown from "react-markdown";
 
 export default function Proposals() {
   const { proposal_id } = useParams();
@@ -37,6 +38,7 @@ export default function Proposals() {
 
   const [toBeAddedNodes, setToBeAddedNodes] = useState([]);
   const [toBeRemovedNodes, setToBeRemovedNodes] = useState([]);
+  const [propMetadata, setPropMetadata] = useState({});
 
   useEffect(() => {
     const promise = isDraft
@@ -48,6 +50,11 @@ export default function Proposals() {
       if (!prop) {
         return;
       }
+
+      setPropMetadata({
+        link: prop.link,
+        summary: prop.summary,
+      });
 
       const payload = prop.payload.ChangeSubnetMembership;
       const subnet = String(payload.subnet_id);
@@ -201,19 +208,26 @@ export default function Proposals() {
     links = (
       <>
         <span>
-          View the proposal on the public dashboard{" "}
           <a
             href={`https://dashboard.internetcomputer.org/proposal/${proposal_id}`}
           >
             <i class="material-icons-two-tone">launch</i>
-          </a>
+          </a>{" "}
+          View the proposal on the public dashboard
         </span>
         <br />
         <span>
-          View the proposal on the nns dapp{" "}
           <a href={`https://nns.ic0.app/proposal/?proposal=${proposal_id}`}>
             <i class="material-icons-two-tone">launch</i>
-          </a>
+          </a>{" "}
+          View the proposal on the nns dapp
+        </span>
+        <br />
+        <span>
+          <a href={propMetadata.link}>
+            <i class="material-icons-two-tone">launch</i>
+          </a>{" "}
+          Join the discussion on the forum
         </span>
       </>
     );
@@ -232,8 +246,12 @@ export default function Proposals() {
               {links}
             </Card.Header>
             <Card.Body>
+              <h3>Proposal summary</h3>
+              <pre className="bg-gray-300 p-4 rounded-lg overflow-x-auto">
+                <ReactMarkdown>{propMetadata.summary}</ReactMarkdown>
+              </pre>
               <h3>Proposal payload</h3>
-              <pre className="bg-gray-900 text-green-300 p-4 rounded-lg overflow-x-auto">
+              <pre className="bg-gray-300 p-4 rounded-lg overflow-x-auto">
                 <code>{JSON.stringify(proposal, null, 2)}</code>
               </pre>
             </Card.Body>

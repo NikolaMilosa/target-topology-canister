@@ -14,6 +14,8 @@ jq -r '
   "(record { " +
     "id = \"nim-draft-\($sid_short)\"; " +
     "title = \"Replace a node in subnet \($sid_short)\"; " +
+    "link = \"\"; " +
+    "summary = \"TODO\"; " +
     "payload = variant { ChangeSubnetMembership = record { " +
       "subnet_id = principal \"\($sid)\"; " +
       "node_ids_to_add = vec { " +

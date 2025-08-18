@@ -25,6 +25,8 @@ type Node = record {
 type Proposal = record {
   id : text;
   title : text;
+  link : text;
+  summary : text;
   payload : ProposalPayload;
   timestamp_seconds : nat64;
 };

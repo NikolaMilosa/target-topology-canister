@@ -6,10 +6,13 @@ use ic_stable_structures::{
     BTreeMap, DefaultMemoryImpl,
 };
 
-use crate::model::{
-    node::Node,
-    proposal::{ChangeSubnetMembership, Proposal},
-    topology::TargetTopology,
+use crate::{
+    context::topology::calculate_topology_limit_report_with_nodes,
+    model::{
+        node::Node,
+        proposal::{ChangeSubnetMembership, Proposal},
+        topology::TargetTopology,
+    },
 };
 
 use self::{
@@ -140,6 +143,32 @@ impl Context {
         ))
     }
 
+    pub fn calculate_topology_changes_for_proposal(
+        &self,
+        proposal: u64,
+    ) -> Option<Vec<Vec<TopologyLimitReport>>> {
+        let proposal = self.proposals.get(&proposal)?;
+
+        let topology = self.get_active_topology()?;
+        let crate::model::proposal::ProposalPayload::ChangeSubnetMembership(proposal) =
+            &proposal.payload;
+
+        let current_nodes = self.get_subnet(proposal.subnet_id)?;
+
+        let nodes_to_add: Vec<_> = proposal
+            .node_ids_to_add
+            .iter()
+            .map(|p| self.get_node(*p).unwrap())
+            .collect();
+
+        Some(calculate_topology_limit_report_with_nodes(
+            current_nodes,
+            topology,
+            nodes_to_add,
+            proposal.node_ids_to_remove.clone(),
+        ))
+    }
+
     pub fn get_active_topology(&self) -> Option<TargetTopology> {
         self.topology_manager.last_key_value().map(|(_, val)| val)
     }
@@ -159,7 +188,9 @@ impl Context {
         let topology = self.get_active_topology();
 
         match (nodes, topology) {
-            (Some(nodes), Some(topology)) => Some(calculate_topology_limit_report(nodes, topology)),
+            (Some(nodes), Some(topology)) => {
+                Some(calculate_topology_limit_report(nodes, &topology))
+            }
             _ => None,
         }
     }

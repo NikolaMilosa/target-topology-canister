@@ -65,4 +65,7 @@ service : {
   get_proposals : () -> (vec Proposal) query;
   get_topology_report : (principal) -> (opt vec TopologyLimitReport) query;
   nakamoto_report_for_proposal : (nat64) -> (opt NakamotoReport) query;
+  topology_report_for_proposal : (nat64) -> (
+      opt vec vec TopologyLimitReport,
+    ) query;
 }

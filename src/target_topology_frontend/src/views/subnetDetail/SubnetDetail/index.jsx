@@ -83,7 +83,7 @@ export default function SubnetDetail() {
 
         setTopologyReport(topologyReport[0]);
         setTargetTopologyConstraintsHold(
-      topologyReport[0].every((x) => x.violations.length == 0),
+          topologyReport[0].every((x) => x.violations.length == 0),
         );
       });
   }, [subnet_id]);
@@ -111,13 +111,13 @@ export default function SubnetDetail() {
                 />
               </Card.Title>
               <span>
-                Target topology constraints ensure that a subnet is well-distributed
-                across different entities to maintain decentralization. Each subnet
-                has limits for countries, data centers, data center owners, and node
-                providers. If any of these attributes exceed their respective limit,
-                the subnet does not comply with the target topology constraints.
-                Proper adherence helps prevent centralization and increases network
-                resilience.
+                Target topology constraints ensure that a subnet is
+                well-distributed across different entities to maintain
+                decentralization. Each subnet has limits for countries, data
+                centers, data center owners, and node providers. If any of these
+                attributes exceed their respective limit, the subnet does not
+                comply with the target topology constraints. Proper adherence
+                helps prevent centralization and increases network resilience.
               </span>
             </Card.Header>
             <Card.Body>

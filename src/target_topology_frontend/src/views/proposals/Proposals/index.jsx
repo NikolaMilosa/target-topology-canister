@@ -4,7 +4,7 @@ import { target_topology_backend } from "declarations/target_topology_backend";
 import { useState, useEffect } from "react";
 import SubnetDetailWithNodes from "../../../components/SubnetBasicDetails";
 import NakamotoBreakdown from "../../../components/NakamotoBreakdown";
-import TargetTopologyConstraints from "../../../components/TargetTopologyConstraints"; 
+import TargetTopologyConstraints from "../../../components/TargetTopologyConstraints";
 
 import Chip from "@mui/material/Chip";
 import { Principal } from "@dfinity/principal";
@@ -15,11 +15,18 @@ export default function Proposals() {
   const [subnetId, setSubnetId] = useState("");
   const [nakamotoBefore, setNakamotoBefore] = useState([]);
   const [nakamotoAfter, setNakamotoAfter] = useState([]);
-  const [topologyReport, setTopologyReport] = useState([]);
-  
-  const [targetTopologyConstraintsHold, setTargetTopologyConstraintsHold] =
-    useState(false);
+  const [topologyReportBefore, setTopologyReportBefore] = useState([]);
 
+  const [
+    targetTopologyConstraintsHoldBefore,
+    setTargetTopologyConstraintsHoldBefore,
+  ] = useState(false);
+  const [topologyReportAfter, setTopologyReportAfter] = useState([]);
+
+  const [
+    targetTopologyConstraintsHoldAfter,
+    setTargetTopologyConstraintsHoldAfter,
+  ] = useState(false);
 
   useEffect(() => {
     target_topology_backend.get_proposals().then((proposals) => {
@@ -72,24 +79,25 @@ export default function Proposals() {
         setNakamotoAfter(nakamotoAfter);
       });
 
-  }, [proposal_id]);
-
-  useEffect(() => {
-    if (subnetId.length == 0) return;
-    
     target_topology_backend
-      .get_topology_report(Principal.fromText(subnetId))
-      .then((topologyReport) => {
-        if (topologyReport.length == 0) {
-          return;
-        }
+      .topology_report_for_proposal(Number(proposal_id))
+      .then((maybeReport) => {
+        if (maybeReport.length == 0) return;
 
-        setTopologyReport(topologyReport[0]);
-        setTargetTopologyConstraintsHold(
-      topologyReport[0].every((x) => x.violations.length == 0),
+        const before = maybeReport[0][0];
+
+        setTopologyReportBefore(before);
+        setTargetTopologyConstraintsHoldBefore(
+          before.every((x) => x.violations.length == 0),
+        );
+
+        const after = maybeReport[0][1];
+        setTopologyReportAfter(after);
+        setTargetTopologyConstraintsHoldAfter(
+          after.every((x) => x.violations.length == 0),
         );
       });
-  }, [subnetId]);
+  }, [proposal_id]);
 
   return (
     <Row>
@@ -120,16 +128,18 @@ export default function Proposals() {
         <Col sm={12}>
           <Card>
             <Card.Header>
-              <Card.Title as="h3">Target topology constraints enforcement</Card.Title>
-                <span>
-                  Target topology constraints ensure that a subnet is well-distributed
-                  across different entities to maintain decentralization. Each subnet
-                  has limits for countries, data centers, data center owners, and node
-                  providers. If any of these attributes exceed their respective limit,
-                  the subnet does not comply with the target topology constraints.
-                  Proper adherence helps prevent centralization and increases network
-                  resilience.
-                </span>
+              <Card.Title as="h3">
+                Target topology constraints enforcement
+              </Card.Title>
+              <span>
+                Target topology constraints ensure that a subnet is
+                well-distributed across different entities to maintain
+                decentralization. Each subnet has limits for countries, data
+                centers, data center owners, and node providers. If any of these
+                attributes exceed their respective limit, the subnet does not
+                comply with the target topology constraints. Proper adherence
+                helps prevent centralization and increases network resilience.
+              </span>
             </Card.Header>
             <Card.Body>
               <Row>
@@ -139,19 +149,30 @@ export default function Proposals() {
                       <Card.Title as="h5">
                         Current target topology constraints enforcement
                       </Card.Title>
-                      <span>The current status of subnet target topology constraints</span><br/>
-                          <Chip
-                            label={
-                              targetTopologyConstraintsHold ? "Enforced" : "Not enforced"
-                            }
-                            size="small"
-                            color={targetTopologyConstraintsHold ? "success" : "error"}
-                            sx={{ mr: 1, mt: 1 }}
-                          />
+                      <span>
+                        The current status of subnet target topology constraints
+                      </span>
+                      <br />
+                      <Chip
+                        label={
+                          targetTopologyConstraintsHoldBefore
+                            ? "Enforced"
+                            : "Not enforced"
+                        }
+                        size="small"
+                        color={
+                          targetTopologyConstraintsHoldBefore
+                            ? "success"
+                            : "error"
+                        }
+                        sx={{ mr: 1, mt: 1 }}
+                      />
                     </Card.Header>
                     <Card.Body>
                       <Row>
-                        <TargetTopologyConstraints topologyReport={topologyReport} />
+                        <TargetTopologyConstraints
+                          topologyReport={topologyReportBefore}
+                        />
                       </Row>
                     </Card.Body>
                   </Card>
@@ -159,21 +180,32 @@ export default function Proposals() {
                 <Col md={6} sm={12}>
                   <Card>
                     <Card.Header>
-                      <Card.Title as="h5">If proposal was adopted
-                        </Card.Title>
-                      <span>This the new status of the target topology constraints if the proposal is adopted.</span><br/>
-                          <Chip
-                            label={
-                              targetTopologyConstraintsHold ? "Enforced" : "Not enforced"
-                            }
-                            size="small"
-                            color={targetTopologyConstraintsHold ? "success" : "error"}
-                            sx={{ mr: 1, mt: 1 }}
-                          />
+                      <Card.Title as="h5">If proposal was adopted</Card.Title>
+                      <span>
+                        This the new status of the target topology constraints
+                        if the proposal is adopted.
+                      </span>
+                      <br />
+                      <Chip
+                        label={
+                          targetTopologyConstraintsHoldAfter
+                            ? "Enforced"
+                            : "Not enforced"
+                        }
+                        size="small"
+                        color={
+                          targetTopologyConstraintsHoldAfter
+                            ? "success"
+                            : "error"
+                        }
+                        sx={{ mr: 1, mt: 1 }}
+                      />
                     </Card.Header>
                     <Card.Body>
                       <Row>
-                        <TargetTopologyConstraints topologyReport={topologyReport} />
+                        <TargetTopologyConstraints
+                          topologyReport={topologyReportAfter}
+                        />
                       </Row>
                     </Card.Body>
                   </Card>
@@ -218,7 +250,10 @@ export default function Proposals() {
                   <Card>
                     <Card.Header>
                       <Card.Title as="h5">If proposal was adopted</Card.Title>
-                      <span>This will be the new nakamoto coefficients if the proposal is adopted.</span>
+                      <span>
+                        This will be the new nakamoto coefficients if the
+                        proposal is adopted.
+                      </span>
                     </Card.Header>
                     <Card.Body>
                       <NakamotoBreakdown nakamoto={nakamotoAfter} />

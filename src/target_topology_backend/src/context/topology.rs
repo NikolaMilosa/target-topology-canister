@@ -1,4 +1,4 @@
-use candid::CandidType;
+use candid::{CandidType, Principal};
 use serde::{Deserialize, Serialize};
 
 use crate::model::{node::Node, topology::TargetTopology};
@@ -17,9 +17,33 @@ pub struct TopologyLimitReport {
     pub violations: Vec<TopologyLimitViolation>,
 }
 
+pub fn calculate_topology_limit_report_with_nodes(
+    current_nodes: Vec<Node>,
+    topology: TargetTopology,
+    nodes_to_add: Vec<Node>,
+    nodes_to_remove: Vec<Principal>,
+) -> Vec<Vec<TopologyLimitReport>> {
+    let mut report = vec![];
+
+    report.push(calculate_topology_limit_report(
+        current_nodes.clone(),
+        &topology,
+    ));
+
+    let nodes_after = current_nodes
+        .into_iter()
+        .filter(|node| !nodes_to_remove.contains(&node.node_id))
+        .chain(nodes_to_add.into_iter())
+        .collect();
+
+    report.push(calculate_topology_limit_report(nodes_after, &topology));
+
+    report
+}
+
 pub fn calculate_topology_limit_report(
     nodes: Vec<Node>,
-    topology: TargetTopology,
+    topology: &TargetTopology,
 ) -> Vec<TopologyLimitReport> {
     #[allow(clippy::type_complexity)]
     let attributes: Vec<(

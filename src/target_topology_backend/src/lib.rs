@@ -66,5 +66,10 @@ fn nakamoto_report_for_proposal(proposal: u64) -> Option<NakamotoReport> {
     with_context(|ctx| ctx.calculate_nakamoto_changes_for_proposal(proposal))
 }
 
+#[ic_cdk::query]
+fn topology_report_for_proposal(proposal: u64) -> Option<Vec<Vec<TopologyLimitReport>>> {
+    with_context(|ctx| ctx.calculate_topology_changes_for_proposal(proposal))
+}
+
 // Export the interface for the smart contract.
 ic_cdk::export_candid!();

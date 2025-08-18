@@ -4,7 +4,6 @@ The canister for displaying detailed information about the proposals for the com
 
 ## Left TODO:
 
-* Link to the nns dapp of the proposal 
 * The summary that was uploaded with the proposal 
 
 * The canister backend must have support for checking the actual payload and displaying if something is wrong with the proposal payload:

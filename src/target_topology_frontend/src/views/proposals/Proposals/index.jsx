@@ -196,14 +196,26 @@ export default function Proposals() {
     gatherAttributeBreakdown();
   }, [subnetId, proposal]);
 
-  let titleText = proposal_id;
+  let links = "";
   if (!isDraft) {
-    titleText = (
-      <a
-        href={`https://dashboard.internetcomputer.org/proposal/${proposal_id}`}
-      >
-        {proposal_id}
-      </a>
+    links = (
+      <>
+        <span>
+          View the proposal on the public dashboard{" "}
+          <a
+            href={`https://dashboard.internetcomputer.org/proposal/${proposal_id}`}
+          >
+            <i class="material-icons-two-tone">launch</i>
+          </a>
+        </span>
+        <br />
+        <span>
+          View the proposal on the nns dapp{" "}
+          <a href={`https://nns.ic0.app/proposal/?proposal=${proposal_id}`}>
+            <i class="material-icons-two-tone">launch</i>
+          </a>
+        </span>
+      </>
     );
   }
 
@@ -214,9 +226,10 @@ export default function Proposals() {
           <Card>
             <Card.Header>
               <Card.Title as="h1">
-                Proposal {titleText} [Subnet{" "}
+                Proposal {proposal_id} [Subnet{" "}
                 <code>{subnetId.split("-")[0]}</code>]
               </Card.Title>
+              {links}
             </Card.Header>
             <Card.Body>
               <h3>Proposal payload</h3>

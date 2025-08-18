@@ -5,6 +5,8 @@ import { Row, Col, Card } from "react-bootstrap";
 import { target_topology_backend } from "declarations/target_topology_backend";
 import { useEffect, useState } from "react";
 
+import Chip from "@mui/material/Chip";
+
 import { useParams } from "react-router-dom";
 import { Principal } from "@dfinity/principal";
 
@@ -18,6 +20,8 @@ export default function SubnetDetail() {
   const [subnetTopology, setSubnetTopology] = useState({});
   const [nakamoto, setNakamoto] = useState([]);
   const [topologyReport, setTopologyReport] = useState([]);
+  const [targetTopologyConstraintsHold, setTargetTopologyConstraintsHold] =
+    useState(false);
 
   useEffect(() => {
     target_topology_backend
@@ -78,6 +82,9 @@ export default function SubnetDetail() {
         }
 
         setTopologyReport(topologyReport[0]);
+        setTargetTopologyConstraintsHold(
+      topologyReport[0].every((x) => x.violations.length == 0),
+        );
       });
   }, [subnet_id]);
 
@@ -90,7 +97,35 @@ export default function SubnetDetail() {
       />
       <Row>
         <Col sm={12} md={6}>
-          <TargetTopologyConstraints topologyReport={topologyReport} />
+          <Card>
+            <Card.Header>
+              <Card.Title as="h3">
+                Target topology constraints
+                <Chip
+                  label={
+                    targetTopologyConstraintsHold ? "Enforced" : "Not enforced"
+                  }
+                  size="small"
+                  color={targetTopologyConstraintsHold ? "success" : "error"}
+                  sx={{ mr: 1, ml: 1 }}
+                />
+              </Card.Title>
+              <span>
+                Target topology constraints ensure that a subnet is well-distributed
+                across different entities to maintain decentralization. Each subnet
+                has limits for countries, data centers, data center owners, and node
+                providers. If any of these attributes exceed their respective limit,
+                the subnet does not comply with the target topology constraints.
+                Proper adherence helps prevent centralization and increases network
+                resilience.
+              </span>
+            </Card.Header>
+            <Card.Body>
+              <Row>
+                <TargetTopologyConstraints topologyReport={topologyReport} />
+              </Row>
+            </Card.Body>
+          </Card>
         </Col>
         <Col sm={12} md={6}>
           <Card>

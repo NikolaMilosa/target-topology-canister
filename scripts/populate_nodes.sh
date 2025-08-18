@@ -21,7 +21,7 @@ for start in $(seq 0 $BATCH_SIZE $((total_nodes - 1))); do
         "hostos_version = \"" + (.hostos_version_id // "") + "\"; " +
         "is_api_bn = " + (.is_api_bn | tostring) + "; " +
         "node_operator_id = principal \"" + .node_operator_id + "\"; " +
-        "guestos_version = \"\"; " +
+        "guestos_version = \"" + (.guestos_version_id // "") + "\"; " +
         "subnet_id = " + (if .subnet_id == null then "null" else "opt principal \"" + .subnet_id + "\"" end) + "; " +
         "node_provider_id = principal \"" + .node_provider_id + "\"; " +
         "node_reward_type = \"" + (.node_reward_type // "") + "\"; " +

@@ -27,3 +27,4 @@ The canister for displaying detailed information about the proposals for the com
 * Go to the beginning of the page if the `proposal_id` changes
 * Go to the beginning of the page if the `subnet_id` changes
 * Add special target topology constraints for some subnets for some features for some values
+* Make the canister actually generate the proposal summary and others just consume it (maybe not the best idea for the beginning.)

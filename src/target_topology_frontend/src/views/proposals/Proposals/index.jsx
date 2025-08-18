@@ -15,6 +15,7 @@ import NodesTable from "../../../components/NodesTable";
 
 export default function Proposals() {
   const { proposal_id } = useParams();
+  const isDraft = isNaN(proposal_id) || isNaN(Number(proposal_id));
   const [proposal, setProposal] = useState({});
   const [subnetId, setSubnetId] = useState("");
   const [nakamotoBefore, setNakamotoBefore] = useState([]);
@@ -38,7 +39,11 @@ export default function Proposals() {
   const [toBeRemovedNodes, setToBeRemovedNodes] = useState([]);
 
   useEffect(() => {
-    target_topology_backend.get_proposals().then((proposals) => {
+    const promise = isDraft
+      ? target_topology_backend.get_draft_proposals()
+      : target_topology_backend.get_proposals();
+
+    promise.then((proposals) => {
       const prop = proposals.find((proposal) => proposal.id == proposal_id);
       if (!prop) {
         return;
@@ -191,6 +196,17 @@ export default function Proposals() {
     gatherAttributeBreakdown();
   }, [subnetId, proposal]);
 
+  let titleText = proposal_id;
+  if (!isDraft) {
+    titleText = (
+      <a
+        href={`https://dashboard.internetcomputer.org/proposal/${proposal_id}`}
+      >
+        {proposal_id}
+      </a>
+    );
+  }
+
   return (
     <Row>
       <Row>
@@ -198,13 +214,8 @@ export default function Proposals() {
           <Card>
             <Card.Header>
               <Card.Title as="h1">
-                Proposal{" "}
-                <a
-                  href={`https://dashboard.internetcomputer.org/proposal/${proposal_id}`}
-                >
-                  {proposal_id}
-                </a>{" "}
-                [Subnet <code>{subnetId.split("-")[0]}</code>]
+                Proposal {titleText} [Subnet{" "}
+                <code>{subnetId.split("-")[0]}</code>]
               </Card.Title>
             </Card.Header>
             <Card.Body>
@@ -213,6 +224,18 @@ export default function Proposals() {
                 <code>{JSON.stringify(proposal, null, 2)}</code>
               </pre>
             </Card.Body>
+            {isDraft ? (
+              <Card.Footer>
+                <Chip
+                  label="Draft"
+                  size="small"
+                  color="primary"
+                  sx={{ mr: 1, mt: 1 }}
+                />
+              </Card.Footer>
+            ) : (
+              ""
+            )}
           </Card>
         </Col>
       </Row>

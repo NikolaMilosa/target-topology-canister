@@ -54,7 +54,7 @@ type TopologyLimitReport = record {
 };
 type TopologyLimitViolation = record { found : nat8; value : text };
 service : {
-  add_draft_proposal : (Proposal) -> ();
+  add_draft_proposal : (Proposal) -> (Result);
   add_nodes : (vec Node) -> (Result);
   add_proposals : (vec Proposal) -> (Result);
   add_topology : (TargetTopology) -> (Result);

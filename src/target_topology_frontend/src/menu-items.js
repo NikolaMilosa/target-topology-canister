@@ -47,8 +47,23 @@ export function useMenuItems() {
             .sort((a, b) => b.id - a.id);
         });
 
+      const draftProposals = await target_topology_backend
+        .get_draft_proposals()
+        .then((proposals) => {
+          return proposals.map((proposal) => {
+            return {
+              id: proposal.id,
+              title: `${proposal.id}`,
+              type: "item",
+              icon: "material-icons-two-tone",
+              iconname: "edit",
+              url: `/proposal/${proposal.id}`,
+            };
+          });
+        });
+
       // const proposals = await target_topology_backend.
-      setMenuItems(buildMenu(subnetChildren, proposals));
+      setMenuItems(buildMenu(subnetChildren, proposals, draftProposals));
     }
 
     fetchTopologyAndProposals();
@@ -57,7 +72,7 @@ export function useMenuItems() {
   return menuItems;
 }
 
-function buildMenu(subnets, proposals) {
+function buildMenu(subnets, proposals, draftProposals) {
   return [
     {
       id: "navigation",
@@ -88,6 +103,14 @@ function buildMenu(subnets, proposals) {
           icon: "material-icons-two-tone",
           iconname: "gavel",
           children: proposals,
+        },
+        {
+          id: "draftProposal",
+          title: "Draft proposals",
+          type: "collapse",
+          icon: "material-icons-two-tone",
+          iconname: "edit",
+          children: draftProposals,
         },
         {
           id: "subnet_details",

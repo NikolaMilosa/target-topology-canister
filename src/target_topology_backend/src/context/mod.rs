@@ -224,7 +224,12 @@ impl Context {
         self.draft_proposals.values().cloned().collect()
     }
 
-    pub fn add_draft_proposal(&mut self, proposal: Proposal) {
+    pub fn add_draft_proposal(&mut self, proposal: Proposal) -> anyhow::Result<()> {
+        if proposal.id.parse::<u64>().is_ok() {
+            return Err(anyhow::anyhow!("Id must not be a u64 because that is reserved for open proposals from the governance."));
+        }
+
         self.draft_proposals.insert(proposal.id.clone(), proposal);
+        Ok(())
     }
 }

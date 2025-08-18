@@ -87,9 +87,9 @@ fn get_draft_proposals() -> Vec<Proposal> {
 }
 
 #[ic_cdk::update]
-fn add_draft_proposal(proposal: Proposal) {
+fn add_draft_proposal(proposal: Proposal) -> TargetTopologyResult<()> {
     ensure_draft_caller();
-    with_context_mut(|ctx| ctx.add_draft_proposal(proposal))
+    with_context_mut(|ctx| ctx.add_draft_proposal(proposal).into())
 }
 
 // Export the interface for the smart contract.

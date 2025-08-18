@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(CandidType, Deserialize, Serialize, Clone)]
 pub struct Proposal {
-    pub id: u64,
+    pub id: String,
     pub title: String,
     pub timestamp_seconds: u64,
     pub payload: ProposalPayload,

@@ -9,6 +9,16 @@ use model::{node::Node, proposal::Proposal, topology::TargetTopology, TargetTopo
 mod context;
 mod model;
 
+const TOPOLOGY_DRAFT: &str = "34xfr-jms62-rmca4-ykglo-bdmps-vg3q3-k5i4u-y5ps6-4bppw-ohvea-xae";
+fn ensure_draft_caller() {
+    let caller = ic_cdk::caller();
+
+    assert!(
+        caller.to_text().eq(TOPOLOGY_DRAFT),
+        "Caller {caller} is not allowed to perform this action."
+    )
+}
+
 #[ic_cdk::query]
 fn get_nodes() -> Vec<Node> {
     with_context(|ctx| ctx.nodes())
@@ -57,18 +67,29 @@ fn get_proposals() -> Vec<Proposal> {
 }
 
 #[ic_cdk::update]
-fn add_proposals(proposals: Vec<Proposal>) {
-    with_context_mut(|ctx| ctx.add_proposals(proposals))
+fn add_proposals(proposals: Vec<Proposal>) -> TargetTopologyResult<()> {
+    with_context_mut(|ctx| ctx.add_proposals(proposals).into())
 }
 
 #[ic_cdk::query]
-fn nakamoto_report_for_proposal(proposal: u64) -> Option<NakamotoReport> {
+fn nakamoto_report_for_proposal(proposal: String) -> Option<NakamotoReport> {
     with_context(|ctx| ctx.calculate_nakamoto_changes_for_proposal(proposal))
 }
 
 #[ic_cdk::query]
-fn topology_report_for_proposal(proposal: u64) -> Option<Vec<Vec<TopologyLimitReport>>> {
+fn topology_report_for_proposal(proposal: String) -> Option<Vec<Vec<TopologyLimitReport>>> {
     with_context(|ctx| ctx.calculate_topology_changes_for_proposal(proposal))
+}
+
+#[ic_cdk::query]
+fn get_draft_proposals() -> Vec<Proposal> {
+    with_context(|ctx| ctx.get_draft_proposals())
+}
+
+#[ic_cdk::update]
+fn add_draft_proposal(proposal: Proposal) {
+    ensure_draft_caller();
+    with_context_mut(|ctx| ctx.add_draft_proposal(proposal))
 }
 
 // Export the interface for the smart contract.

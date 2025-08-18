@@ -23,7 +23,7 @@ type Node = record {
   dc_id : text;
 };
 type Proposal = record {
-  id : nat64;
+  id : text;
   title : text;
   payload : ProposalPayload;
   timestamp_seconds : nat64;
@@ -54,18 +54,20 @@ type TopologyLimitReport = record {
 };
 type TopologyLimitViolation = record { found : nat8; value : text };
 service : {
+  add_draft_proposal : (Proposal) -> ();
   add_nodes : (vec Node) -> (Result);
-  add_proposals : (vec Proposal) -> ();
+  add_proposals : (vec Proposal) -> (Result);
   add_topology : (TargetTopology) -> (Result);
   get_active_topology : () -> (opt TargetTopology) query;
+  get_draft_proposals : () -> (vec Proposal) query;
   get_nakamoto_for_subnet : (principal) -> (opt vec NakamotoCoefficient) query;
   get_node : (principal) -> (opt Node) query;
   get_nodes : () -> (vec Node) query;
   get_nodes_for_subnet : (principal) -> (opt vec Node) query;
   get_proposals : () -> (vec Proposal) query;
   get_topology_report : (principal) -> (opt vec TopologyLimitReport) query;
-  nakamoto_report_for_proposal : (nat64) -> (opt NakamotoReport) query;
-  topology_report_for_proposal : (nat64) -> (
+  nakamoto_report_for_proposal : (text) -> (opt NakamotoReport) query;
+  topology_report_for_proposal : (text) -> (
       opt vec vec TopologyLimitReport,
     ) query;
 }

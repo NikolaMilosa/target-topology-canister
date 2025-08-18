@@ -55,7 +55,7 @@ export default function Proposals() {
     });
 
     target_topology_backend
-      .nakamoto_report_for_proposal(Number(proposal_id))
+      .nakamoto_report_for_proposal(proposal_id)
       .then((maybeReport) => {
         if (maybeReport.length == 0) {
           return;
@@ -89,7 +89,7 @@ export default function Proposals() {
       });
 
     target_topology_backend
-      .topology_report_for_proposal(Number(proposal_id))
+      .topology_report_for_proposal(proposal_id)
       .then((maybeReport) => {
         if (maybeReport.length == 0) return;
 

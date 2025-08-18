@@ -33,7 +33,7 @@ pub fn calculate_topology_limit_report_with_nodes(
     let nodes_after = current_nodes
         .into_iter()
         .filter(|node| !nodes_to_remove.contains(&node.node_id))
-        .chain(nodes_to_add.into_iter())
+        .chain(nodes_to_add)
         .collect();
 
     report.push(calculate_topology_limit_report(nodes_after, &topology));
@@ -106,7 +106,7 @@ pub fn calculate_topology_limit_report(
         .iter()
         .map(|(attr, selector, topology_selector)| {
             let attributes: Vec<_> = nodes.iter().map(selector).collect();
-            let topology_value = topology_selector(&topology, &subnet_id).unwrap();
+            let topology_value = topology_selector(topology, &subnet_id).unwrap();
 
             TopologyLimitReport {
                 limit_name: attr.to_string(),

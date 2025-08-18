@@ -8,7 +8,7 @@ PROPOSALS_FILE="$HOME/Downloads/proposals.json"
 CANDID_VEC=$(jq -r '
   map(
     "record { " +
-    "id = \(.id) : nat64; " +
+    "id = \"\(.id)\"; " +
     "title = \"\(.title)\"; " +
     "payload = variant { ChangeSubnetMembership = record { " +
       "subnet_id = principal \"\(.payload.subnet_id)\"; " +

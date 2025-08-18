@@ -57,6 +57,7 @@ pub struct Context {
     nodes: BTreeMap<Principal, Node, Memory>,
     topology_manager: BTreeMap<String, TargetTopology, Memory>,
     proposals: std::collections::BTreeMap<u64, Proposal>,
+    draft_proposals: std::collections::BTreeMap<String, Proposal>,
 }
 
 impl Context {
@@ -68,6 +69,7 @@ impl Context {
             nodes,
             topology_manager,
             proposals: std::collections::BTreeMap::new(),
+            draft_proposals: std::collections::BTreeMap::new(),
         }
     }
 
@@ -117,9 +119,12 @@ impl Context {
 
     pub fn calculate_nakamoto_changes_for_proposal(
         &self,
-        proposal_id: u64,
+        proposal_id: String,
     ) -> Option<NakamotoReport> {
-        let proposal = self.proposals.get(&proposal_id)?;
+        let proposal = match proposal_id.parse::<u64>() {
+            Ok(id) => self.proposals.get(&id)?,
+            _ => self.draft_proposals.get(&proposal_id)?,
+        };
 
         let crate::model::proposal::ProposalPayload::ChangeSubnetMembership(
             ChangeSubnetMembership {
@@ -145,9 +150,12 @@ impl Context {
 
     pub fn calculate_topology_changes_for_proposal(
         &self,
-        proposal: u64,
+        proposal_id: String,
     ) -> Option<Vec<Vec<TopologyLimitReport>>> {
-        let proposal = self.proposals.get(&proposal)?;
+        let proposal = match proposal_id.parse::<u64>() {
+            Ok(id) => self.proposals.get(&id)?,
+            _ => self.draft_proposals.get(&proposal_id)?,
+        };
 
         let topology = self.get_active_topology()?;
         let crate::model::proposal::ProposalPayload::ChangeSubnetMembership(proposal) =
@@ -195,15 +203,28 @@ impl Context {
         }
     }
 
-    pub fn add_proposal(&mut self, proposal: Proposal) {
-        self.proposals.insert(proposal.id, proposal);
+    pub fn add_proposal(&mut self, proposal: Proposal) -> anyhow::Result<()> {
+        let key = proposal.id.parse()?;
+        self.proposals.insert(key, proposal);
+        Ok(())
     }
 
-    pub fn add_proposals(&mut self, proposals: Vec<Proposal>) {
-        proposals.into_iter().for_each(|p| self.add_proposal(p));
+    pub fn add_proposals(&mut self, proposals: Vec<Proposal>) -> anyhow::Result<()> {
+        for proposal in proposals {
+            self.add_proposal(proposal)?;
+        }
+        Ok(())
     }
 
     pub fn get_proposals(&self) -> Vec<Proposal> {
         self.proposals.values().cloned().collect()
+    }
+
+    pub fn get_draft_proposals(&self) -> Vec<Proposal> {
+        self.draft_proposals.values().cloned().collect()
+    }
+
+    pub fn add_draft_proposal(&mut self, proposal: Proposal) {
+        self.draft_proposals.insert(proposal.id.clone(), proposal);
     }
 }

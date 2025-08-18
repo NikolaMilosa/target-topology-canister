@@ -13,6 +13,7 @@ import { Principal } from "@dfinity/principal";
 import SubnetDetailWithNodes from "../../../components/SubnetBasicDetails/index.jsx";
 import TargetTopologyConstraints from "../../../components/TargetTopologyConstraints/index.jsx";
 import NakamotoBreakdown from "../../../components/NakamotoBreakdown";
+import AttributeBreakdown from "../../../components/AttributeBreakdown/index.jsx";
 
 export default function SubnetDetail() {
   const { subnet_id } = useParams();
@@ -49,14 +50,24 @@ export default function SubnetDetail() {
         setNodes(nodesMapped);
 
         const attributes = [
-          ["Node provider", (node) => node.node_provider_id.split("-")[0]],
-          ["Data center", (node) => node.dc_id],
-          ["Country", (node) => node.country],
-          ["Data center owner", (node) => node.dc_owner],
+          [
+            "Node provider",
+            (node) => String(node.node_provider_id),
+            (id) => `/network/providers/${id}`,
+            (id) => id.split("-")[0],
+          ],
+          [
+            "Data center",
+            (node) => node.dc_id,
+            (id) => `/network/centers/${id}`,
+            null,
+          ],
+          ["Country", (node) => node.country, null, null],
+          ["Data center owner", (node) => node.dc_owner, null, null],
         ];
 
         setAttributeBreakdown(
-          attributes.map(([attrName, selector]) => {
+          attributes.map(([attrName, selector, urlMaker, transformer]) => {
             const occurrences = nodesMapped
               .map(selector)
               .reduce((map, item) => {
@@ -65,7 +76,10 @@ export default function SubnetDetail() {
               }, new Map());
             return {
               attrName: attrName,
-              occurrences: occurrences,
+              urlMaker: urlMaker,
+              transformer: transformer,
+              occurrencesBefore: occurrences,
+              occurrencesAfter: occurrences,
             };
           }),
         );
@@ -181,39 +195,7 @@ export default function SubnetDetail() {
             </Card.Header>
             <Card.Body>
               <Row>
-                {attributeBreakdown.map((attr, ind) => (
-                  <Col sm={6} md={3} key={ind}>
-                    <Card>
-                      <Card.Header>
-                        <Card.Title as="h5">
-                          Attribute: {attr.attrName}
-                        </Card.Title>
-                      </Card.Header>
-                      <Card.Body>
-                        <Table>
-                          <thead>
-                            <tr>
-                              <th>Value</th>
-                              <th>Utilization</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {Array.from(attr.occurrences.entries()).map(
-                              ([key, value]) => (
-                                <tr key={key}>
-                                  <td>
-                                    <code>{key}</code>
-                                  </td>
-                                  <td>{value}</td>
-                                </tr>
-                              ),
-                            )}
-                          </tbody>
-                        </Table>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
+                <AttributeBreakdown attributeBreakdown={attributeBreakdown} />
               </Row>
             </Card.Body>
           </Card>

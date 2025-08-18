@@ -8,6 +8,7 @@ import TargetTopologyConstraints from "../../../components/TargetTopologyConstra
 
 import Chip from "@mui/material/Chip";
 import { Principal } from "@dfinity/principal";
+import AttributeBreakdown from "../../../components/AttributeBreakdown";
 
 export default function Proposals() {
   const { proposal_id } = useParams();
@@ -27,6 +28,8 @@ export default function Proposals() {
     targetTopologyConstraintsHoldAfter,
     setTargetTopologyConstraintsHoldAfter,
   ] = useState(false);
+
+  const [attributeBreakdown, setAttributeBreakdown] = useState([]);
 
   useEffect(() => {
     target_topology_backend.get_proposals().then((proposals) => {
@@ -98,6 +101,79 @@ export default function Proposals() {
         );
       });
   }, [proposal_id]);
+
+  useEffect(() => {
+    if (subnetId.length == 0 || proposal == null) return;
+
+    async function gatherAttributeBreakdown() {
+      const maybeNodes = await target_topology_backend.get_nodes_for_subnet(
+        Principal.fromText(subnetId),
+      );
+
+      if (maybeNodes.length == 0) return;
+
+      const nodes = maybeNodes[0];
+
+      const addedNodes = [];
+      for (let node of proposal.node_ids_add) {
+        const maybeNode = await target_topology_backend.get_node(
+          Principal.fromText(node),
+        );
+
+        if (maybeNode.length == 0) conitnue;
+
+        addedNodes.push(maybeNode[0]);
+      }
+
+      const attributes = [
+        [
+          "Node provider",
+          (node) => String(node.node_provider_id),
+          (id) => `/network/providers/${id}`,
+          (id) => id.split("-")[0],
+        ],
+        [
+          "Data center",
+          (node) => node.dc_id,
+          (id) => `/network/centers/${id}`,
+          null,
+        ],
+        ["Country", (node) => node.country, null, null],
+        ["Data center owner", (node) => node.dc_owner, null, null],
+      ];
+
+      setAttributeBreakdown(
+        attributes.map(([attrName, selector, urlMaker, transformer]) => {
+          const occurrencesBefore = nodes.map(selector).reduce((map, item) => {
+            map.set(item, (map.get(item) || 0) + 1);
+            return map;
+          }, new Map());
+
+          const after = nodes.filter(
+            (node) => !proposal.node_ids_remove.includes(node.node_id),
+          );
+          for (let newNode of addedNodes) {
+            after.push(newNode);
+          }
+
+          const occurrencesAfter = after.map(selector).reduce((map, item) => {
+            map.set(item, (map.get(item) || 0) + 1);
+            return map;
+          }, new Map());
+
+          return {
+            attrName: attrName,
+            transformer: transformer,
+            urlMaker: urlMaker,
+            occurrencesBefore: occurrencesBefore,
+            occurrencesAfter: occurrencesAfter,
+          };
+        }),
+      );
+    }
+
+    gatherAttributeBreakdown();
+  }, [subnetId, proposal]);
 
   return (
     <Row>
@@ -265,6 +341,22 @@ export default function Proposals() {
           </Card>
         </Col>
       </Row>
+      <Row>
+        <Col sm={12}>
+          <Card>
+            <Card.Header>
+              <Card.Title as="h3">Attribute breakdown</Card.Title>
+              <span>Attribute wise breakdown of a subnet.</span>
+            </Card.Header>
+            <Card.Body>
+              <Row>
+                <AttributeBreakdown attributeBreakdown={attributeBreakdown} />
+              </Row>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
       <SubnetDetailWithNodes subnet_id={subnetId} />
     </Row>
   );

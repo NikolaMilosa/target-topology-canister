@@ -2,13 +2,16 @@ import { Card, Col, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { target_topology_backend } from "declarations/target_topology_backend";
 import { useState, useEffect } from "react";
-import SubnetDetailWithNodes from "../../../components/SubnetBasicDetails";
+import SubnetDetailWithNodes, {
+  mapNodes,
+} from "../../../components/SubnetBasicDetails";
 import NakamotoBreakdown from "../../../components/NakamotoBreakdown";
 import TargetTopologyConstraints from "../../../components/TargetTopologyConstraints";
 
 import Chip from "@mui/material/Chip";
 import { Principal } from "@dfinity/principal";
 import AttributeBreakdown from "../../../components/AttributeBreakdown";
+import NodesTable from "../../../components/NodesTable";
 
 export default function Proposals() {
   const { proposal_id } = useParams();
@@ -30,6 +33,9 @@ export default function Proposals() {
   ] = useState(false);
 
   const [attributeBreakdown, setAttributeBreakdown] = useState([]);
+
+  const [toBeAddedNodes, setToBeAddedNodes] = useState([]);
+  const [toBeRemovedNodes, setToBeRemovedNodes] = useState([]);
 
   useEffect(() => {
     target_topology_backend.get_proposals().then((proposals) => {
@@ -124,6 +130,14 @@ export default function Proposals() {
 
         addedNodes.push(maybeNode[0]);
       }
+      setToBeAddedNodes(mapNodes(addedNodes));
+      setToBeRemovedNodes(
+        mapNodes(
+          nodes.filter((node) =>
+            proposal.node_ids_remove.some((p) => p == String(node.node_id)),
+          ),
+        ),
+      );
 
       const attributes = [
         [
@@ -149,8 +163,10 @@ export default function Proposals() {
             return map;
           }, new Map());
 
-          const after = nodes.filter(
-            (node) => !proposal.node_ids_remove.includes(node.node_id),
+          const after = nodes.filter((node) =>
+            proposal.node_ids_remove.every(
+              (pr) => String(pr) != String(node.node_id),
+            ),
           );
           for (let newNode of addedNodes) {
             after.push(newNode);
@@ -198,6 +214,22 @@ export default function Proposals() {
               </pre>
             </Card.Body>
           </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={6} sm={12}>
+          <NodesTable
+            title="Nodes added"
+            subtitle="These nodes are proposed to be added to the subnet."
+            nodes={toBeAddedNodes}
+          />
+        </Col>
+        <Col md={6} sm={12}>
+          <NodesTable
+            title="Nodes removed"
+            subtitle="These nodes are proposed to be removed from the subnet."
+            nodes={toBeRemovedNodes}
+          />
         </Col>
       </Row>
       <Row>

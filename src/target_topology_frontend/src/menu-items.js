@@ -37,7 +37,7 @@ export function useMenuItems() {
             .map((proposal) => {
               return {
                 id: Number(proposal.id),
-                title: `Proposal ${proposal.id}`,
+                title: `${proposal.id} - ${String(proposal.payload.ChangeSubnetMembership.subnet_id).split("-")[0]}`,
                 type: "item",
                 icon: "material-icons-two-tone",
                 iconname: "gavel",

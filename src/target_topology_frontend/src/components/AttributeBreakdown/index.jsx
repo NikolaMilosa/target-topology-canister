@@ -50,7 +50,7 @@ export default function AttributeBreakdown({ attributeBreakdown }) {
                           before
                         ) : (
                           <>
-                            {before} → {after}
+                            <s>{before}</s> → {after}
                           </>
                         )}
                       </td>

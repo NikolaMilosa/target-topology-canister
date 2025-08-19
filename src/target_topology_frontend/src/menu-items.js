@@ -67,6 +67,16 @@ export function useMenuItems() {
     }
 
     fetchTopologyAndProposals();
+
+    const interval = setInterval(async () => {
+      try {
+        await fetchTopologyAndProposals();
+      } catch (err) {
+        console.log("Failed to fetch menu data", err);
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return menuItems;

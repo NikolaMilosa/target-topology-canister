@@ -26,69 +26,87 @@ export default function DashSales() {
   const [subnets, setSubnets] = useState([]);
 
   useEffect(() => {
-    target_topology_backend.get_nodes().then((nodes) => {
-      setTotalNodes(nodes.length);
+    async function fetchData() {
+      target_topology_backend.get_nodes().then((nodes) => {
+        setTotalNodes(nodes.length);
 
-      const subnets = [
-        ...new Set(
-          nodes
-            .map((n) => n.subnet_id)
-            .filter((s) => s.length > 0)
-            .map((s) => String(s)),
-        ),
-      ];
-      setTotalSubnets(subnets.length);
+        const subnets = [
+          ...new Set(
+            nodes
+              .map((n) => n.subnet_id)
+              .filter((s) => s.length > 0)
+              .map((s) => String(s)),
+          ),
+        ];
+        setTotalSubnets(subnets.length);
 
-      const node_providers = [
-        ...new Set(nodes.map((n) => n.node_provider_id).map((s) => String(s))),
-      ];
-      setTotalNodeProviders(node_providers.length);
+        const node_providers = [
+          ...new Set(
+            nodes.map((n) => n.node_provider_id).map((s) => String(s)),
+          ),
+        ];
+        setTotalNodeProviders(node_providers.length);
 
-      const countries = [...new Set(nodes.map((n) => n.country))];
-      setTotalCountries(countries.length);
+        const countries = [...new Set(nodes.map((n) => n.country))];
+        setTotalCountries(countries.length);
 
-      const data_centers = [...new Set(nodes.map((n) => n.dc_id))];
-      setTotalDataCenters(data_centers.length);
+        const data_centers = [...new Set(nodes.map((n) => n.dc_id))];
+        setTotalDataCenters(data_centers.length);
 
-      const dc_providers = [...new Set(nodes.map((n) => n.dc_owner))];
-      setTotalDataCenterProviders(dc_providers.length);
+        const dc_providers = [...new Set(nodes.map((n) => n.dc_owner))];
+        setTotalDataCenterProviders(dc_providers.length);
 
-      const nodes_in_subnet = nodes.reduce(
-        (acc, i) => acc + (i.subnet_id.length > 0 ? 1 : 0),
-        0,
-      );
-      const api_bns = nodes.reduce(
-        (acc, i) => acc + (i.is_api_bn === true ? 1 : 0),
-        0,
-      );
-      const unassigned = nodes.length - nodes_in_subnet - api_bns;
+        const nodes_in_subnet = nodes.reduce(
+          (acc, i) => acc + (i.subnet_id.length > 0 ? 1 : 0),
+          0,
+        );
+        const api_bns = nodes.reduce(
+          (acc, i) => acc + (i.is_api_bn === true ? 1 : 0),
+          0,
+        );
+        const unassigned = nodes.length - nodes_in_subnet - api_bns;
 
-      setNodesInSubnets(
-        Math.round((nodes_in_subnet * 10000) / nodes.length) / 100,
-      );
-      setUnassignedNodes(Math.round((unassigned * 10000) / nodes.length) / 100);
-      setApiBns(Math.round((api_bns * 10000) / nodes.length) / 100);
-    });
+        setNodesInSubnets(
+          Math.round((nodes_in_subnet * 10000) / nodes.length) / 100,
+        );
+        setUnassignedNodes(
+          Math.round((unassigned * 10000) / nodes.length) / 100,
+        );
+        setApiBns(Math.round((api_bns * 10000) / nodes.length) / 100);
+      });
 
-    target_topology_backend.get_active_topology().then((topology) => {
-      if (topology.length < 0) {
-        return;
+      target_topology_backend.get_active_topology().then((topology) => {
+        if (topology.length < 0) {
+          return;
+        }
+
+        setSubnets(
+          topology[0].entries
+            .map((node) => {
+              const subnet = String(node[1].subnet_id);
+              return {
+                subnet_id: subnet,
+                number_of_nodes: node[1].subnet_size,
+                subnet_short: subnet.split("-")[0],
+                subnet_type: node[1].subnet_type,
+              };
+            })
+            .sort((a, b) => b.number_of_nodes - a.number_of_nodes),
+        );
+      });
+    }
+
+    fetchData();
+
+    const interval = setInterval(async () => {
+      try {
+        await fetchData();
+      } catch (err) {
+        console.error("Failed to fetch subnets dashboard data", err);
       }
+    }, 10000);
 
-      setSubnets(
-        topology[0].entries
-          .map((node) => {
-            const subnet = String(node[1].subnet_id);
-            return {
-              subnet_id: subnet,
-              number_of_nodes: node[1].subnet_size,
-              subnet_short: subnet.split("-")[0],
-              subnet_type: node[1].subnet_type,
-            };
-          })
-          .sort((a, b) => b.number_of_nodes - a.number_of_nodes),
-      );
-    });
+    return () => clearInterval(interval);
   }, []);
 
   return (

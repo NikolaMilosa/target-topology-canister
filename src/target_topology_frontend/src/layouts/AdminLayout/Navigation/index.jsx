@@ -6,6 +6,8 @@ import { ConfigContext } from "../../../contexts/ConfigContext";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { useMenuItems } from "../../../menu-items";
 import * as actionType from "../../../store/actions";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 // assets
 
@@ -21,6 +23,11 @@ export default function Navigation() {
   const navToggleHandler = () => {
     dispatch({ type: actionType.COLLAPSE_MENU });
   };
+
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   let navClass = "dark-sidebar";
 

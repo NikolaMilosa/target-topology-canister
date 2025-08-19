@@ -4,7 +4,12 @@ use context::{
     topology::TopologyLimitReport,
     with_context, with_context_mut,
 };
-use model::{node::Node, proposal::Proposal, topology::TargetTopology, TargetTopologyResult};
+use model::{
+    node::Node,
+    proposal::{Proposal, ProposalWithWarnings},
+    topology::TargetTopology,
+    TargetTopologyResult,
+};
 
 mod context;
 mod model;
@@ -50,9 +55,9 @@ fn get_active_topology() -> Option<TargetTopology> {
     with_context(|ctx| ctx.get_active_topology())
 }
 
-// TODO: ensure only some callers can call this
 #[ic_cdk::update]
 fn add_topology(topology: TargetTopology) -> TargetTopologyResult<()> {
+    ensure_draft_caller();
     with_context_mut(|ctx| ctx.add_topology(topology).into())
 }
 
@@ -66,6 +71,7 @@ fn get_proposals() -> Vec<Proposal> {
     with_context(|ctx| ctx.get_proposals())
 }
 
+// TODO: remove the add call and actually query it
 #[ic_cdk::update]
 fn add_proposals(proposals: Vec<Proposal>) -> TargetTopologyResult<()> {
     with_context_mut(|ctx| ctx.add_proposals(proposals).into())
@@ -84,6 +90,11 @@ fn topology_report_for_proposal(proposal: String) -> Option<Vec<Vec<TopologyLimi
 #[ic_cdk::query]
 fn get_draft_proposals() -> Vec<Proposal> {
     with_context(|ctx| ctx.get_draft_proposals())
+}
+
+#[ic_cdk::query]
+fn get_draft_proposal(proposal: String) -> Option<ProposalWithWarnings> {
+    with_context(|ctx| ctx.get_draft_proposal_with_warnings(proposal))
 }
 
 #[ic_cdk::update]

@@ -37,7 +37,7 @@ export default function DashSales() {
   const [activeTopology, setActiveTopology] = useState("");
 
   useEffect(() => {
-    async function fetchData() {
+    function fetchData() {
       target_topology_backend.get_nodes().then((nodes) => {
         setTotalNodes(nodes.length);
 
@@ -97,9 +97,9 @@ export default function DashSales() {
 
     fetchData();
 
-    const interval = setInterval(async () => {
+    const interval = setInterval(() => {
       try {
-        await fetchData();
+        fetchData();
       } catch (err) {
         console.error("Failed to fetch home dashboard data", err);
       }

@@ -72,7 +72,7 @@ export function useMenuItems() {
       try {
         await fetchTopologyAndProposals();
       } catch (err) {
-        console.log("Failed to fetch menu data", err);
+        console.error("Failed to fetch menu data", err);
       }
     }, 10000);
 

@@ -13,6 +13,7 @@ import { Principal } from "@dfinity/principal";
 import AttributeBreakdown from "../../../components/AttributeBreakdown";
 import NodesTable from "../../../components/NodesTable";
 import ReactMarkdown from "react-markdown";
+import ProductCard from "../../../components/Widgets/Statistic/ProductCard";
 
 export default function Proposals() {
   const { proposal_id } = useParams();
@@ -40,25 +41,40 @@ export default function Proposals() {
   const [toBeRemovedNodes, setToBeRemovedNodes] = useState([]);
   const [propMetadata, setPropMetadata] = useState({});
 
+  const [warnings, setWarnings] = useState([]);
+
   useEffect(() => {
     function fetchData() {
       {
         const promise = isDraft
-          ? target_topology_backend.get_draft_proposals()
-          : target_topology_backend.get_proposals();
+          ? target_topology_backend.get_draft_proposal(proposal_id)
+          : target_topology_backend.get_proposals().then((proposals) =>
+              proposals.map((p) => {
+                return {
+                  proposal: p,
+                  warnings: [],
+                };
+              }),
+            );
 
         promise.then((proposals) => {
-          const prop = proposals.find((proposal) => proposal.id == proposal_id);
+          const prop = proposals.find(
+            (proposal) => proposal.proposal.id == proposal_id,
+          );
           if (!prop) {
             return;
           }
 
+          const proposal = prop.proposal;
+          const warnings = prop.warnings;
+          setWarnings(warnings);
+
           setPropMetadata({
-            link: prop.link,
-            summary: prop.summary,
+            link: proposal.link,
+            summary: proposal.summary,
           });
 
-          const payload = prop.payload.ChangeSubnetMembership;
+          const payload = proposal.payload.ChangeSubnetMembership;
           const subnet = String(payload.subnet_id);
           setSubnetId(subnet);
           setProposal({
@@ -250,6 +266,31 @@ export default function Proposals() {
     );
   }
 
+  let warningCard = "";
+  if (isDraft && warnings.length != 0) {
+    warningCard = (
+      <>
+        <Col sm={12} md={6}>
+          <ProductCard
+            params={{
+              variant: "warning",
+              title: "Warnings",
+              primaryText: "Proposal contains warnings!",
+              icon: "warning",
+              secondaryText: (
+                <ul>
+                  {warnings.map((warning, j) => (
+                    <li key={j}>{warning}</li>
+                  ))}
+                </ul>
+              ),
+            }}
+          />
+        </Col>
+      </>
+    );
+  }
+
   return (
     <Row>
       <Row>
@@ -271,6 +312,7 @@ export default function Proposals() {
               <pre className="bg-gray-300 p-4 rounded-lg overflow-x-auto">
                 <code>{JSON.stringify(proposal, null, 2)}</code>
               </pre>
+              {warningCard}
             </Card.Body>
             {isDraft ? (
               <Card.Footer>

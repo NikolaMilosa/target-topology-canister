@@ -43,4 +43,4 @@ done < "$INPUT_FILE"
 ENTRIES+=" }"
 
 # Call the canister with dfx
-dfx canister call "$CANISTER_NAME" add_topology "( record { entries = $ENTRIES; proposal = \"137147\"; timestamp_seconds = 1755121667} )"
+dfx canister call --identity topology-draft "$CANISTER_NAME" add_topology "( record { entries = $ENTRIES; proposal = \"137147\"; timestamp_seconds = 1755121667} )"

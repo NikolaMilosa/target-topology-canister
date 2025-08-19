@@ -33,6 +33,7 @@ type Proposal = record {
 type ProposalPayload = variant {
   ChangeSubnetMembership : ChangeSubnetMembership;
 };
+type ProposalWithWarnings = record { warnings : vec text; proposal : Proposal };
 type Result = variant { Ok; Err : text };
 type TargetTopology = record {
   entries : vec record { text; TopologyEntry };
@@ -61,6 +62,7 @@ service : {
   add_proposals : (vec Proposal) -> (Result);
   add_topology : (TargetTopology) -> (Result);
   get_active_topology : () -> (opt TargetTopology) query;
+  get_draft_proposal : (text) -> (opt ProposalWithWarnings) query;
   get_draft_proposals : () -> (vec Proposal) query;
   get_nakamoto_for_subnet : (principal) -> (opt vec NakamotoCoefficient) query;
   get_node : (principal) -> (opt Node) query;

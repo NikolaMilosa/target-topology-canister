@@ -4,14 +4,6 @@ The canister for displaying detailed information about the proposals for the com
 
 ## Left TODO:
 
-* The canister backend must have support for checking the actual payload and displaying if something is wrong with the proposal payload:
-
-  * If the subnet doesn't exist
-  * If any of the nodes don't exist
-  * If nodes being added are members of different subnets
-  * If nodes being removed are members of a different subnet
-  * Warnings should be displayed below the proposal payload
-
 * add the proposals related to a subnet in subnet detail view.
 
 * Add methods that acutally sync data from governance canister

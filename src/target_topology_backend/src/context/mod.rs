@@ -10,7 +10,7 @@ use crate::{
     context::topology::calculate_topology_limit_report_with_nodes,
     model::{
         node::Node,
-        proposal::{ChangeSubnetMembership, Proposal},
+        proposal::{ChangeSubnetMembership, Proposal, ProposalWithWarnings},
         topology::TargetTopology,
     },
 };
@@ -20,10 +20,12 @@ use self::{
         calculate_nakamoto_from_nodes, calculate_nakamoto_report, NakamotoCoefficient,
         NakamotoReport,
     },
+    proposal::ProposalValidator,
     topology::{calculate_topology_limit_report, TopologyLimitReport},
 };
 
 pub mod nakamoto;
+mod proposal;
 pub mod topology;
 
 type Memory = VirtualMemory<DefaultMemoryImpl>;
@@ -224,10 +226,32 @@ impl Context {
         self.draft_proposals.values().cloned().collect()
     }
 
+    pub fn get_draft_proposal_with_warnings(
+        &self,
+        proposal: String,
+    ) -> Option<ProposalWithWarnings> {
+        let proposal = self.draft_proposals.get(&proposal)?;
+
+        let topology = self.get_active_topology()?;
+
+        let nodes: Vec<_> = self.nodes.values().collect();
+
+        let warnings = ProposalValidator::default()
+            .with_topology(topology)
+            .with_nodes(nodes)
+            .validate_draft_proposal(proposal);
+
+        Some(ProposalWithWarnings {
+            proposal: proposal.clone(),
+            warnings,
+        })
+    }
+
     pub fn add_draft_proposal(&mut self, proposal: Proposal) -> anyhow::Result<()> {
-        if proposal.id.parse::<u64>().is_ok() {
-            return Err(anyhow::anyhow!("Id must not be a u64 because that is reserved for open proposals from the governance."));
-        }
+        // We do just basic validations here and refuse proposals
+        // that are not formatted well. Other issues will be rendered
+        // as warnings.
+        proposal.validate_draft()?;
 
         self.draft_proposals.insert(proposal.id.clone(), proposal);
         Ok(())

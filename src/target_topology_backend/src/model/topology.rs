@@ -16,7 +16,7 @@ pub struct TopologyEntry {
     pub subnet_limit_country: u8,
 }
 
-#[derive(CandidType, Serialize, Deserialize)]
+#[derive(CandidType, Serialize, Deserialize, Default)]
 pub struct TargetTopology {
     pub proposal: String,
     pub entries: BTreeMap<String, TopologyEntry>,

@@ -33,38 +33,54 @@ export default function SubnetDetailWithNodes({ subnet_id }) {
   const [forumLink, setForumLink] = useState("");
 
   useEffect(() => {
-    if (subnet_id.length == 0) {
-      return;
-    }
-    target_topology_backend
-      .get_nodes_for_subnet(Principal.fromText(subnet_id))
-      .then((nodes) => {
-        if (nodes.length == 0) {
+    function fetchData() {
+      {
+        if (subnet_id.length == 0) {
           return;
         }
+        target_topology_backend
+          .get_nodes_for_subnet(Principal.fromText(subnet_id))
+          .then((nodes) => {
+            if (nodes.length == 0) {
+              return;
+            }
 
-        setNodes(mapNodes(nodes[0]));
-      });
+            setNodes(mapNodes(nodes[0]));
+          });
 
-    target_topology_backend.get_active_topology().then((topology) => {
-      if (topology.length == 0) {
-        return;
+        target_topology_backend.get_active_topology().then((topology) => {
+          if (topology.length == 0) {
+            return;
+          }
+
+          const currTopology = topology[0]["entries"].find(
+            (entry) => String(entry["0"]) === subnet_id,
+          )["1"];
+          currTopology.proposal = topology[0]["proposal"];
+          setSubnetTopology(currTopology);
+        });
+
+        const forumMap = subnetForumMap();
+        if (forumMap.has(subnet_id)) {
+          const forumMetadata = forumMap.get(subnet_id);
+          setForumLink(
+            `https://forum.dfinity.org/t/${forumMetadata["slug"]}/${forumMetadata["topic_id"]}`,
+          );
+        }
       }
-
-      const currTopology = topology[0]["entries"].find(
-        (entry) => String(entry["0"]) === subnet_id,
-      )["1"];
-      currTopology.proposal = topology[0]["proposal"];
-      setSubnetTopology(currTopology);
-    });
-
-    const forumMap = subnetForumMap();
-    if (forumMap.has(subnet_id)) {
-      const forumMetadata = forumMap.get(subnet_id);
-      setForumLink(
-        `https://forum.dfinity.org/t/${forumMetadata["slug"]}/${forumMetadata["topic_id"]}`,
-      );
     }
+
+    fetchData();
+
+    const interval = setInterval(() => {
+      try {
+        fetchData();
+      } catch (err) {
+        console.error("Failed to fetch subnet basic detail", subnet_id, err);
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, [subnet_id]);
 
   return (

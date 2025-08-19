@@ -27,103 +27,117 @@ export default function SubnetDetail() {
   const [attributeBreakdown, setAttributeBreakdown] = useState([]);
 
   useEffect(() => {
-    target_topology_backend
-      .get_nodes_for_subnet(Principal.fromText(subnet_id))
-      .then((nodes) => {
-        if (nodes.length == 0) {
-          return;
-        }
+    function fetchData() {
+      target_topology_backend
+        .get_nodes_for_subnet(Principal.fromText(subnet_id))
+        .then((nodes) => {
+          if (nodes.length == 0) {
+            return;
+          }
 
-        const nodesMapped = nodes[0].map((node) => {
-          return {
-            node_id: String(node["node_id"]),
-            dc_id: node["dc_id"],
-            dc_owner: node["dc_owner"],
-            hostos_version: node["hostos_version"],
-            ip: node["ip"],
-            node_operator_id: String(node["node_operator_id"]),
-            node_provider_id: String(node["node_provider_id"]),
-            country: node["country"],
-          };
+          const nodesMapped = nodes[0].map((node) => {
+            return {
+              node_id: String(node["node_id"]),
+              dc_id: node["dc_id"],
+              dc_owner: node["dc_owner"],
+              hostos_version: node["hostos_version"],
+              ip: node["ip"],
+              node_operator_id: String(node["node_operator_id"]),
+              node_provider_id: String(node["node_provider_id"]),
+              country: node["country"],
+            };
+          });
+
+          setNodes(nodesMapped);
+
+          const attributes = [
+            [
+              "Node provider",
+              (node) => String(node.node_provider_id),
+              (id) => `/network/providers/${id}`,
+              (id) => id.split("-")[0],
+            ],
+            [
+              "Data center",
+              (node) => node.dc_id,
+              (id) => `/network/centers/${id}`,
+              null,
+            ],
+            ["Country", (node) => node.country, null, null],
+            ["Data center owner", (node) => node.dc_owner, null, null],
+          ];
+
+          setAttributeBreakdown(
+            attributes.map(([attrName, selector, urlMaker, transformer]) => {
+              const occurrences = nodesMapped
+                .map(selector)
+                .reduce((map, item) => {
+                  map.set(item, (map.get(item) || 0) + 1);
+                  return map;
+                }, new Map());
+              return {
+                attrName: attrName,
+                urlMaker: urlMaker,
+                transformer: transformer,
+                occurrencesBefore: occurrences,
+                occurrencesAfter: occurrences,
+              };
+            }),
+          );
         });
 
-        setNodes(nodesMapped);
+      target_topology_backend.get_active_topology().then((topology) => {
+        if (topology.length == 0) {
+          return;
+        }
 
-        const attributes = [
-          [
-            "Node provider",
-            (node) => String(node.node_provider_id),
-            (id) => `/network/providers/${id}`,
-            (id) => id.split("-")[0],
-          ],
-          [
-            "Data center",
-            (node) => node.dc_id,
-            (id) => `/network/centers/${id}`,
-            null,
-          ],
-          ["Country", (node) => node.country, null, null],
-          ["Data center owner", (node) => node.dc_owner, null, null],
-        ];
-
-        setAttributeBreakdown(
-          attributes.map(([attrName, selector, urlMaker, transformer]) => {
-            const occurrences = nodesMapped
-              .map(selector)
-              .reduce((map, item) => {
-                map.set(item, (map.get(item) || 0) + 1);
-                return map;
-              }, new Map());
-            return {
-              attrName: attrName,
-              urlMaker: urlMaker,
-              transformer: transformer,
-              occurrencesBefore: occurrences,
-              occurrencesAfter: occurrences,
-            };
-          }),
-        );
+        const currTopology = topology[0]["entries"].find(
+          (entry) => String(entry["0"]) === subnet_id,
+        )["1"];
+        currTopology.proposal = topology[0]["proposal"];
+        setSubnetTopology(currTopology);
       });
 
-    target_topology_backend.get_active_topology().then((topology) => {
-      if (topology.length == 0) {
-        return;
+      target_topology_backend
+        .get_nakamoto_for_subnet(Principal.fromText(subnet_id))
+        .then((nakamoto) => {
+          if (nakamoto.length == 0) {
+            return;
+          }
+
+          setNakamoto(
+            nakamoto[0].map((nakamoto) => {
+              nakamoto["variant"] = "secondary";
+              return nakamoto;
+            }),
+          );
+        });
+
+      target_topology_backend
+        .get_topology_report(Principal.fromText(subnet_id))
+        .then((topologyReport) => {
+          if (topologyReport.length == 0) {
+            return;
+          }
+
+          setTopologyReport(topologyReport[0]);
+          setTargetTopologyConstraintsHold(
+            topologyReport[0].every((x) => x.violations.length == 0),
+          );
+        });
+    }
+
+    fetchData();
+
+    const interval = setInterval(async () => {
+      try {
+        fetchData();
+      } catch (err) {
+        console.error("Failed to fetch subnet detail data", subnet_id, err);
       }
+    }, 10000);
 
-      const currTopology = topology[0]["entries"].find(
-        (entry) => String(entry["0"]) === subnet_id,
-      )["1"];
-      currTopology.proposal = topology[0]["proposal"];
-      setSubnetTopology(currTopology);
-    });
-
-    target_topology_backend
-      .get_nakamoto_for_subnet(Principal.fromText(subnet_id))
-      .then((nakamoto) => {
-        if (nakamoto.length == 0) {
-          return;
-        }
-
-        setNakamoto(
-          nakamoto[0].map((nakamoto) => {
-            nakamoto["variant"] = "secondary";
-            return nakamoto;
-          }),
-        );
-      });
-
-    target_topology_backend
-      .get_topology_report(Principal.fromText(subnet_id))
-      .then((topologyReport) => {
-        if (topologyReport.length == 0) {
-          return;
-        }
-
-        setTopologyReport(topologyReport[0]);
-        setTargetTopologyConstraintsHold(
-          topologyReport[0].every((x) => x.violations.length == 0),
-        );
-      });
+    return () => clearInterval(interval);
   }, [subnet_id]);
 
   return (

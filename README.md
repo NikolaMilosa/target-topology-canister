@@ -16,8 +16,6 @@ The canister for displaying detailed information about the proposals for the com
 
 * Add methods that acutally sync data from governance canister
 * Add methods that actually sync data from registry canister
-* Add periodic refresh of subnet detail data
-* Add periodic refresh of draft proposals
 * Add a way to remove proposals if they are not open anymore
 * Add a way to remove draft if they have been open for too long or if they have been proposed
 * Add support for specifing the user that has created a draft proposal

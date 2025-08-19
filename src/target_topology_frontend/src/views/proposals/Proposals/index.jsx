@@ -41,83 +41,99 @@ export default function Proposals() {
   const [propMetadata, setPropMetadata] = useState({});
 
   useEffect(() => {
-    const promise = isDraft
-      ? target_topology_backend.get_draft_proposals()
-      : target_topology_backend.get_proposals();
+    function fetchData() {
+      {
+        const promise = isDraft
+          ? target_topology_backend.get_draft_proposals()
+          : target_topology_backend.get_proposals();
 
-    promise.then((proposals) => {
-      const prop = proposals.find((proposal) => proposal.id == proposal_id);
-      if (!prop) {
-        return;
-      }
-
-      setPropMetadata({
-        link: prop.link,
-        summary: prop.summary,
-      });
-
-      const payload = prop.payload.ChangeSubnetMembership;
-      const subnet = String(payload.subnet_id);
-      setSubnetId(subnet);
-      setProposal({
-        subnet_id: subnet,
-        node_ids_add: payload.node_ids_to_add.map((p) => String(p)),
-        node_ids_remove: payload.node_ids_to_remove.map((p) => String(p)),
-      });
-    });
-
-    target_topology_backend
-      .nakamoto_report_for_proposal(proposal_id)
-      .then((maybeReport) => {
-        if (maybeReport.length == 0) {
-          return;
-        }
-
-        const report = maybeReport[0];
-        setNakamotoBefore(
-          report["before"].map((coef) => {
-            coef["variant"] = "secondary";
-            return coef;
-          }),
-        );
-
-        const nakamotoAfter = [];
-        for (let i in report["before"]) {
-          let before = report["before"][i];
-          let after = report["after"][i];
-
-          if (before.value < after.value) {
-            after["variant"] = "success";
-          } else if (before.value == after.value) {
-            after["variant"] = "secondary";
-          } else {
-            after["variant"] = "warning";
+        promise.then((proposals) => {
+          const prop = proposals.find((proposal) => proposal.id == proposal_id);
+          if (!prop) {
+            return;
           }
 
-          nakamotoAfter.push(after);
-        }
+          setPropMetadata({
+            link: prop.link,
+            summary: prop.summary,
+          });
 
-        setNakamotoAfter(nakamotoAfter);
-      });
+          const payload = prop.payload.ChangeSubnetMembership;
+          const subnet = String(payload.subnet_id);
+          setSubnetId(subnet);
+          setProposal({
+            subnet_id: subnet,
+            node_ids_add: payload.node_ids_to_add.map((p) => String(p)),
+            node_ids_remove: payload.node_ids_to_remove.map((p) => String(p)),
+          });
+        });
 
-    target_topology_backend
-      .topology_report_for_proposal(proposal_id)
-      .then((maybeReport) => {
-        if (maybeReport.length == 0) return;
+        target_topology_backend
+          .nakamoto_report_for_proposal(proposal_id)
+          .then((maybeReport) => {
+            if (maybeReport.length == 0) {
+              return;
+            }
 
-        const before = maybeReport[0][0];
+            const report = maybeReport[0];
+            setNakamotoBefore(
+              report["before"].map((coef) => {
+                coef["variant"] = "secondary";
+                return coef;
+              }),
+            );
 
-        setTopologyReportBefore(before);
-        setTargetTopologyConstraintsHoldBefore(
-          before.every((x) => x.violations.length == 0),
-        );
+            const nakamotoAfter = [];
+            for (let i in report["before"]) {
+              let before = report["before"][i];
+              let after = report["after"][i];
 
-        const after = maybeReport[0][1];
-        setTopologyReportAfter(after);
-        setTargetTopologyConstraintsHoldAfter(
-          after.every((x) => x.violations.length == 0),
-        );
-      });
+              if (before.value < after.value) {
+                after["variant"] = "success";
+              } else if (before.value == after.value) {
+                after["variant"] = "secondary";
+              } else {
+                after["variant"] = "warning";
+              }
+
+              nakamotoAfter.push(after);
+            }
+
+            setNakamotoAfter(nakamotoAfter);
+          });
+
+        target_topology_backend
+          .topology_report_for_proposal(proposal_id)
+          .then((maybeReport) => {
+            if (maybeReport.length == 0) return;
+
+            const before = maybeReport[0][0];
+
+            setTopologyReportBefore(before);
+            setTargetTopologyConstraintsHoldBefore(
+              before.every((x) => x.violations.length == 0),
+            );
+
+            const after = maybeReport[0][1];
+            setTopologyReportAfter(after);
+            setTargetTopologyConstraintsHoldAfter(
+              after.every((x) => x.violations.length == 0),
+            );
+          });
+      }
+    }
+
+    fetchData();
+
+    const interval = setInterval(() => {
+      try {
+        fetchData();
+      } catch (err) {
+        console.error("Failed to fetch proposal data", proposal_id, err);
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, [proposal_id]);
 
   useEffect(() => {

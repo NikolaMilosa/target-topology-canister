@@ -129,7 +129,7 @@ export default function SubnetDetail() {
 
     fetchData();
 
-    const interval = setInterval(async () => {
+    const interval = setInterval(() => {
       try {
         fetchData();
       } catch (err) {

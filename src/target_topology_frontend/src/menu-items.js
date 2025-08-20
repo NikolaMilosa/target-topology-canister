@@ -68,12 +68,10 @@ export function useMenuItems() {
 
     fetchTopologyAndProposals();
 
-    const interval = setInterval(async () => {
-      try {
-        await fetchTopologyAndProposals();
-      } catch (err) {
-        console.error("Failed to fetch menu data", err);
-      }
+    const interval = setInterval(() => {
+      fetchTopologyAndProposals().catch((err) =>
+        console.error("Failed to fetch menu data", err),
+      );
     }, 10000);
 
     return () => clearInterval(interval);
@@ -107,7 +105,7 @@ function buildMenu(subnets, proposals, draftProposals) {
           url: "/subnets",
         },
         {
-          id: "proposal",
+          id: "proposals",
           title: "Proposals view",
           type: "collapse",
           icon: "material-icons-two-tone",
